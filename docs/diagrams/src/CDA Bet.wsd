@@ -7,44 +7,64 @@ title CDA Bet
 
 namespace CdaBet {
     class User {
+        -gender
+        -lastname
+        -firstname
+        -address
+        -city
+        -postcode
+        -country
+        -birthdate
+        -phonenumber
+        -email
+        -password
         -timezone
     }
 
-    class Bet {
-        -amount
-        -date
-        +take()
-        +resolve()
-    }
-
-    class BetType {
-
-    }
-
     class Wallet {
+        -balance
         +credit()
         +debit()
     }
 
     class Currency {
-    }
-
-    class Cart {
+        -name
+        -description
+        -code
     }
 
     class Payment {
         -amount
         -date
+        -transactionID
+        -description
         +make()
     }
 
     class Odds {
+        -description
+        -value
+    }
+
+    class OddsType {
+    }
+
+    class Bet {
+        -amount
+        -date
+        +make()
+        +resolve()
+    }
+
+    class Cart {
     }
 
     class Event {
-        -location
+        -name
         -date
+        -location
         -timezone
+        -illustration
     }
 
     class Competitor {
@@ -52,9 +72,13 @@ namespace CdaBet {
     }
 
     class Sport {
+        -name
+        -description
     }
 
     class SportType {
+        -name
+        -description
     }
 
     class Competition {
@@ -62,6 +86,27 @@ namespace CdaBet {
 
     class Team {
         -name
+        -description
+    }
+
+    class Country{
     }
 }
 @enduml
+
+@startmindmap "CDA Bet Mind Map"
+* CDA Bet
+** Class
+** Actions
+*** Sign up
+*** Sign in
+*** Log out
+*** Show user profile
+*** Show bet history
+*** Credit wallet
+*** Debit wallet
+*** Show transactions history
+*** Show events by category
+*** Show Bets
+*** Make a bet
+@endmindmap
