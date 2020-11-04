@@ -2,7 +2,7 @@
 hide empty members
 caption CDA Bet Class Diagram
 footer Joël L & Bertrand C
-header Last updated 03/11/2020
+header Last updated 04/11/2020
 title CDA Bet
 
 namespace CdaBet {
