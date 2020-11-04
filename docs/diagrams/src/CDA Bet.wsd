@@ -6,5 +6,62 @@ header Last updated 04/11/2020
 title CDA Bet
 
 namespace CdaBet {
+    class User {
+        -timezone
+    }
+
+    class Bet {
+        -amount
+        -date
+        +take()
+        +resolve()
+    }
+
+    class BetType {
+
+    }
+
+    class Wallet {
+        +credit()
+        +debit()
+    }
+
+    class Currency {
+    }
+
+    class Cart {
+    }
+
+    class Payment {
+        -amount
+        -date
+        +make()
+    }
+
+    class Odds {
+    }
+
+    class Event {
+        -location
+        -date
+        -timezone
+    }
+
+    class Competitor {
+        -name
+    }
+
+    class Sport {
+    }
+
+    class SportType {
+    }
+
+    class Competition {
+    }
+
+    class Team {
+        -name
+    }
 }
 @enduml
