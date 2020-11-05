@@ -13,18 +13,17 @@ namespace CdaBet {
         -address
         -city
         -postcode
-        -country
         -birthdate
         -phonenumber
         -email
         -password
         -timezone
+        -active
+        -verified
+        -maximunWeeklyBet
     }
 
-    class Wallet {
-        -balance
-        +credit()
-        +debit()
+    class Country{
     }
 
     class Currency {
@@ -33,12 +32,49 @@ namespace CdaBet {
         -code
     }
 
+    class Wallet {
+        -balance
+        +credit()
+        +debit()
+    }
+
     class Payment {
         -amount
         -date
         -transactionID
         -description
         +make()
+    }
+
+    class Sport {
+        -name
+        -description
+    }
+
+    class SportType {
+        -name
+        -description
+    }
+
+    class Competitor {
+        -name
+    }
+
+    class Team {
+        -name
+        -description
+    }
+
+    class Event {
+        -name
+        -date
+        -location
+        -timezone
+        -illustration
+    }
+
+    class Competition {
+        -name
     }
 
     class Odds {
@@ -59,38 +95,24 @@ namespace CdaBet {
     class Cart {
     }
 
-    class Event {
-        -name
-        -date
-        -location
-        -timezone
-        -illustration
+    class CartLine {
     }
 
-    class Competitor {
-        -name
-    }
-
-    class Sport {
-        -name
-        -description
-    }
-
-    class SportType {
-        -name
-        -description
-    }
-
-    class Competition {
-    }
-
-    class Team {
-        -name
-        -description
-    }
-
-    class Country{
-    }
+    User "1" *-- "1" Wallet : has
+    User "1" -- "0..n" Country : has
+    Wallet -- Currency
+    Sport -- SportType
+    Competitor -- Team
+    Odds -- OddsType
+    Bet -- Odds
+    Event -- Competition
+    Competition -- Competition
+    Cart -- CartLine
+    Cart -- Payment
+    Event -- Odds
+    Event -- Competitor
+    Event -- Team
+    Event -- Country
 }
 @enduml
 
