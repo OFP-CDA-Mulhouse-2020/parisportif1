@@ -6,6 +6,7 @@ header Last updated 04/11/2020
 title CDA Bet
 
 namespace CdaBet {
+    ' Abstract class for people?
     class User {
         -gender
         -lastname
@@ -17,7 +18,6 @@ namespace CdaBet {
         -phonenumber
         -email
         -password
-        -timezone
         -active
         -verified
         -maximunWeeklyBet
@@ -25,6 +25,10 @@ namespace CdaBet {
 
     class Country{
     }
+
+    class TimeZone{
+    }
+
 
     class Currency {
         -name
@@ -69,7 +73,6 @@ namespace CdaBet {
         -name
         -date
         -location
-        -timezone
         -illustration
     }
 
@@ -87,6 +90,7 @@ namespace CdaBet {
 
     class Bet {
         -amount
+        -odds
         -date
         +make()
         +resolve()
@@ -100,6 +104,8 @@ namespace CdaBet {
 
     User "1" *-- "1" Wallet : has
     User "1" -- "0..n" Country : has
+    User -- TimeZone
+    Country -- TimeZone
     Wallet -- Currency
     Sport -- SportType
     Competitor -- Team
@@ -113,6 +119,9 @@ namespace CdaBet {
     Event -- Competitor
     Event -- Team
     Event -- Country
+    Event -- TimeZone
+    User -- Cart
+    Cart -- Bert
 }
 @enduml
 
@@ -131,4 +140,7 @@ namespace CdaBet {
 *** Show events by category
 *** Show Bets
 *** Make a bet
+** Component
+*** Symfony
+*** PHPStan
 @endmindmap
