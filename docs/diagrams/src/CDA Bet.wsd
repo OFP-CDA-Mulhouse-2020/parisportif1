@@ -24,16 +24,12 @@ namespace CdaBet {
     }
 
     class Country{
+        -name
     }
 
     class TimeZone{
-    }
-
-
-    class Currency {
-        -name
-        -description
         -code
+        -name
     }
 
     class Wallet {
@@ -91,37 +87,40 @@ namespace CdaBet {
     class Bet {
         -amount
         -odds
-        -date
         +make()
         +resolve()
     }
 
-    class Cart {
-    }
-
-    class CartLine {
+    class Order {
+        -date
+        -total
     }
 
     User "1" *-- "1" Wallet : has
     User "1" -- "0..n" Country : has
     User -- TimeZone
     Country -- TimeZone
-    Wallet -- Currency
+    Wallet -- Payment
     Sport -- SportType
     Competitor -- Team
+    Competitor -- Country
+    Team -- Country
     Odds -- OddsType
     Bet -- Odds
     Event -- Competition
     Competition -- Competition
-    Cart -- CartLine
-    Cart -- Payment
+    Competition -- Sport
+    Competition -- SportType
+    Order -- Payment
     Event -- Odds
+    Event -- Sport
+    Event -- SportType
     Event -- Competitor
     Event -- Team
     Event -- Country
     Event -- TimeZone
-    User -- Cart
-    Cart -- Bert
+    User -- Order
+    Order -- Bet
 }
 @enduml
 
