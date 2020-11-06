@@ -7,6 +7,8 @@ header Last updated 04/11/2020
 title CDA Bet
 
 namespace CdaBet {
+    ' TODO: complete the attributes, add the types and methods
+    ' TODO: Manage payment type
     ' Abstract class for people to extend?
     class User {
         -gender
