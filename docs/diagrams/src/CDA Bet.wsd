@@ -103,14 +103,14 @@ namespace CdaBet {
     User "1" *-- "1" Wallet : has >
     User "1" -- "0..n" Country : has >
     User "1" -- "0..n" TimeZone : is in >
-    Country "1..n" o-- "0..n" TimeZone : is in >
+    Country "1..n" -- "0..n" TimeZone : is in >
     Wallet "0..n" *-- "1" Payment
     Sport "1..n" --o "0..n" SportType
     Competitor "0..n" --o "2..n" Team
     Competitor "1" --o "0..n" Country
     Team "1" --o "0..n" Country
     Odds "1" --o "0..n" OddsType
-    (User, Odds) "0..n" *-- "1" Bet
+    (User, Odds) "1" *-- "1" Bet
     Event "0..1" --* "1..n" Competition
     Competition "0..1" --* "1..n" Competition
     Competition "1" -- "0..n" Sport
@@ -119,12 +119,15 @@ namespace CdaBet {
     Event "1..n" *-- "1" Odds
     Event "1" -- "0..n" Sport
     Event "1" -- "0..n" SportType
-    Event "0..2" -- "0..n" Competitor
-    Event "0..2" -- "0..n" Team
+    Event "2..n" -- "0..n" Competitor
+    Event "2..n" -- "0..n" Team
     Event "1" -- "0..n" Country
     Event "1" -- "0..n" TimeZone
     User "0..n" *-- "1" Order
-    Order "1..n" *-- "1" Bet
+    Order "1" *-- "1" Bet
+    ' Ajouter lien pari-joueur
+    ' Cacher le panier
+    ' Gérer les remplaçants
 }
 @enduml
 
