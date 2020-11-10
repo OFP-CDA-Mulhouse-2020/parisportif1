@@ -35,10 +35,12 @@ namespace CdaBet {
         -name
     }
 
+    ' add protected
     class Wallet {
         -balance
-        +credit()
-        +debit()
+        #credit()
+        #debit()
+        #history()
     }
 
     class Payment {
@@ -55,9 +57,11 @@ namespace CdaBet {
     }
 
     ' Could be an enumeration?
+    ' add Bool ifTeams
     class SportType {
         -name
         -description
+        -Bool ifTeams
     }
 
     ' Abstract class for people to extend?
