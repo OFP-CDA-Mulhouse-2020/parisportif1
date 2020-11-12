@@ -11,6 +11,8 @@ namespace CdaBet {
     ' TODO: Manage payment type
     ' TODO: Abstract class for people to extend?
     ' TODO: Manage the results and win
+
+    ' Manage the website user
     class User {
         -String gender
         -String lastname
@@ -36,7 +38,6 @@ namespace CdaBet {
         -String name
     }
 
-    ' add protected
     class Wallet {
         -Float balance
         #credit(balance)
@@ -58,12 +59,10 @@ namespace CdaBet {
         -String description
     }
 
-    ' Could be an enumeration?
-    ' add Bool ifTeams
+    ' Could be an enumeration: individual or team
     class SportType {
         -String name
         -String description
-        -Bool ifTeams
     }
 
     ' Abstract class for people to extend?
@@ -72,7 +71,7 @@ namespace CdaBet {
     }
 
     class Team {
-        -Sting name
+        -String name
         -String description
     }
 
@@ -113,6 +112,7 @@ namespace CdaBet {
         -Float total
     }
 
+    ' Relationships
     User "1" *-- "1" Wallet : has >
     User "1" -- "0..n" Country : has >
     User "1" -- "0..n" TimeZone : is in >
@@ -138,9 +138,8 @@ namespace CdaBet {
     Event "1" -- "0..n" TimeZone
     User "0..n" *-- "1" Order
     Order "1" *-- "1" Bet
-    ' Ajouter lien pari-joueur
-    ' Cacher le panier
-    ' Gérer les remplaçants
+    ' TODO: Add Bet-User relationships?
+    ' TODO: Manage the player status
 }
 @enduml
 
