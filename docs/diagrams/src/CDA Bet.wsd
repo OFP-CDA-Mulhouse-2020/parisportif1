@@ -7,9 +7,10 @@ header Last updated 04/11/2020
 title CDA Bet
 
 namespace CdaBet {
-    ' TODO: complete the attributes, add the types and methods
+    ' TODO: check the attributes, the types and methods
     ' TODO: Manage payment type
-    ' Abstract class for people to extend?
+    ' TODO: Abstract class for people to extend?
+    ' TODO: Manage the results and win
     class User {
         -String gender
         -String lastname
@@ -23,7 +24,7 @@ namespace CdaBet {
         -String password
         -Bool active
         -Bool verified
-        -Int maximunWeeklyBet
+        -Float maximunWeeklyBet
     }
 
     class Country{
@@ -37,16 +38,16 @@ namespace CdaBet {
 
     ' add protected
     class Wallet {
-        -Int balance
+        -Float balance
         #credit(balance)
         #debit(balance)
         #history()
     }
 
     class Payment {
-        -Int amount
+        -Float amount
         -Date date
-        -Int transactionID
+        -String transactionID
         -String description
         +make()
         +cancel(transactionID)
@@ -91,23 +92,25 @@ namespace CdaBet {
 
     class Odds {
         -String description
-        -Int value
+        -Float value
     }
 
+    /' Unused class for now
     class OddsType {
     }
+    '/
 
     class Bet {
-        -Int eventId
         -Int amount
         -Float odds
+        -Bool resolved
         +make()
         +resolve()
     }
 
     class Order {
         -Date date
-        -Int total
+        -Float total
     }
 
     User "1" *-- "1" Wallet : has >
