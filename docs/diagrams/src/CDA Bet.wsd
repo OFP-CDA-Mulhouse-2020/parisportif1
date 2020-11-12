@@ -11,102 +11,110 @@ namespace CdaBet {
     ' TODO: Manage payment type
     ' Abstract class for people to extend?
     class User {
-        -gender
-        -lastname
-        -firstname
-        -address
-        -city
-        -postcode
-        -birthdate
-        -phonenumber
-        -email
-        -password
-        -active
-        -verified
-        -maximunWeeklyBet
+        -String gender
+        -String lastname
+        -String firstname
+        -String address
+        -String city
+        -Int postcode
+        -Date birthdate
+        -Int phonenumber
+        -String email
+        -String password
+        -Bool active
+        -Bool verified
+        -Int maximunWeeklyBet
     }
 
     class Country{
-        -name
+        -String name
     }
 
     class TimeZone{
-        -code
-        -name
+        -String code
+        -String name
     }
 
+    ' add protected
     class Wallet {
-        -balance
-        +credit()
-        +debit()
+        -Int balance
+        #credit(balance)
+        #debit(balance)
+        #history()
     }
 
     class Payment {
-        -amount
-        -date
-        -transactionID
-        -description
+        -Int amount
+        -Date date
+        -Int transactionID
+        -String description
         +make()
+        +cancel(transactionID)
     }
 
     class Sport {
-        -name
-        -description
+        -String name
+        -String description
     }
 
     ' Could be an enumeration?
+    ' add Bool ifTeams
     class SportType {
-        -name
-        -description
+        -String name
+        -String description
+        -Bool ifTeams
     }
 
     ' Abstract class for people to extend?
     class Competitor {
-        -name
+        -String name
     }
 
     class Team {
-        -name
-        -description
+        -Sting name
+        -String description
     }
 
     ' Need for a class/markup between Team/Competitor and Event?
     class Event {
-        -name
-        -date
-        -location
-        -illustration
+        -String name
+        -Date date
+        -String location
+        -String illustration
+        -Int Score
+        -String whoWins
     }
 
     class Competition {
-        -name
+        -String name
     }
 
     class Odds {
-        -description
-        -value
+        -String description
+        -Int value
     }
 
     class OddsType {
     }
 
     class Bet {
-        -amount
-        -odds
+        -Int eventId
+        -Int amount
+        -Float odds
         +make()
         +resolve()
     }
 
     class Order {
-        -date
-        -total
+        -Date date
+        -Int total
     }
 
     User "1" *-- "1" Wallet : has >
     User "1" -- "0..n" Country : has >
     User "1" -- "0..n" TimeZone : is in >
     Country "1..n" -- "0..n" TimeZone : is in >
-    Wallet "0..n" *-- "1" Payment
+    Wallet "0..n" -- "1" Payment
     Sport "1..n" --o "0..n" SportType
     Competitor "0..n" --o "2..n" Team
     Competitor "1" --o "0..n" Country
