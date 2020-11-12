@@ -40,7 +40,7 @@ namespace CdaBet {
 
     class Wallet {
         -Float balance
-        #credit(balance)
+        #credit()
         #debit(balance)
         #history()
     }
