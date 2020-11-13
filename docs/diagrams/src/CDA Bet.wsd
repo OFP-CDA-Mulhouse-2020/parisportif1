@@ -1,6 +1,5 @@
 /' Development notes
 TODO: Check attributes, types and methods
-TODO: Manage the player status
 Assumptions: Age verification and payments are managed by external services
 Enhancement: Manage the payment type
 Enhancement: Extract the location from the event
@@ -77,6 +76,15 @@ namespace CdaBet {
     class Team {
         -String name
         -String description
+    }
+
+    class Status {
+        -String name
+        -String description
+    }
+
+    class Status {
+        -Date date
     }
 
     ' Need for a class/markup between Team/Competitor and Event?
