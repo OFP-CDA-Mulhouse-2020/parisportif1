@@ -1,3 +1,15 @@
+/' Development notes
+TODO: Check attributes, types and methods
+TODO: Shall we manage the payment type?
+TODO: Shall we abstract people? (user, competitor)
+TODO: How do we manage the results and win?
+TODO: Shalle we add Bet-User relationships?
+TODO: Manage the player status
+TODO: How do check the age?
+TODO: Shall we extract the location from the event?
+TODO: Add odds template
+'/
+
 @startuml "CDA Bet Class Diagram"
 hide empty members
 skinparam linetype ortho
@@ -7,11 +19,6 @@ header Last updated 04/11/2020
 title CDA Bet
 
 namespace CdaBet {
-    ' TODO: check the attributes, the types and methods
-    ' TODO: Manage payment type
-    ' TODO: Abstract class for people to extend?
-    ' TODO: Manage the results and win
-
     ' Manage the website user
     class User {
         -String gender
@@ -138,8 +145,6 @@ namespace CdaBet {
     Event "1" -- "0..n" TimeZone
     User "0..n" *-- "1" Order
     Order "1" *-- "1" Bet
-    ' TODO: Add Bet-User relationships?
-    ' TODO: Manage the player status
 }
 @enduml
 
