@@ -3,11 +3,9 @@ TODO: Check attributes, types and methods
 TODO: Shall we manage the payment type?
 TODO: Shall we abstract people? (user, competitor)
 TODO: How do we manage the results and win?
-TODO: Shalle we add Bet-User relationships?
 TODO: Manage the player status
-TODO: How do check the age?
+TODO: How do we check the age?
 TODO: Shall we extract the location from the event?
-TODO: Add odds template
 '/
 
 @startuml "CDA Bet Class Diagram"
@@ -102,7 +100,7 @@ namespace CdaBet {
     }
 
     /' Unused class for now
-    class OddsType {
+    class OddsTemplate {
     }
     '/
 
