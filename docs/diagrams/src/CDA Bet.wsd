@@ -1,11 +1,10 @@
 /' Development notes
 TODO: Check attributes, types and methods
-TODO: How do we check the age?
-TODO: How do we manage the results and win?
-TODO: Shall we abstract people? (user, competitor)
 TODO: Manage the player status
-TODO: Shall we extract the location from the event?
-TODO: Shall we manage the payment type?
+Assumptions: Age verification and payments are managed by external services
+Enhancement: Manage the payment type
+Enhancement: Extract the location from the event
+Enhancement: Abstract people (user, competitor)
 '/
 
 @startuml "CDA Bet Class Diagram"
@@ -87,7 +86,6 @@ namespace CdaBet {
         -String location
         -String illustration
         -Int Score
-        -String whoWins
     }
 
     class Competition {
@@ -107,6 +105,7 @@ namespace CdaBet {
     class Bet {
         -Int amount
         -Float odds
+        -Bool winning
         -Bool resolved
         +make()
         +resolve()
