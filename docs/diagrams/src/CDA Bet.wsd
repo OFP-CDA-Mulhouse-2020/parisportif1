@@ -1,11 +1,11 @@
 /' Development notes
 TODO: Check attributes, types and methods
-TODO: Shall we manage the payment type?
-TODO: Shall we abstract people? (user, competitor)
-TODO: How do we manage the results and win?
-TODO: Manage the player status
 TODO: How do we check the age?
+TODO: How do we manage the results and win?
+TODO: Shall we abstract people? (user, competitor)
+TODO: Manage the player status
 TODO: Shall we extract the location from the event?
+TODO: Shall we manage the payment type?
 '/
 
 @startuml "CDA Bet Class Diagram"
