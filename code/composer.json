@@ -40,6 +40,13 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.12.55",
+        "phpstan/phpstan-deprecation-rules": "^0.12.5",
+        "phpstan/phpstan-doctrine": "^0.12.22",
+        "phpstan/phpstan-phpunit": "^0.12.16",
+        "phpstan/phpstan-strict-rules": "^0.12.5",
+        "phpstan/phpstan-symfony": "^0.12.11",
         "spatie/phpunit-watcher": "^1.23",
         "squizlabs/php_codesniffer": "*",
         "symfony/browser-kit": "^5.1",
