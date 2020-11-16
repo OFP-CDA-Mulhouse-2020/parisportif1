@@ -4,6 +4,7 @@ Assumptions: Age verification and payments are managed by external services
 Enhancement: Manage the payment type
 Enhancement: Extract the location from the event
 Enhancement: Abstract people (user, competitor)
+Enhancement: Add template for odds
 '/
 
 @startuml "CDA Bet Class Diagram"
@@ -15,7 +16,57 @@ header Last updated 04/11/2020
 title CDA Bet
 
 namespace CdaBet {
+    ' Need for a class/markup between Team/Competitor and Event?
+    class Event {
+        -String name
+        -Date date
+        -String location
+        -String illustration
+        -Int Score
+    }
+
+    class Competition {
+        -String name
+    }
+
+    class Country{
+        -String name
+    }
+
+    ' Abstract class for people to extend
+    class Competitor {
+        -String name
+    }
+
+    class Team {
+        -String name
+        -String description
+    }
+
+    ' Hold the odds for the event
+    class Odds {
+        -String description
+        -Float value
+    }
+
+    class Sport {
+        -String name
+        -String description
+    }
+
+    ' Could be an enumeration: individual or team
+    class SportType {
+        -String name
+        -String description
+    }
+
+    class TimeZone{
+        -String code
+        -String name
+    }
+
     ' Manage the website user
+    ' Abstract class for people to extend later
     class User {
         -String gender
         -String lastname
@@ -32,20 +83,25 @@ namespace CdaBet {
         -Float maximunWeeklyBet
     }
 
-    class Country{
-        -String name
-    }
-
-    class TimeZone{
-        -String code
-        -String name
-    }
-
     class Wallet {
         -Float balance
         #credit()
         #debit(balance)
         #history()
+    }
+
+    class Order {
+        -Date date
+        -Float total
+    }
+
+    class Bet {
+        -Int amount
+        -Float odds
+        -Bool winning
+        -Bool resolved
+        +make()
+        +resolve()
     }
 
     class Payment {
@@ -57,99 +113,42 @@ namespace CdaBet {
         +cancel(transactionID)
     }
 
-    class Sport {
-        -String name
-        -String description
-    }
-
-    ' Could be an enumeration: individual or team
-    class SportType {
-        -String name
-        -String description
-    }
-
-    ' Abstract class for people to extend?
-    class Competitor {
-        -String name
-    }
-
-    class Team {
-        -String name
-        -String description
-    }
-
     class Status {
         -String name
         -String description
     }
 
-    class Status {
+    class CompetitorTeamStatus {
         -Date date
-    }
-
-    ' Need for a class/markup between Team/Competitor and Event?
-    class Event {
-        -String name
-        -Date date
-        -String location
-        -String illustration
-        -Int Score
-    }
-
-    class Competition {
-        -String name
-    }
-
-    class Odds {
-        -String description
-        -Float value
-    }
-
-    /' Unused class for now
-    class OddsTemplate {
-    }
-    '/
-
-    class Bet {
-        -Int amount
-        -Float odds
-        -Bool winning
-        -Bool resolved
-        +make()
-        +resolve()
-    }
-
-    class Order {
-        -Date date
-        -Float total
     }
 
     ' Relationships
-    User "1" *-- "1" Wallet : has >
-    User "1" -- "0..n" Country : has >
-    User "1" -- "0..n" TimeZone : is in >
-    Country "1..n" -- "0..n" TimeZone : is in >
-    Wallet "0..n" -- "1" Payment
-    Sport "1..n" --o "0..n" SportType
-    Competitor "0..n" --o "2..n" Team
-    Competitor "1" --o "0..n" Country
-    Team "1" --o "0..n" Country
-    Odds "1" --o "0..n" OddsType
-    (User, Odds) "1" *-- "1" Bet
     Event "0..1" --* "1..n" Competition
+    Event "1" -- "0..n" Country
+    Event "2..n" -- "0..n" Competitor
+    Event "2..n" -- "0..n" Team
+    Event "1..n" *-- "1" Odds
+    Event "1" -- "0..n" Sport
+    Event "1" -- "0..n" SportType
+    Event "1" -- "0..n" TimeZone
+    Country "0..n" -- "1" User : < has
+    Country"0..n" o-- "1" Competitor
+    Country "0..n" o-- "1" Team
+    Country "1..n" -- "0..n" TimeZone : is in >
+    User "1" -- "0..n" TimeZone : is in >
+    User "1" *-- "1" Wallet : has >
+    User "0..n" *-- "1" Order
+    (User, Odds) *.. "1" Bet
     Competition "0..1" --* "1..n" Competition
     Competition "1" -- "0..n" Sport
     Competition "1" -- "0..n" SportType
     Order "1" *-- "1" Payment
-    Event "1..n" *-- "1" Odds
-    Event "1" -- "0..n" Sport
-    Event "1" -- "0..n" SportType
-    Event "2..n" -- "0..n" Competitor
-    Event "2..n" -- "0..n" Team
-    Event "1" -- "0..n" Country
-    Event "1" -- "0..n" TimeZone
-    User "0..n" *-- "1" Order
     Order "1" *-- "1" Bet
+    Competitor "0..n" --o "2..n" Team
+    CompetitorTeamStatus "1" -- "0..n" Status
+    CompetitorTeamStatus "1" ..* (Competitor, Team)
+    Sport "1..n" --o "0..n" SportType
+    Wallet "0..n" -- "1" Payment
 }
 @enduml
 
