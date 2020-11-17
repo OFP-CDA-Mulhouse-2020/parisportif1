@@ -17,3 +17,10 @@ services:
     working_dir: /app
     volumes:
       - ./code:/app
+
+  mysql:
+    image: mysql:5.7
+    container_name: appDatabase
+    restart: always
+    ports:
+      - "3306:3306"
