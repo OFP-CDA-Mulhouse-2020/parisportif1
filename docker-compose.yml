@@ -9,3 +9,11 @@ services:
     working_dir: /app
     volumes:
       - ./code:/app
+
+  composer:
+    restart: "no"
+    image: composer
+    command: install
+    working_dir: /app
+    volumes:
+      - ./code:/app
