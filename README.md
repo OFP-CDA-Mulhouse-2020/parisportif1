@@ -8,7 +8,7 @@ A sport betting site
 - Language: English
 - No CSS, JS in run 1
 
-## Run 1 - Modeling and design
+## Sprint 1 - Modeling and design
 
 Specifications : https://github.com/OFP-CDA-Mulhouse-2020/specs
 From 03/11/2020 to 12/11/2020
@@ -25,7 +25,7 @@ From 03/11/2020 to 12/11/2020
 Adobe XD
 Plant UML
 
-## Run 2 - Preparing the project
+## Sprint 2 - Preparing the project
 
 Details: https://github.com/OFP-CDA-Mulhouse-2020/specs/blob/master/projet-init.md
 From 15/11/2020 to 16/11/200
