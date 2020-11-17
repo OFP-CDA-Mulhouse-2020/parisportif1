@@ -1,0 +1,11 @@
+version: "3.3"
+services:
+  php74:
+    build:
+      context: docker/php74-xdebug
+      dockerfile: dockerfile
+    ports:
+      - 8080:80
+    working_dir: /app
+    volumes:
+      - ./code:/app
