@@ -13,7 +13,6 @@ RUN apt-get update -qq && \
     zip && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-
 # PHP Extensions
 RUN docker-php-ext-install -j$(nproc) opcache pdo pdo_mysql
 RUN pecl install xdebug-2.9.6
@@ -24,6 +23,5 @@ COPY conf/php.ini /usr/local/etc/php/conf.d/app.ini
 
 # Apache
 COPY conf/vhost.conf /etc/apache2/sites-available/000-default.conf
-
 
 RUN a2enmod rewrite 
