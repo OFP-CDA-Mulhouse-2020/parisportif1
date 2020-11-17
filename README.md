@@ -1,7 +1,6 @@
 # CDA Bet Readme
 
 A sport betting site
-Specifications : https://github.com/OFP-CDA-Mulhouse-2020/specs
 
 # Constraints
 
@@ -11,6 +10,7 @@ Specifications : https://github.com/OFP-CDA-Mulhouse-2020/specs
 
 ## Run 1 - Modeling and design
 
+Specifications : https://github.com/OFP-CDA-Mulhouse-2020/specs
 From 03/11/2020 to 12/11/2020
 
 ### Tasks
@@ -24,3 +24,12 @@ From 03/11/2020 to 12/11/2020
 
 Adobe XD
 Plant UML
+
+## Run 2 - Preparing the project
+
+Details: https://github.com/OFP-CDA-Mulhouse-2020/specs/blob/master/projet-init.md
+From 15/11/2020 to 16/11/200
+
+- Prepare a Symfony project
+- Install the tools
+- Prepare the Docker containers
