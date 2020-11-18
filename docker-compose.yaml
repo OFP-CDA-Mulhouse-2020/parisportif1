@@ -1,38 +1,36 @@
 version: "3"
 services:
-  php74:
+  php:
     build:
       context: docker/php74-xdebug
       dockerfile: dockerfile
     working_dir: /app
     volumes:
       - ./code:/app
+    restart: on-failure
+    depends_on:
+      - composer
+      - db
+      - mailhog
 
   composer:
-    restart: "no"
     image: composer
     command: install
     working_dir: /app
     volumes:
       - ./code:/app
 
-  mysql:
-    image: mysql:5.7
-    container_name: appDatabase
-    restart: always
-    ports:
-      - "3306:3306"
+  db:
+    image: mysql
+    restart: on-failure
 
   phpmyadmin:
-    depends_on:
-      - mysql
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    restart: always
-    ports:
-      - "8060:80"
+    image: phpmyadmin
     environment:
-      PMA_HOST: mysql
+      PMA_HOST: db
+    restart: on-failure
+    depends_on:
+      - db
 
   traefik:
     image: "traefik"
@@ -42,6 +40,12 @@ services:
     volumes:
       - "./docker/traefik/conf/traefik.yml:/etc/traefik/traefik.yml"
       - "/var/run/docker.sock:/var/run/docker.sock"
+    restart: on-failure
+    depends_on:
+      - php
+      - phpmyadmin
+      - mailhog
 
   mailhog:
     image: "mailhog/mailhog"
+    restart: on-failure
