@@ -12,7 +12,7 @@ hide empty members
 skinparam linetype ortho
 caption CDA Bet Class Diagram
 footer Joël L & Bertrand C
-header Last updated 04/11/2020
+header Last updated 15/11/2020
 title CDA Bet
 
 namespace CdaBet {
@@ -152,6 +152,23 @@ namespace CdaBet {
 }
 @enduml
 
+@startuml "CDA Bet Component Diagram"
+hide empty members
+skinparam linetype ortho
+caption CDA Bet Component Diagram
+footer Joël L & Bertrand C
+header Last updated 18/11/2020
+title CDA Bet
+
+HTTP - [traefik]
+[traefik] - [php]
+[traefik] - [phpmyadmin]
+[traefik] - [mailhog]
+[php] - [mysql]
+[phpmyadmin] - [mysql]
+[php] - [composer]
+@enduml
+
 @startmindmap "CDA Bet Mind Map"
 * CDA Bet
 ** Class
@@ -167,7 +184,8 @@ namespace CdaBet {
 *** Show events by category
 *** Show Bets
 *** Make a bet
-** Component
+** Components
 *** Symfony
 *** PHPStan
+** Quality
 @endmindmap
