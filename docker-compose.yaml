@@ -50,3 +50,5 @@ services:
   mailhog:
     image: "mailhog/mailhog"
     restart: on-failure
+    labels:
+      - "traefik.http.services.mailhog-parisportif1.loadbalancer.server.port=8025"
