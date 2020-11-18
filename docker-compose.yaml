@@ -28,8 +28,6 @@ services:
 
   phpmyadmin:
     image: phpmyadmin
-    environment:
-      PMA_HOST: db
     restart: on-failure
     depends_on:
       - db
