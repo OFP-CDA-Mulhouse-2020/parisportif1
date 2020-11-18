@@ -15,10 +15,9 @@ services:
 
   composer:
     image: composer
-    command: install
-    working_dir: /app
     volumes:
       - ./code:/app
+    command: ["install"]
 
   db:
     image: mysql
@@ -29,6 +28,8 @@ services:
   phpmyadmin:
     image: phpmyadmin
     restart: on-failure
+    environment:
+      PMA_ABSOLUTE_URI: http://phpmyadmin-parisportif1.docker.localhost/
     depends_on:
       - db
 
