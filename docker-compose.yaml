@@ -3,8 +3,8 @@ services:
   php:
     build:
       context: docker/php74-xdebug
-      dockerfile: dockerfile
-    working_dir: /app
+      cache_from:
+        - php:7.4-apache
     volumes:
       - ./code:/app
     restart: on-failure
