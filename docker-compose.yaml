@@ -4,8 +4,6 @@ services:
     build:
       context: docker/php74-xdebug
       dockerfile: dockerfile
-    ports:
-      - 80:80
     working_dir: /app
     volumes:
       - ./code:/app
@@ -35,3 +33,15 @@ services:
       - "8060:80"
     environment:
       PMA_HOST: mysql
+
+  traefik:
+    image: "traefik"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "./docker/traefik/conf/traefik.yml:/etc/traefik/traefik.yml"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  mailhog:
+    image: "mailhog/mailhog"
