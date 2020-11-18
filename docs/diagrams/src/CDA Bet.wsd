@@ -152,22 +152,21 @@ namespace CdaBet {
 }
 @enduml
 
-@startuml "CDA Bet Components Diagram"
+@startuml "CDA Bet Component Diagram"
 hide empty members
 skinparam linetype ortho
-caption CDA Bet Components Diagram
+caption CDA Bet Component Diagram
 footer Joël L & Bertrand C
-header Last updated 17/11/2020
+header Last updated 18/11/2020
 title CDA Bet
 
-HTTP.80 - [traefik]
-HTTP.8080 - [traefik]
+HTTP - [traefik]
 [traefik] - [php]
-[php] - [mysql]
-[phpmyadmin] - [mysql]
-[composer]
 [traefik] - [phpmyadmin]
 [traefik] - [mailhog]
+[php] - [mysql]
+[phpmyadmin] - [mysql]
+[php] - [composer]
 @enduml
 
 @startmindmap "CDA Bet Mind Map"
