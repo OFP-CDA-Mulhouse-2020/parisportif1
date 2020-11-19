@@ -1,15 +1,15 @@
 <?php
 
 use App\Entity\Dummy;
-use PHPUnit\FrameWork\TestCase;
+use PHPUnit\Framework\TestCase;
 
 class DummyTest extends TestCase
 {
     public function testString()
     {
         $dummyString = new Dummy();
-        $dummyString->setDummyStr("helloworld");
-        $this->assertSame("helloworld", $dummyString->get());
+        $dummyString->setDummyString("helloworld");
+        $this->assertSame("helloworld", $dummyString->getDummyString());
     }
 
 }
