@@ -28,11 +28,15 @@ Plant UML
 ## Sprint 2 - Preparing the project
 
 Details: https://github.com/OFP-CDA-Mulhouse-2020/specs/blob/master/projet-init.md
-From 16/11/2020 to 17/11/200
+From 16/11/2020 to 19/11/200
 
 - Prepare a Symfony project
-- Install the tools
-- Prepare the Docker containers
+- Install and configure the tools (quality)
+- Install and configure the Docker containers
+- Configure environments (dev, test)
+- Configure the databases
+- Perform unit testing on a dummy entity
+- Setup GitHub actions for unit testing
 
 ## Sprint 3 - ...
 
