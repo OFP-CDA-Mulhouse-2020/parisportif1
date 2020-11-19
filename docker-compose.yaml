@@ -3,8 +3,8 @@ services:
   php:
     build:
       context: docker/php74-xdebug
-      dockerfile: dockerfile
-    working_dir: /app
+      cache_from:
+        - php:7.4-apache
     volumes:
       - ./code:/app
     restart: on-failure
@@ -12,6 +12,8 @@ services:
       - composer
       - db
       - mailhog
+    # labels:
+      # - traefik.port=80
 
   composer:
     image: composer
@@ -34,13 +36,13 @@ services:
       - db
 
   traefik:
-    image: "traefik"
+    image: traefik
     ports:
       - "80:80"
       - "8080:8080"
     volumes:
-      - "./docker/traefik/conf/traefik.yml:/etc/traefik/traefik.yml"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ./docker/traefik/conf/traefik.yml:/etc/traefik/traefik.yml
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: on-failure
     depends_on:
       - php
@@ -48,7 +50,7 @@ services:
       - mailhog
 
   mailhog:
-    image: "mailhog/mailhog"
+    image: mailhog/mailhog
     restart: on-failure
     labels:
-      - "traefik.http.services.mailhog-parisportif1.loadbalancer.server.port=8025"
+      - traefik.http.services.mailhog-parisportif1.loadbalancer.server.port=8025
