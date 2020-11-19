@@ -27,8 +27,7 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
     volumes:
-      - ./data/db:/var/lib/mysql
-    #download database command cli = docker-compose up -d
+      - ./volumes/database:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin
@@ -55,5 +54,7 @@ services:
   mailhog:
     image: mailhog/mailhog
     restart: on-failure
+    volumes:
+      - ./volumes/mailhog:/maildir
     labels:
       - traefik.http.services.mailhog-parisportif1.loadbalancer.server.port=8025
