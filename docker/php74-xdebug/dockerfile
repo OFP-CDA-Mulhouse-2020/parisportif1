@@ -3,7 +3,7 @@ FROM php:7.4-apache
 WORKDIR "/app"
 
 # PHP Extensions
-RUN docker-php-ext-install -j$(nproc) opcache pdo pdo_mysql
+RUN docker-php-ext-install -j$(nproc) opcache pdo_mysql
 RUN pecl install xdebug-2.9.6
 RUN docker-php-ext-enable xdebug
 RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini
