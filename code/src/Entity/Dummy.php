@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Entity;
 
 class Dummy
 {
@@ -12,7 +12,6 @@ class Dummy
     public function getDummyString(): string
     {
         return $this->dummyString;
-
     }
 
     /**
@@ -20,7 +19,6 @@ class Dummy
      */
     public function setDummyString(string $dummyString): void
     {
-
         if (!preg_match("/^[a-zA-Z]+$/", $dummyString)) {
             throw new \InvalidArgumentException('is not string');
         }
