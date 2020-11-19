@@ -1,5 +1,6 @@
 <?php
 
+use App\Entity\Dummy;
 use PHPUnit\FrameWork\TestCase;
 
 class DummyTest extends TestCase
@@ -10,4 +11,5 @@ class DummyTest extends TestCase
         $dummyString->setDummyStr("helloworld");
         $this->assertSame("helloworld", $dummyString->get());
     }
+
 }
