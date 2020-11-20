@@ -15,14 +15,15 @@ class DummyTest extends TestCase
 
     public function testInvalidString()
     {
-        $this->expectException(\InvalidArgumentException::class);
         $dummyString = new Dummy();
-        $dummyString->setDummyString("a");
+        $this->expectException(\InvalidArgumentException::class);
+        $dummyString->setDummyString("5");
     }
 
     public function testInteger()
     {
-        $dummyInterger = new Dummy();
-        $dummyInterger->setDummyInterger('55');
+        $dummyInteger = new Dummy();
+        $dummyInteger->setDummyInteger(55);
+        $this->assertEquals(55, $dummyInteger->getDummyInteger());
     }
 }
