@@ -1,0 +1,28 @@
+FROM php:7.4-apache
+
+WORKDIR "/app"
+
+RUN apt-get update -qq && \
+    apt-get install -qy \
+    git \
+    gnupg \
+    unzip \
+    zip && \
+    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+# PHP Extensions
+RUN docker-php-ext-install -j$(nproc) opcache pdo_mysql
+RUN pecl install xdebug-2.9.6
+RUN docker-php-ext-enable xdebug
+RUN echo "xdebug.remote_enable=1" >> /usr/local/etc/php/php.ini
+RUN echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/php.ini
+RUN echo "xdebug.remote_host=host.docker.internal" >> /usr/local/etc/php/php.ini
+# RUN echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/php.ini
+COPY conf/php.ini /usr/local/etc/php/conf.d/app.ini
+
+# Apache
+COPY conf/vhost.conf /etc/apache2/sites-available/000-default.conf
+
+RUN a2enmod rewrite

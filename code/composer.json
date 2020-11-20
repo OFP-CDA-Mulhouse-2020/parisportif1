@@ -1,4 +1,6 @@
 {
+    "name": "ofp-cda-mulhouse-2020/cda-bet",
+    "description": "CDA Bet project, the best sports betting site by CDA Mulhouse 2020",
     "type": "project",
     "license": "proprietary",
     "require": {
