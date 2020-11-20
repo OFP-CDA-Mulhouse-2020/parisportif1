@@ -24,5 +24,4 @@ class Dummy
         }
         $this->dummyString = $dummyString;
     }
-
 }
