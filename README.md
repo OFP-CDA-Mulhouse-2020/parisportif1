@@ -38,6 +38,8 @@ From 16/11/2020 to 19/11/200
 - Perform unit testing on a dummy entity
 - Setup GitHub actions for unit testing
 
-## Sprint 3 - ...
+Setup: The project uses uncommited and locally overrided default values for the environment variables, especially for the database configuration. Create local environment files (.env.local, .env.dev.local, .env.test.local) with your database specific configurations
 
-Details:
+## Sprint 3 - TBD later
+
+Details: TBD later
