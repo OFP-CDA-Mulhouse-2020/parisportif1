@@ -1,4 +1,5 @@
 version: "3"
+
 services:
   php:
     build:
@@ -12,8 +13,6 @@ services:
       - composer
       - db
       - mailhog
-    # labels:
-    # - traefik.port=80
 
   composer:
     image: composer
@@ -27,12 +26,13 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
     volumes:
-      - ./volumes/database:/var/lib/mysql
+      - db-volume:/var/lib/mysql
 
   phpmyadmin:
     image: phpmyadmin
     restart: on-failure
     environment:
+      # Update in case of service name change
       PMA_ABSOLUTE_URI: http://phpmyadmin-parisportif1.docker.localhost/
     depends_on:
       - db
@@ -44,7 +44,7 @@ services:
       - "8080:8080"
     volumes:
       - ./docker/traefik/conf/traefik.yml:/etc/traefik/traefik.yml
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: on-failure
     depends_on:
       - php
@@ -55,6 +55,11 @@ services:
     image: mailhog/mailhog
     restart: on-failure
     volumes:
-      - ./volumes/mailhog:/maildir
+      - mail-volume:/maildir
     labels:
-      - traefik.http.services.mailhog-parisportif1.loadbalancer.server.port=8025
+      - traefik.http.services.mailhog.loadbalancer.server.port=8025
+
+volumes:
+  db-volume:
+  mail-volume:
+  
