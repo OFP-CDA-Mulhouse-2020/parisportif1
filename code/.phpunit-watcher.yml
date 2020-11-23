@@ -1,2 +1,3 @@
+hideManual: true
 phpunit:
-  binaryPath: "./vendor/bin/simple-phpunit"
+  binaryPath: "./bin/phpunit"
