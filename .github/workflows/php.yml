@@ -4,7 +4,7 @@ on: [push]
 
 defaults:
   run:
-    working-directory: code
+    working-directory: ./code
 
 jobs:
   build:
@@ -47,15 +47,22 @@ jobs:
             sleep 1
           done
 
+      - name: Tests
+        run: |
+          php bin/console doctrine:database:create
+          php bin/console doctrine:fixtures:load
+        env:
+          DATABASE_URL: DATABASE_URL=mysql://root@127.0.0.1:3306/ps_test?serverVersion=8.0
+
       - name: PHPunit
         run: |
           vendor/bin/simple-phpunit
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-    # - name: Run test suite
-    #   run: composer run-script test
-    #          cd code
+      # - name: Run test suite
+      #   run: composer run-script test
+      #          cd code
 
-#          composer install
+      #          composer install
