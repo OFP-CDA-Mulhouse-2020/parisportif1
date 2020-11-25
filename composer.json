@@ -4,5 +4,7 @@
     "type": "project",
     "license": "AGPL-3.0-or-later",
     "minimum-stability": "stable",
-    "require": {}
+    "require-dev": {
+        "dama/doctrine-test-bundle": "^6.4"
+    }
 }
