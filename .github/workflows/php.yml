@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mariadb:
-        image: mariadb:latest
+      services:
+      db:
+        image: mysql:latest
         ports:
-          - 3306
+          - 3306:3306
         env:
-          MYSQL_USER: root
           MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+          MYSQL_DATABASE: ps_test
 
     steps:
       - uses: actions/checkout@v2
@@ -39,9 +39,13 @@ jobs:
         #if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress --no-suggest
 
+        #
+        # DataBase
+        #
+
       - name: Verify MariaDB connection
         env:
-          PORT: ${{ job.services.mariadb.ports[3306] }}
+          PORT: ${{ job.services.db.ports[3306] }}
         run: |
           while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
             sleep 1
@@ -49,10 +53,16 @@ jobs:
 
       - name: Tests
         run: |
-          php bin/console doctrine:database:create
-          php bin/console doctrine:fixtures:load
+          php bin/console doctrine:database:drop --if-exists -f --env=test
+          php bin/console doctrine:database:create --env=test
+          php bin/console doctrine:fixtures:load --env=test
         env:
-          DATABASE_URL: DATABASE_URL=mysql://root@127.0.0.1:3306/ps_test?serverVersion=8.0
+          PORT: ${{ job.services.db.ports[3306] }}
+          DATABASE_URL: mysql://root@127.0.0.1:3306/ps_test?serverVersion=8.0
+
+          #
+          # End DataBase
+          #
 
       - name: PHPunit
         run: |
