@@ -34,7 +34,6 @@ class User implements UserInterface
      */
     private $password;
 
-<<<<<<< HEAD
     /**
      * @ORM\Column(type="string", length=255)
      */
@@ -55,8 +54,6 @@ class User implements UserInterface
      */
     private $address;
 
-=======
->>>>>>> 08e87e5... add user
     public function getId(): ?int
     {
         return $this->id;
@@ -134,7 +131,6 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
-<<<<<<< HEAD
 
     public function getGender(): ?string
     {
@@ -183,6 +179,4 @@ class User implements UserInterface
 
         return $this;
     }
-=======
->>>>>>> 08e87e5... add user
 }
