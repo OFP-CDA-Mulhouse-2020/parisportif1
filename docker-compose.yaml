@@ -10,7 +10,6 @@ services:
       - ./code:/app
     restart: on-failure
     depends_on:
-      - composer
       - db
       - mailhog
 
@@ -18,7 +17,7 @@ services:
     image: composer
     volumes:
       - ./code:/app
-    command: ["install"]
+      - .git:/.git
 
   db:
     image: mysql
