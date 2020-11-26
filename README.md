@@ -28,7 +28,7 @@ Plant UML
 ## Sprint 2 - Preparing the project
 
 Details: https://github.com/OFP-CDA-Mulhouse-2020/specs/blob/master/projet-init.md
-From 16/11/2020 to 19/11/200
+From 16/11/2020 to 25/11/200
 
 - Prepare a Symfony project
 - Install and configure the tools (quality)
@@ -38,8 +38,15 @@ From 16/11/2020 to 19/11/200
 - Perform unit testing on a dummy entity
 - Setup GitHub actions for unit testing
 
-Setup: The project uses uncommited and locally overrided default values for the environment variables, especially for the database configuration. Create local environment files (.env.local, .env.dev.local, .env.test.local) with your database specific configurations
+Setup: The project uses uncommited and locally overrided default values for the environment variables, especially for the database configuration. Create local environment files (.env.local, .env.test.local) with your database specific configurations
 
-## Sprint 3 - TBD later
+## Sprint 3 - Security Module
 
-Details: TBD later
+Details: https://github.com/OFP-CDA-Mulhouse-2020/specs/blob/master/Security.md
+From 26/11/2020 to 10/12/2020 (tentatively)
+
+- Create a user entity
+- Unit test the user entity
+- Function test the user entity (TBD later)
+
+Keep using git flow features for the features, start using Pull Requests to merge code change
