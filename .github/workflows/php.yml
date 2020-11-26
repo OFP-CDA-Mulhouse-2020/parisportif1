@@ -4,11 +4,20 @@ on: [push]
 
 defaults:
   run:
-    working-directory: code
+    working-directory: ./code
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mysql:latest
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+          MYSQL_DATABASE: ps_test
 
     steps:
       - uses: actions/checkout@v2
@@ -29,15 +38,40 @@ jobs:
         #if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress --no-suggest
 
+        #
+        # DataBase
+        #
+
+      - name: Verify MariaDB connection
+        env:
+          PORT: ${{ job.services.db.ports[3306] }}
+        run: |
+          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
+            sleep 1
+          done
+
+      - name: Tests
+        run: |
+          php bin/console doctrine:database:drop --if-exists -f --env=test
+          php bin/console doctrine:database:create --env=test
+          php bin/console doctrine:fixtures:load --env=test
+        env:
+          PORT: ${{ job.services.db.ports[3306] }}
+          DATABASE_URL: mysql://root@127.0.0.1:3306/ps_test?serverVersion=8.0
+
+          #
+          # End DataBase
+          #
+
       - name: PHPunit
         run: |
           vendor/bin/simple-phpunit
 
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
+      # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+      # Docs: https://getcomposer.org/doc/articles/scripts.md
 
-    # - name: Run test suite
-    #   run: composer run-script test
-    #          cd code
+      # - name: Run test suite
+      #   run: composer run-script test
+      #          cd code
 
-#          composer install
+      #          composer install

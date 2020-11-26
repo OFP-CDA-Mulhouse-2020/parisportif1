@@ -3,6 +3,5 @@
     "description": "CDA Bet project, the best sports betting site by CDA Mulhouse 2020",
     "type": "project",
     "license": "AGPL-3.0-or-later",
-    "minimum-stability": "stable",
-    "require": {}
+    "minimum-stability": "stable"
 }
