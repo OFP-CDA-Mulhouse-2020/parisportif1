@@ -67,7 +67,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="date_immutable")
      */
-    private $birthDate;
+    private $birthdate;
 
     public function getId(): ?int
     {
@@ -221,12 +221,12 @@ class User implements UserInterface
 
     public function getBirthDate(): ?\DateTimeImmutable
     {
-        return $this->birthDate;
+        return $this->birthdate;
     }
 
-    public function setBirthDate(\DateTimeImmutable $birthDate): self
+    public function setBirthDate(\DateTimeImmutable $birthdate): self
     {
-        $this->birthDate = $birthDate;
+        $this->birthdate = $birthdate;
 
         return $this;
     }

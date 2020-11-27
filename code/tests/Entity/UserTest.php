@@ -11,7 +11,7 @@ class UserTest extends TestCase
     {
         $user = new User();
         $this->assertInstanceOf(User::class, $user);
-        $this->assertClassHasAttribute('birthDate', User::class);
+        $this->assertClassHasAttribute('birthdate', User::class);
     }
 
     public function testSetGender()
