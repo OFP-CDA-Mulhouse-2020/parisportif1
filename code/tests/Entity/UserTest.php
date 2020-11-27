@@ -1,5 +1,8 @@
 <?php
+<<<<<<< HEAD:code/tests/Entity/UserTest.php
 namespace App\test\entity;
+=======
+>>>>>>> 08e87e5... add user:code/tests/UserTest.php
 
 namespace APP\Test;
 
@@ -33,6 +36,7 @@ class UserTest extends TestCase
         $user->setAddress("10 Rue de tarte au pomme 98432");
         $this->assertSame("10 Rue de tarte au pomme 98432", $user->getAddress());
     }
+<<<<<<< HEAD:code/tests/Entity/UserTest.php
 
     public function testEmailValidate()
     {
@@ -49,3 +53,6 @@ class UserTest extends TestCase
         $this->assertSame("password", $user->getPassword());
     }
 }
+=======
+}
+>>>>>>> 08e87e5... add user:code/tests/UserTest.php
