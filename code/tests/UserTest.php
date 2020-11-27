@@ -8,7 +8,6 @@ use PHPUnit\Framework\TestCase;
 class UserTest extends TestCase
 {
 
-
     public function testSetGender()
     {
         $user = new User();
