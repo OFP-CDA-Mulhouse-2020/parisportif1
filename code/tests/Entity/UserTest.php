@@ -48,4 +48,18 @@ class UserTest extends TestCase
         $user->setPassword("password");
         $this->assertSame("password", $user->getPassword());
     }
+
+    public function testUserStatusBool()
+    {
+        $user = new User();
+        $user->setUserStatus(true);
+        $this->assertTrue($user->getUserStatus());
+    }
+
+    public function testUserSuspendedBool()
+    {
+        $user = new User();
+        $user->setUserSuspended(true);
+        $this->assertTrue($user->getUserSuspended());
+    }
 }

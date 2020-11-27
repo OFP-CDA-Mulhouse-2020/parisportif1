@@ -54,6 +54,16 @@ class User implements UserInterface
      */
     private $address;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $userStatus;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $UserSuspended;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -176,6 +186,30 @@ class User implements UserInterface
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getUserStatus(): ?bool
+    {
+        return $this->userStatus;
+    }
+
+    public function setUserStatus(bool $userStatus): self
+    {
+        $this->userStatus = $userStatus;
+
+        return $this;
+    }
+
+    public function getUserSuspended(): ?bool
+    {
+        return $this->UserSuspended;
+    }
+
+    public function setUserSuspended(bool $UserSuspended): self
+    {
+        $this->UserSuspended = $UserSuspended;
 
         return $this;
     }
