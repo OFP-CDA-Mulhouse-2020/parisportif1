@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Exception;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -37,7 +38,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Gender;
+    private $gender;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -64,6 +65,11 @@ class User implements UserInterface
      */
     private $UserSuspended;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $userDeleted;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +82,9 @@ class User implements UserInterface
 
     public function setEmail(string $email): self
     {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception('Email invalided');
+        }
         $this->email = $email;
 
         return $this;
@@ -88,7 +97,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -115,11 +124,14 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
     {
+        if (!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&_*(),.?":{}|<>])(?!.*\s).{8,16}$/ ', $password)) {
+            throw new Exception('Password invalided');
+        }
         $this->password = $password;
 
         return $this;
@@ -144,12 +156,12 @@ class User implements UserInterface
 
     public function getGender(): ?string
     {
-        return $this->Gender;
+        return $this->gender;
     }
 
-    public function setGender(string $Gender): self
+    public function setGender(string $gender): self
     {
-        $this->Gender = $Gender;
+        $this->gender = $gender;
 
         return $this;
     }
@@ -161,6 +173,9 @@ class User implements UserInterface
 
     public function setLastname(string $lastname): self
     {
+        if (!preg_match('^[a-zA-ZÀ-ÿ_.-]{2,16}$', $lastname)) {
+            throw new Exception('last name invalided');
+        }
         $this->lastname = $lastname;
 
         return $this;
@@ -173,6 +188,9 @@ class User implements UserInterface
 
     public function setFirstname(string $firstname): self
     {
+        if (!preg_match('^[a-zA-ZÀ-ÿ_.-]{2,16}$', $firstname)) {
+            throw new Exception('first name invalided');
+        }
         $this->firstname = $firstname;
 
         return $this;
@@ -210,6 +228,18 @@ class User implements UserInterface
     public function setUserSuspended(bool $UserSuspended): self
     {
         $this->UserSuspended = $UserSuspended;
+
+        return $this;
+    }
+
+    public function getUserDeleted(): ?bool
+    {
+        return $this->userDeleted;
+    }
+
+    public function setUserDeleted(bool $userDeleted): self
+    {
+        $this->userDeleted = $userDeleted;
 
         return $this;
     }
