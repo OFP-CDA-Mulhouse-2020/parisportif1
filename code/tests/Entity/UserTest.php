@@ -4,6 +4,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Exception;
 
 class UserTest extends TestCase
 {
@@ -27,10 +28,24 @@ class UserTest extends TestCase
         $user->setLastname("Dupont");
         $this->assertSame("Dupont", $user->getLastname());
     }
+    public function testSetLastNameInvalidated()
+    {
+        $this->expectException(\Exception::class);
+        $user = new User();
+        $user->setLastname("Dupont");
+        $this->assertSame("Dupont", $user->getLastname());
+    }
 
     //firstname
     public function testSetFirstName()
     {
+        $user = new User();
+        $user->setFirstname("Ben");
+        $this->assertSame("Ben", $user->getFirstname());
+    }
+    public function testSetFirstNameInvalidated()
+    {
+        $this->expectException(\Exception::class);
         $user = new User();
         $user->setFirstname("Ben");
         $this->assertSame("Ben", $user->getFirstname());
@@ -54,7 +69,7 @@ class UserTest extends TestCase
 
     public function testEmailInvalidated()
     {
-        //$this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Exception::class);
         $user = new User();
         $user->setEmail("test@test");
         $this->assertSame("test@test", $user->getEmail());
@@ -70,7 +85,7 @@ class UserTest extends TestCase
 
     public function testInvalidPassword()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\Exception::class);
         $user = new User();
         $user->setPassword("pas");
         $this->assertSame("pas", $user->getPassword());
