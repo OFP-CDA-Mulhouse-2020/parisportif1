@@ -64,6 +64,11 @@ class User implements UserInterface
      */
     private $UserSuspended;
 
+    /**
+     * @ORM\Column(type="date_immutable")
+     */
+    private $birthDate;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -210,6 +215,18 @@ class User implements UserInterface
     public function setUserSuspended(bool $UserSuspended): self
     {
         $this->UserSuspended = $UserSuspended;
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeImmutable
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(\DateTimeImmutable $birthDate): self
+    {
+        $this->birthDate = $birthDate;
 
         return $this;
     }

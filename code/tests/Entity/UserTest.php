@@ -60,4 +60,11 @@ class UserTest extends TestCase
         $user->setUserSuspended(true);
         $this->assertTrue($user->getUserSuspended());
     }
+
+    public function testInstanceOfUser()
+    {
+        $user = new User();
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertClassHasAttribute('birthDate', User::class);
+    }
 }
