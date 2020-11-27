@@ -7,6 +7,12 @@ use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
 {
+    public function testInstanceOfUser(): void
+    {
+        $user = new User();
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertClassHasAttribute('birthDate', User::class);
+    }
 
     public function testSetGender()
     {
@@ -14,6 +20,7 @@ class UserTest extends TestCase
         $user->setGender("male");
         $this->assertSame("male", $user->getGender());
     }
+
     public function testSetLastName()
     {
         $user = new User();
@@ -89,12 +96,5 @@ class UserTest extends TestCase
         $user = new User();
         $user->setUserDeleted(true);
         $this->assertTrue($user->getUserDeleted());
-    }
-
-    public function testInstanceOfUser()
-    {
-        $user = new User();
-        $this->assertInstanceOf(User::class, $user);
-        $this->assertClassHasAttribute('birthDate', User::class);
     }
 }
