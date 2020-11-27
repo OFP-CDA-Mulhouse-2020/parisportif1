@@ -1,6 +1,6 @@
 <?php
-namespace App\test\entity;
 
+namespace App\test\entity;
 namespace APP\Test;
 
 use App\Entity\User;
@@ -21,12 +21,16 @@ class UserTest extends TestCase
         $user->setLastname("Dupont");
         $this->assertSame("Dupont", $user->getLastname());
     }
+
+    //firstname
     public function testSetFirstName()
     {
         $user = new User();
         $user->setFirstname("Ben");
         $this->assertSame("Ben", $user->getFirstname());
     }
+
+    //adresse
     public function testSetAddress()
     {
         $user = new User();
@@ -34,21 +38,39 @@ class UserTest extends TestCase
         $this->assertSame("10 Rue de tarte au pomme 98432", $user->getAddress());
     }
 
-    public function testEmailValidate()
+    //email
+    public function testEmailValidated()
     {
         $user = new User();
         $user->setEmail("test@test.fr");
         $this->assertSame("test@test.fr", $user->getEmail());
-
     }
 
-    public function testPassword()
+    public function testEmailInvalidated()
+    {
+        //$this->expectException(\InvalidArgumentException::class);
+        $user = new User();
+        $user->setEmail("test@test");
+        $this->assertSame("test@test", $user->getEmail());
+    }
+
+    //password
+    public function testPasswordValidated()
     {
         $user = new User();
-        $user->setPassword("password");
-        $this->assertSame("password", $user->getPassword());
+        $user->setPassword("Test95qz@a");
+        $this->assertSame("Test95qz@a", $user->getPassword());
     }
 
+    public function testInvalidPassword()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $user = new User();
+        $user->setPassword("pas");
+        $this->assertSame("pas", $user->getPassword());
+    }
+
+    //boolean
     public function testUserStatusBool()
     {
         $user = new User();
@@ -61,5 +83,11 @@ class UserTest extends TestCase
         $user = new User();
         $user->setUserSuspended(true);
         $this->assertTrue($user->getUserSuspended());
+    }
+    public function testUserDeletedBool()
+    {
+        $user = new User();
+        $user->setUserDeleted(true);
+        $this->assertTrue($user->getUserDeleted());
     }
 }
