@@ -46,4 +46,5 @@ class UserTest extends TestCase
         $user->setPassword("password");
         $this->assertSame("password", $user->getPassword());
     }
+
 }
