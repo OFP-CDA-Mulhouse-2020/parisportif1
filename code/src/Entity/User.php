@@ -245,6 +245,7 @@ class User implements UserInterface
     {
         $this->userDeleted = $userDeleted;
     }
+
     public function getBirthDate(): ?\DateTimeImmutable
     {
         return $this->birthdate;
