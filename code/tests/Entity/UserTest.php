@@ -1,7 +1,6 @@
 <?php
-namespace App\test\entity;
 
-namespace APP\Test;
+namespace App\Tests\Entity;
 
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +38,6 @@ class UserTest extends TestCase
         $user = new User();
         $user->setEmail("test@test.fr");
         $this->assertSame("test@test.fr", $user->getEmail());
-
     }
 
     public function testPassword()
