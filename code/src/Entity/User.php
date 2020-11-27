@@ -4,8 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Exception;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -69,6 +69,10 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $userDeleted;
+    /*
+     * @ORM\Column(type="date_immutable")
+     */
+    private $birthDate;
 
     public function getId(): ?int
     {
@@ -97,7 +101,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string)$this->email;
+        return (string) $this->email;
     }
 
     /**
@@ -124,7 +128,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string)$this->password;
+        return (string) $this->password;
     }
 
     public function setPassword(string $password): self
@@ -240,6 +244,15 @@ class User implements UserInterface
     public function setUserDeleted(bool $userDeleted): self
     {
         $this->userDeleted = $userDeleted;
+    }
+    public function getBirthDate(): ?\DateTimeImmutable
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(\DateTimeImmutable $birthDate): self
+    {
+        $this->birthDate = $birthDate;
 
         return $this;
     }

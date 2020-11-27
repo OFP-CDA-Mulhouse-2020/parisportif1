@@ -8,6 +8,12 @@ use PHPUnit\Util\Exception;
 
 class UserTest extends TestCase
 {
+    public function testInstanceOfUser(): void
+    {
+        $user = new User();
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertClassHasAttribute('birthDate', User::class);
+    }
 
     public function testSetGender()
     {
