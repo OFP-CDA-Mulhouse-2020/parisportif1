@@ -12,7 +12,15 @@ class UserTest extends TestCase
     {
         $user = new User();
         $this->assertInstanceOf(User::class, $user);
-        $this->assertClassHasAttribute('birthdate', User::class);
+        $this->assertClassHasAttribute("email", User::class);
+        $this->assertClassHasAttribute("password", User::class);
+        $this->assertClassHasAttribute("gender", User::class);
+        $this->assertClassHasAttribute("lastname", User::class);
+        $this->assertClassHasAttribute("firstname", User::class);
+        $this->assertClassHasAttribute("address", User::class);
+        $this->assertClassHasAttribute("userStatus", User::class);
+        $this->assertClassHasAttribute("UserSuspended", User::class);
+        $this->assertClassHasAttribute("birthdate", User::class);
     }
 
     public function testSetGender()
@@ -28,6 +36,7 @@ class UserTest extends TestCase
         $user->setLastname("Dupont");
         $this->assertSame("Dupont", $user->getLastname());
     }
+
     public function testSetLastNameInvalidated()
     {
         $this->expectException(\Exception::class);
@@ -43,6 +52,8 @@ class UserTest extends TestCase
         $user->setFirstname("Ben");
         $this->assertSame("Ben", $user->getFirstname());
     }
+
+
     public function testSetFirstNameInvalidated()
     {
         $this->expectException(\Exception::class);
