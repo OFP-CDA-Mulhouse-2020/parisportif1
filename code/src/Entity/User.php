@@ -179,8 +179,4 @@ class User implements UserInterface
 
         return $this;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 47b745a... update user file
