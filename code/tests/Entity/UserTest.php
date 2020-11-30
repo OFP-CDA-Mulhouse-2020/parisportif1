@@ -41,8 +41,8 @@ class UserTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $user = new User();
-        $user->setLastname("Dupont");
-        $this->assertSame("Dupont", $user->getLastname());
+        $user->setLastname("D");
+        $this->assertSame("D", $user->getLastname());
     }
 
     //firstname
@@ -58,8 +58,8 @@ class UserTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $user = new User();
-        $user->setFirstname("Ben");
-        $this->assertSame("Ben", $user->getFirstname());
+        $user->setFirstname("B");
+        $this->assertSame("B", $user->getFirstname());
     }
 
     //adresse

@@ -177,7 +177,7 @@ class User implements UserInterface
 
     public function setLastname(string $lastname): self
     {
-        if (!preg_match('^[a-zA-ZÀ-ÿ_.-]{2,16}$', $lastname)) {
+        if (!preg_match('/^[a-zA-ZÀ-ÿ_.-]{2,16}$/', $lastname)) {
             throw new Exception('last name invalided');
         }
         $this->lastname = $lastname;
@@ -192,7 +192,7 @@ class User implements UserInterface
 
     public function setFirstname(string $firstname): self
     {
-        if (!preg_match('^[a-zA-ZÀ-ÿ_.-]{2,16}$', $firstname)) {
+        if (!preg_match('/^[a-zA-ZÀ-ÿ_.-]{2,16}$/', $firstname)) {
             throw new Exception('first name invalided');
         }
         $this->firstname = $firstname;
@@ -202,11 +202,15 @@ class User implements UserInterface
 
     public function getAddress(): ?string
     {
+
         return $this->address;
     }
 
     public function setAddress(string $address): self
     {
+        if (!preg_match("/^(?!\s*$)[-a-zA-Z0-9_:,.\s]{1,60}$/", $address)) {
+            throw new Exception('address invalided');
+        }
         $this->address = $address;
 
         return $this;
@@ -219,6 +223,10 @@ class User implements UserInterface
 
     public function setUserStatus(bool $userStatus): self
     {
+        if ($userStatus != false || $userStatus != true) {
+            echo "oki" ;
+        }
+
         $this->userStatus = $userStatus;
 
         return $this;
@@ -244,6 +252,8 @@ class User implements UserInterface
     public function setUserDeleted(bool $userDeleted): self
     {
         $this->userDeleted = $userDeleted;
+
+        return $this;
     }
 
     public function getBirthDate(): ?\DateTimeImmutable
