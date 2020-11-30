@@ -45,8 +45,10 @@ Setup: The project uses uncommited and locally overrided default values for the 
 Details: https://github.com/OFP-CDA-Mulhouse-2020/specs/blob/master/Security.md
 From 26/11/2020 to 10/12/2020 (tentatively)
 
-- Create a user entity
-- Unit test the user entity
-- Function test the user entity (TBD later)
+- Create and test the User entity (unit test)
+- Create and test the registration form using the form and validator components (functional test)
+- Create and test the connection form using the security components (functional test)
+- Setup the authentication
+- Use TDD for all tests (unit and functional)
 
 Keep using git flow features for the features, start using Pull Requests to merge code change
