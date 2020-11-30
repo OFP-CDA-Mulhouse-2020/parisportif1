@@ -6,12 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RegisterFormTest extends WebTestCase
 {
-    public function testSomething()
+    public function testGetRegistrationForm()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request('GET', '/register');
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Hello World');
     }
 }
