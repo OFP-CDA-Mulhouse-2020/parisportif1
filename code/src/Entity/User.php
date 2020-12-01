@@ -63,7 +63,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $UserSuspended;
+    private $userSuspended;
 
     /**
      * @ORM\Column(type="boolean")
@@ -224,7 +224,7 @@ class User implements UserInterface
     public function setUserStatus(bool $userStatus): self
     {
         if ($userStatus != false || $userStatus != true) {
-            echo "oki" ;
+            echo "oki";
         }
 
         $this->userStatus = $userStatus;
@@ -234,12 +234,12 @@ class User implements UserInterface
 
     public function getUserSuspended(): ?bool
     {
-        return $this->UserSuspended;
+        return $this->userSuspended;
     }
 
-    public function setUserSuspended(bool $UserSuspended): self
+    public function setUserSuspended(bool $userSuspended): self
     {
-        $this->UserSuspended = $UserSuspended;
+        $this->userSuspended = $userSuspended;
 
         return $this;
     }

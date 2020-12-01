@@ -19,7 +19,7 @@ class UserTest extends TestCase
         $this->assertClassHasAttribute("firstname", User::class);
         $this->assertClassHasAttribute("address", User::class);
         $this->assertClassHasAttribute("userStatus", User::class);
-        $this->assertClassHasAttribute("UserSuspended", User::class);
+        $this->assertClassHasAttribute("userSuspended", User::class);
         $this->assertClassHasAttribute("birthdate", User::class);
     }
 
