@@ -34,4 +34,10 @@ class RegisterFormTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+
+    public function testSubmitRegistrationPage()
+    {
+        $client = static::createClient();
+        $crawler = $client->request("GET", "/register");
+    }
 }
