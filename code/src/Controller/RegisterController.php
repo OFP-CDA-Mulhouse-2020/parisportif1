@@ -20,11 +20,9 @@ class RegisterController extends AbstractController
         $form = $this->createForm(RegisterFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->render('register/index.html.twig', [
-                'controller_name' => 'RegisterController',
-                'form' => $form->createView(),
-            ]);
+            return $this->render("base.html.twig");
         }
+        
         return $this->render('register/index.html.twig', [
             'controller_name' => 'RegisterController',
             'form' => $form->createView(),
