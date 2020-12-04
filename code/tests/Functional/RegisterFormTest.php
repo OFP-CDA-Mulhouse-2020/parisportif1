@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -52,5 +53,6 @@ class RegisterFormTest extends WebTestCase
 
         $userRepository = static::$container->get(UserRepository::class);
         $user = $userRepository->findOneByEmail("test@test.fr");
+        $this->assertInstanceOf(User::class, $user);
     }
 }
