@@ -2,10 +2,7 @@
 
 namespace App\Tests\Functional;
 
-<<<<<<< HEAD
 use App\Entity\User;
-=======
->>>>>>> Register database test
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
