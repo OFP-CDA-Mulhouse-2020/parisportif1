@@ -18,7 +18,6 @@ class UserTest extends TestCase
         $this->assertClassHasAttribute("firstname", User::class);
         $this->assertClassHasAttribute("birthdate", User::class);
         $this->assertClassHasAttribute("creationDate", User::class);
-        $this->assertClassHasAttribute("address", User::class);
         $this->assertClassHasAttribute("userStatus", User::class);
         $this->assertClassHasAttribute("UserSuspended", User::class);
     }
@@ -53,14 +52,6 @@ class UserTest extends TestCase
         $user = new User();
         $user->setFirstname("B");
         $this->assertSame("B", $user->getFirstname());
-    }
-
-    //adresse
-    public function testSetAddress()
-    {
-        $user = new User();
-        $user->setAddress("10 Rue de tarte au pomme 98432");
-        $this->assertSame("10 Rue de tarte au pomme 98432", $user->getAddress());
     }
 
     //email
