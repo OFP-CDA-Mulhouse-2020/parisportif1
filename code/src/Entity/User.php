@@ -81,6 +81,11 @@ final class User implements UserInterface
      */
     private $suspendedSince;
 
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
+     */
+    private $deletedSince;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -276,6 +281,18 @@ final class User implements UserInterface
     public function setSuspendedSince(?\DateTimeImmutable $suspendedSince): self
     {
         $this->suspendedSince = $suspendedSince;
+
+        return $this;
+    }
+
+    public function getDeletedSince(): ?\DateTimeImmutable
+    {
+        return $this->deletedSince;
+    }
+
+    public function setDeletedSince(?\DateTimeImmutable $deletedSince): self
+    {
+        $this->deletedSince = $deletedSince;
 
         return $this;
     }
