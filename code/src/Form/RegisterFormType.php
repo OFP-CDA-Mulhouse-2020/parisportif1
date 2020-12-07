@@ -15,11 +15,7 @@ class RegisterFormType extends AbstractType
             ->add('email')
             ->add('password')
             ->add('lastname')
-            ->add('firstname')
-            ->add('active')
-            ->add('suspended')
-            ->add('userDeleted')
-        ;
+            ->add('firstname');
     }
 
     public function configureOptions(OptionsResolver $resolver)
