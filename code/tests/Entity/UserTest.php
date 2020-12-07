@@ -21,6 +21,7 @@ final class UserTest extends TestCase
         $this->assertClassHasAttribute("birthdate", User::class);
         $this->assertClassHasAttribute("creationDate", User::class);
         $this->assertClassHasAttribute("active", User::class);
+        $this->assertClassHasAttribute("activeSince", User::class);
         $this->assertClassHasAttribute("UserSuspended", User::class);
     }
 

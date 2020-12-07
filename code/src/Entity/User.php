@@ -32,7 +32,7 @@ final class User implements UserInterface
     private $roles = [];
 
     /**
-     * @var                       string The hashed password
+     * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
@@ -70,6 +70,11 @@ final class User implements UserInterface
      * @ORM\Column(type="date_immutable")
      */
     private $creationDate;
+
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
+     */
+    private $activeSince;
 
     public function getId(): ?int
     {
@@ -242,6 +247,18 @@ final class User implements UserInterface
     public function setCreationDate(\DateTimeImmutable $creationDate): self
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getActiveSince(): ?\DateTimeImmutable
+    {
+        return $this->activeSince;
+    }
+
+    public function setActiveSince(?\DateTimeImmutable $activeSince): self
+    {
+        $this->activeSince = $activeSince;
 
         return $this;
     }
