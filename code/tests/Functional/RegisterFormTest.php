@@ -28,7 +28,7 @@ class RegisterFormTest extends WebTestCase
         $form["register_form[firstname]"] = "test";
         $form["register_form[userStatus]"] = true;
         $form["register_form[suspended]"] = true;
-        $form["register_form[userDeleted]"] = true;
+        $form["register_form[deleted]"] = true;
 
         $crawler = $client->submit($form);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
