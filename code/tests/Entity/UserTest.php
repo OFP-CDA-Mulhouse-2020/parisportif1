@@ -22,6 +22,7 @@ class UserTest extends TestCase
         $this->assertClassHasAttribute("activeSince", User::class);
         $this->assertClassHasAttribute("suspended", User::class);
         $this->assertClassHasAttribute("suspendedSince", User::class);
+        $this->assertClassHasAttribute("deleted", User::class);
     }
 
     public function testSetLastName()
@@ -103,10 +104,10 @@ class UserTest extends TestCase
         $this->assertTrue($user->getSuspended());
     }
 
-    public function testUserDeletedBool()
+    public function testdeletedBool()
     {
         $user = new User();
-        $user->setUserDeleted(true);
-        $this->assertTrue($user->getUserDeleted());
+        $user->setdeleted(true);
+        $this->assertTrue($user->getdeleted());
     }
 }
