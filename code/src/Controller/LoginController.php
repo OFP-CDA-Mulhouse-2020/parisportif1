@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LoginController extends AbstractController
 {
     /**
-     * @Route("/login", name="login")
+     * @Route("/logins", name="login")
      */
     public function index(Request $request): Response
     {
