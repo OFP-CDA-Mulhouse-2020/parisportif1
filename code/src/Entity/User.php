@@ -76,6 +76,11 @@ final class User implements UserInterface
      */
     private $activeSince;
 
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
+     */
+    private $suspendedSince;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -259,6 +264,18 @@ final class User implements UserInterface
     public function setActiveSince(?\DateTimeImmutable $activeSince): self
     {
         $this->activeSince = $activeSince;
+
+        return $this;
+    }
+
+    public function getSuspendedSince(): ?\DateTimeImmutable
+    {
+        return $this->suspendedSince;
+    }
+
+    public function setSuspendedSince(?\DateTimeImmutable $suspendedSince): self
+    {
+        $this->suspendedSince = $suspendedSince;
 
         return $this;
     }
