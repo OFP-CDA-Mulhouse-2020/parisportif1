@@ -21,6 +21,7 @@ class UserTest extends TestCase
         $this->assertClassHasAttribute("active", User::class);
         $this->assertClassHasAttribute("activeSince", User::class);
         $this->assertClassHasAttribute("suspended", User::class);
+        $this->assertClassHasAttribute("suspendedSince", User::class);
     }
 
     public function testSetLastName()
