@@ -16,7 +16,7 @@ class RegisterFormType extends AbstractType
             ->add('password')
             ->add('lastname')
             ->add('firstname')
-            ->add('userStatus')
+            ->add('active')
             ->add('UserSuspended')
             ->add('userDeleted')
         ;

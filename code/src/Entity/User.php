@@ -50,7 +50,7 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $userStatus;
+    private $active;
 
     /**
      * @ORM\Column(type="boolean")
@@ -185,15 +185,15 @@ final class User implements UserInterface
         return $this;
     }
 
-    public function getUserStatus(): ?bool
+    public function getactive(): ?bool
     {
-        return $this->userStatus;
+        return $this->active;
     }
 
-    public function setUserStatus(bool $userStatus): self
+    public function setactive(bool $active): self
     {
 
-        $this->userStatus = $userStatus;
+        $this->active = $active;
 
         return $this;
     }
