@@ -20,7 +20,7 @@ final class UserTest extends TestCase
         $this->assertClassHasAttribute("firstname", User::class);
         $this->assertClassHasAttribute("birthdate", User::class);
         $this->assertClassHasAttribute("creationDate", User::class);
-        $this->assertClassHasAttribute("userStatus", User::class);
+        $this->assertClassHasAttribute("isActived", User::class);
         $this->assertClassHasAttribute("UserSuspended", User::class);
     }
 
@@ -89,11 +89,11 @@ final class UserTest extends TestCase
     }
 
     //boolean
-    public function testUserStatusBool()
+    public function testisActivedBool()
     {
         $user = new User();
-        $user->setUserStatus(true);
-        $this->assertTrue($user->getUserStatus());
+        $user->setisActived(true);
+        $this->assertTrue($user->getisActived());
     }
 
     public function testUserSuspendedBool()
