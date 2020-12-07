@@ -38,11 +38,6 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $gender;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $lastname;
 
     /**
@@ -73,6 +68,11 @@ class User implements UserInterface
      * @ORM\Column(type="date_immutable")
      */
     private $birthdate;
+
+    /**
+     * @ORM\Column(type="date_immutable")
+     */
+    private $creationDate;
 
     public function getId(): ?int
     {
@@ -156,18 +156,6 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
-    }
-
-    public function getGender(): ?string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(string $gender): self
-    {
-        $this->gender = $gender;
-
-        return $this;
     }
 
     public function getLastname(): ?string
@@ -261,6 +249,18 @@ class User implements UserInterface
     public function setBirthDate(\DateTimeImmutable $birthdate): self
     {
         $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeImmutable
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeImmutable $creationDate): self
+    {
+        $this->creationDate = $creationDate;
 
         return $this;
     }

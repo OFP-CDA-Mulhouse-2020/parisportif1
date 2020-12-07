@@ -15,7 +15,6 @@ class UserFixtures extends Fixture
 
         $user = new User();
 
-        $user->setGender("male");
         $user->setFirstname("Ben");
         $user->setLastname("Dupont");
         $user->setAddress("10 Rue de tarte au pomme 98432");

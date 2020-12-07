@@ -14,20 +14,13 @@ class UserTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
         $this->assertClassHasAttribute("email", User::class);
         $this->assertClassHasAttribute("password", User::class);
-        $this->assertClassHasAttribute("gender", User::class);
         $this->assertClassHasAttribute("lastname", User::class);
         $this->assertClassHasAttribute("firstname", User::class);
+        $this->assertClassHasAttribute("birthdate", User::class);
+        $this->assertClassHasAttribute("creationDate", User::class);
         $this->assertClassHasAttribute("address", User::class);
         $this->assertClassHasAttribute("userStatus", User::class);
         $this->assertClassHasAttribute("UserSuspended", User::class);
-        $this->assertClassHasAttribute("birthdate", User::class);
-    }
-
-    public function testSetGender()
-    {
-        $user = new User();
-        $user->setGender("male");
-        $this->assertSame("male", $user->getGender());
     }
 
     public function testSetLastName()
