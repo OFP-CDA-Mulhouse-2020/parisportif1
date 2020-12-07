@@ -48,11 +48,6 @@ final class User implements UserInterface
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $address;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $userStatus;
@@ -186,22 +181,6 @@ final class User implements UserInterface
             throw new Exception('first name invalided');
         }
         $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-
-        return $this->address;
-    }
-
-    public function setAddress(string $address): self
-    {
-        if (!preg_match("/^(?!\s*$)[-a-zA-Z0-9_:,.\s]{1,60}$/", $address)) {
-            throw new Exception('address invalided');
-        }
-        $this->address = $address;
 
         return $this;
     }
