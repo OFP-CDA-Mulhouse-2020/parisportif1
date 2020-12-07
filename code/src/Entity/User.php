@@ -60,7 +60,7 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $userDeleted;
+    private $deleted;
     /*
      * @ORM\Column(type="date_immutable")
      */
@@ -220,14 +220,14 @@ final class User implements UserInterface
         return $this;
     }
 
-    public function getUserDeleted(): ?bool
+    public function getDeleted(): ?bool
     {
-        return $this->userDeleted;
+        return $this->deleted;
     }
 
-    public function setUserDeleted(bool $userDeleted): self
+    public function setDeleted(bool $deleted): self
     {
-        $this->userDeleted = $userDeleted;
+        $this->deleted = $deleted;
 
         return $this;
     }
