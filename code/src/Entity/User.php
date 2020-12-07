@@ -53,7 +53,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private $userSuspended;
+    private $suspended;
 
     /**
      * @ORM\Column(type="boolean")
@@ -201,14 +201,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getUserSuspended(): ?bool
+    public function getSuspended(): ?bool
     {
-        return $this->userSuspended;
+        return $this->suspended;
     }
 
-    public function setUserSuspended(bool $userSuspended): self
+    public function setSuspended(bool $suspended): self
     {
-        $this->userSuspended = $userSuspended;
+        $this->suspended = $suspended;
 
         return $this;
     }
