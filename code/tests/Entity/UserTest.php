@@ -105,10 +105,10 @@ class UserTest extends TestCase
         $this->assertTrue($user->getSuspended());
     }
 
-    public function testdeletedBool()
+    public function testDeletedBool()
     {
         $user = new User();
-        $user->setdeleted(true);
-        $this->assertTrue($user->getdeleted());
+        $user->setDeleted(true);
+        $this->assertTrue($user->getDeleted());
     }
 }
