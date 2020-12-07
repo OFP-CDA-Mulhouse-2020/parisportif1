@@ -24,7 +24,6 @@ class RegisterFormTest extends WebTestCase
         $form = $crawler->filter("form")->form();
         $form["register_form[email]"] = "test@test.fr";
         $form["register_form[password]"] = "Test95qz@a";
-        $form["register_form[gender]"] = "male";
         $form["register_form[lastname]"] = "test";
         $form["register_form[firstname]"] = "test";
         $form["register_form[address]"] = "10 Rue de tarte au pomme 98432";
