@@ -133,7 +133,7 @@ class User implements UserInterface
 
     public function setPassword(string $password): self
     {
-        if (!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&_*(),.?":{}|<>])(?!.*\s).{8,16}$/ ', $password)) {
+        if (!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&_*(),.?":{}|<>])(?!.*\s).{8,64}$/ ', $password)) {
             throw new Exception('Password invalided');
         }
         $this->password = $password;
@@ -223,9 +223,6 @@ class User implements UserInterface
 
     public function setUserStatus(bool $userStatus): self
     {
-        if ($userStatus != false || $userStatus != true) {
-            echo "oki";
-        }
 
         $this->userStatus = $userStatus;
 
