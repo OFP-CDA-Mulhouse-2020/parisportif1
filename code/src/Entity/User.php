@@ -6,11 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User implements UserInterface
+final class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -21,6 +22,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -96,9 +99,6 @@ class User implements UserInterface
 
     public function setEmail(string $email): self
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception('Email invalided');
-        }
         $this->email = $email;
 
         return $this;

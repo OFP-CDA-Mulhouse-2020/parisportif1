@@ -1,17 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Entity;
 
 use App\Entity\User;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Exception;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class UserTest extends TestCase
+final class UserTest extends KernelTestCase
 {
+    private $user;
+    private $validator;
+
+    protected function setUp(): void
+    {
+        $this->user = new User();
+
+        $kernel = self::bootKernel();
+        $kernel->boot();
+        $this->validator = $kernel->getContainer()->get("validator");
+    }
+
     public function testInstanceOfUser(): void
     {
-        $user = new User();
-        $this->assertInstanceOf(User::class, $user);
+        $this->assertInstanceOf(User::class, $this->user);
         $this->assertClassHasAttribute("email", User::class);
         $this->assertClassHasAttribute("password", User::class);
         $this->assertClassHasAttribute("lastname", User::class);
@@ -28,87 +40,101 @@ class UserTest extends TestCase
 
     public function testSetLastName()
     {
-        $user = new User();
-        $user->setLastname("Dupont");
-        $this->assertSame("Dupont", $user->getLastname());
+        $this->user->setLastname("Dupont");
+        $this->assertSame("Dupont", $this->user->getLastname());
     }
 
     public function testSetLastNameInvalidated()
     {
         $this->expectException(\Exception::class);
-        $user = new User();
-        $user->setLastname("D");
-        $this->assertSame("D", $user->getLastname());
+        $this->user->setLastname("D");
+        $this->assertSame("D", $this->user->getLastname());
     }
 
     //firstname
     public function testSetFirstName()
     {
-        $user = new User();
-        $user->setFirstname("Ben");
-        $this->assertSame("Ben", $user->getFirstname());
+        $this->user->setFirstname("Ben");
+        $this->assertSame("Ben", $this->user->getFirstname());
     }
 
 
     public function testSetFirstNameInvalidated()
     {
         $this->expectException(\Exception::class);
-        $user = new User();
-        $user->setFirstname("B");
-        $this->assertSame("B", $user->getFirstname());
+        $this->user->setFirstname("B");
+        $this->assertSame("B", $this->user->getFirstname());
     }
 
     //email
-    public function testEmailValidated()
+    /**
+     * @dataProvider invalidEmailProvider
+     */
+    public function testSetInvalidEmail($email)
     {
-        $user = new User();
-        $user->setEmail("test@test.fr");
-        $this->assertSame("test@test.fr", $user->getEmail());
+        $this->user->setEmail($email);
+        $errorsList = $this->validator->validate($this->user);
+        $this->assertGreaterThan(0, count($errorsList));
     }
 
-    public function testEmailInvalidated()
+    public function invalidEmailProvider(): array
     {
-        $this->expectException(\Exception::class);
-        $user = new User();
-        $user->setEmail("test@test");
-        $this->assertSame("test@test", $user->getEmail());
+        return [
+            [""],
+            ["doejcodeuronline"],
+            ["doe@j@codeur.online"],
+            ["john.doe.com"]
+        ];
+    }
+
+    /**
+     * @dataProvider validEmailProvider
+     */
+    public function testSetValidEmail($email)
+    {
+        $this->user->setEmail($email);
+        $errorsList = $this->validator->validate($this->user);
+        $this->assertEquals(0, count($errorsList));
+    }
+
+    public function validEmailProvider(): array
+    {
+        return [
+            ["doe.j@codeur.online"],
+            ["john@doe.com"]
+        ];
     }
 
     //password
     public function testPasswordValidated()
     {
-        $user = new User();
-        $user->setPassword("Test95qz@a");
-        $this->assertSame("Test95qz@a", $user->getPassword());
+        $this->user->setPassword("Test95qz@a");
+        $this->assertSame("Test95qz@a", $this->user->getPassword());
     }
 
     public function testInvalidPassword()
     {
         $this->expectException(\Exception::class);
-        $user = new User();
-        $user->setPassword("pas");
-        $this->assertSame("pas", $user->getPassword());
+        $this->user->setPassword("pas");
+        $this->assertSame("pas", $this->user->getPassword());
     }
 
     //boolean
     public function testActiveBool()
     {
-        $user = new User();
-        $user->setActive(true);
-        $this->assertTrue($user->getActive());
+        $this->user->setActive(true);
+        $this->assertTrue($this->user->getActive());
     }
 
     public function testSuspendedBool()
     {
-        $user = new User();
-        $user->setSuspended(true);
-        $this->assertTrue($user->getSuspended());
+        $this->user->setSuspended(true);
+        $this->assertTrue($this->user->getSuspended());
     }
 
     public function testDeletedBool()
     {
-        $user = new User();
-        $user->setDeleted(true);
-        $this->assertTrue($user->getDeleted());
+        $this->user->setDeleted(true);
+        $this->assertTrue($this->user->getDeleted());
     }
 }
