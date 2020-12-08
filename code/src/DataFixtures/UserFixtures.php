@@ -14,11 +14,8 @@ final class UserFixtures extends Fixture
     {
         $user = new User();
 
-<<<<<<< HEAD
         $user->setEmail("test@test.fr");
         $user->setPassword("Test95qz@a");
-=======
->>>>>>> bf7b3250b162b4f25aa9c35e96562cb857ea6a66
         $user->setFirstname("Ben");
         $user->setLastname("Dupont");
 
