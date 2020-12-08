@@ -60,6 +60,8 @@ class LoginFormTest extends WebTestCase
         $form['password'] = "Test95qz";
         
         $crawler = $client->submit($form);
-        
+        $this->assertResponseRedirects();
+        $client->followRedirect();
+        $this->assertSelectorExists('.alert.alert-danger');
     }
 }
