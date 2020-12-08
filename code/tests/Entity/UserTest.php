@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Entity;
 
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Exception;
 
-class UserTest extends TestCase
+final class UserTest extends TestCase
 {
     public function testInstanceOfUser(): void
     {
