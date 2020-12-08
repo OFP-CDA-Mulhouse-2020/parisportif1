@@ -11,10 +11,10 @@
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
-
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'H:/disque S/prog/CDA/parisportif1/code/src/Controller/LoginController.php'|file_link(0) }}">src/Controller/LoginController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'H:/disque S/prog/CDA/parisportif1/code/templates/login/index.html.twig'|file_link(0) }}">templates/login/index.html.twig</a></code></li>
+    </ul>
 </div>
 {% endblock %}

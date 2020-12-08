@@ -223,6 +223,9 @@ class User implements UserInterface
 
     public function setUserStatus(bool $userStatus): self
     {
+        if ($userStatus != false || $userStatus != true) {
+            echo "oki";
+        }
 
         $this->userStatus = $userStatus;
 
