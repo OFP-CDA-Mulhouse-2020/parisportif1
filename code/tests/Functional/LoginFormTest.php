@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional;
 
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class LoginFormTest extends WebTestCase
@@ -40,15 +39,6 @@ class LoginFormTest extends WebTestCase
         $form['login_form[password]'] = "Test95qz@a";
         $crawler = $client->submit($form);
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    }
-    public function testLoginPage()
-    {
-        $client = static::createClient();
-        $userRepository = static::$container->get(UserRepository::class);
-        $userEmail = $userRepository->findOneBySomeField('test@test.fr');
-        $client->loginUser($userEmail);
-        $client->request('GET', '/login');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }
