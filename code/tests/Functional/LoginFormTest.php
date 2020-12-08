@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Functional;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class LoginFormTest extends WebTestCase
+final class LoginFormTest extends WebTestCase
 {
     public function testGetLoginPage()
     {
@@ -31,10 +33,10 @@ class LoginFormTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('input[name*=password]'), "input password exist");
     }
 
-   
+
     public function testLoginPage()
     {
-        
+
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
 
@@ -49,8 +51,6 @@ class LoginFormTest extends WebTestCase
 
     public function testLoginPageInvalid()
     {
-        // We expect an exception
-        $this->expectException(\Exception::class);
 
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
@@ -58,7 +58,7 @@ class LoginFormTest extends WebTestCase
         $form = $crawler->filter('form')->form();
         $form['email'] = "test@test.fr";
         $form['password'] = "Test95qz";
-        
+
         $crawler = $client->submit($form);
         $this->assertResponseRedirects();
         $client->followRedirect();
