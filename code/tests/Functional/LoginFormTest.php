@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional;
 
-use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -45,37 +44,10 @@ class LoginFormTest extends WebTestCase
     }
     public function testLoginPage()
     {
-        // Create new User
-        $fakeUser = new User();
-        $fakeUser->setEmail('test@test.fr');
-
-        // Create new Client
         $client = static::createClient();
-
-        // Database
         $userRepository = static::$container->get(UserRepository::class);
-        $userEmail = $userRepository->findOneBySomeField($fakeUser->getEmail()); // search for the email address in database
-        $client->loginUser($userEmail); // we store data in loginUser
-        $client->request('GET', '/login');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    }
-
-    public function testLoginPageInvalid()
-    {
-        // We expect an exception
-        $this->expectException(\Exception::class);
-
-        // Create new User
-        $fakeUser = new User();
-        $fakeUser->setEmail('test@testfr');
-
-        // Create new Client
-        $client = static::createClient();
-
-        // Database
-        $userRepository = static::$container->get(UserRepository::class);
-        $userEmail = $userRepository->findOneBySomeField($fakeUser->getEmail()); // search for the email address in database
-        $client->loginUser($userEmail); // we store data in loginUser
+        $userEmail = $userRepository->findOneBySomeField('test@test.fr');
+        $client->loginUser($userEmail);
         $client->request('GET', '/login');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
