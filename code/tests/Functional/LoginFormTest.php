@@ -43,7 +43,7 @@ class LoginFormTest extends WebTestCase
         $form['password'] = "Test95qz@a";
 
         $crawler = $client->submit($form);
-        $this->assertResponseRedirects('/profile');
+        $this->assertResponseRedirects('/login');
         $client->followRedirect();
     }
 
