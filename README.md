@@ -11,6 +11,7 @@ A sport betting site
 ## Sprint 1 - Modeling and design
 
 Specifications : https://github.com/OFP-CDA-Mulhouse-2020/specs
+
 From 03/11/2020 to 12/11/2020
 
 ### Tasks
@@ -28,6 +29,7 @@ Plant UML
 ## Sprint 2 - Preparing the project
 
 Details: https://github.com/OFP-CDA-Mulhouse-2020/specs/blob/master/projet-init.md
+
 From 16/11/2020 to 25/11/200
 
 - Prepare a Symfony project
@@ -43,12 +45,22 @@ Setup: The project uses uncommited and locally overrided default values for the 
 ## Sprint 3 - Security Module
 
 Details: https://github.com/OFP-CDA-Mulhouse-2020/specs/blob/master/Security.md
-From 26/11/2020 to 10/12/2020 (tentatively)
 
-- Create and test the User entity (unit test)
-- Create and test the registration form using the form and validator components (functional test)
-- Create and test the connection form using the security components (functional test)
+From 26/11/2020 to 08/12/2020
+
+- Create and test the User entity (unit tests)
+- Create and test the registration form using the form and validator components (functional tests)
+- Create and test the login form using the security components (functional tests)
 - Setup the authentication
-- Use TDD for all tests (unit and functional)
+- Use TDD for all tests (unit and functional tests)
 
 Keep using git flow features for the features, start using Pull Requests to merge code change
+Declare strict types in php and make all classes final, unless they are abstracts
+
+## Sprint 4 - Business objects
+
+Details to be provided later
+
+From 09/12/2020 to TBD
+
+- Create and test the remaining business entity (unit test)
