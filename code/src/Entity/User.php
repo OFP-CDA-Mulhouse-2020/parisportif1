@@ -89,6 +89,14 @@ final class User implements UserInterface
      */
     private $deletedSince;
 
+    public function __construct()
+    {
+        $this->active = false;
+        $this->suspended = false;
+        $this->deleted = false;
+        $this->creationDate = new \DateTimeImmutable();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
