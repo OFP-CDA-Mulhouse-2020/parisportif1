@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -23,6 +24,8 @@ final class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private $email;
 
@@ -32,15 +35,10 @@ final class User implements UserInterface
     private $roles = [];
 
     /**
-     * @var                       string The hashed password
+     * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private $password;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $gender;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -53,28 +51,51 @@ final class User implements UserInterface
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="boolean")
      */
-    private $address;
+    private $active;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $userStatus;
+    private $suspended;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $userSuspended;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $userDeleted;
+    private $deleted;
     /*
      * @ORM\Column(type="date_immutable")
      */
     private $birthdate;
+
+    /**
+     * @ORM\Column(type="date_immutable")
+     */
+    private $creationDate;
+
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
+     */
+    private $activeSince;
+
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
+     */
+    private $suspendedSince;
+
+    /**
+     * @ORM\Column(type="date_immutable", nullable=true)
+     */
+    private $deletedSince;
+
+    public function __construct()
+    {
+        $this->active = false;
+        $this->suspended = false;
+        $this->deleted = false;
+        $this->creationDate = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -88,9 +109,6 @@ final class User implements UserInterface
 
     public function setEmail(string $email): self
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception('Email invalided');
-        }
         $this->email = $email;
 
         return $this;
@@ -160,18 +178,6 @@ final class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getGender(): ?string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(string $gender): self
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
     public function getLastname(): ?string
     {
         return $this->lastname;
@@ -202,55 +208,39 @@ final class User implements UserInterface
         return $this;
     }
 
-    public function getAddress(): ?string
+    public function getactive(): ?bool
     {
-
-        return $this->address;
+        return $this->active;
     }
 
-    public function setAddress(string $address): self
+    public function setactive(bool $active): self
     {
-        if (!preg_match("/^(?!\s*$)[-a-zA-Z0-9_:,.\s]{1,60}$/", $address)) {
-            throw new Exception('address invalided');
-        }
-        $this->address = $address;
+
+        $this->active = $active;
 
         return $this;
     }
 
-    public function getUserStatus(): ?bool
+    public function getSuspended(): ?bool
     {
-        return $this->userStatus;
+        return $this->suspended;
     }
 
-    public function setUserStatus(bool $userStatus): self
+    public function setSuspended(bool $suspended): self
     {
-
-        $this->userStatus = $userStatus;
+        $this->suspended = $suspended;
 
         return $this;
     }
 
-    public function getUserSuspended(): ?bool
+    public function getDeleted(): ?bool
     {
-        return $this->userSuspended;
+        return $this->deleted;
     }
 
-    public function setUserSuspended(bool $userSuspended): self
+    public function setDeleted(bool $deleted): self
     {
-        $this->userSuspended = $userSuspended;
-
-        return $this;
-    }
-
-    public function getUserDeleted(): ?bool
-    {
-        return $this->userDeleted;
-    }
-
-    public function setUserDeleted(bool $userDeleted): self
-    {
-        $this->userDeleted = $userDeleted;
+        $this->deleted = $deleted;
 
         return $this;
     }
@@ -263,6 +253,54 @@ final class User implements UserInterface
     public function setBirthDate(\DateTimeImmutable $birthdate): self
     {
         $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeImmutable
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeImmutable $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getActiveSince(): ?\DateTimeImmutable
+    {
+        return $this->activeSince;
+    }
+
+    public function setActiveSince(?\DateTimeImmutable $activeSince): self
+    {
+        $this->activeSince = $activeSince;
+
+        return $this;
+    }
+
+    public function getSuspendedSince(): ?\DateTimeImmutable
+    {
+        return $this->suspendedSince;
+    }
+
+    public function setSuspendedSince(?\DateTimeImmutable $suspendedSince): self
+    {
+        $this->suspendedSince = $suspendedSince;
+
+        return $this;
+    }
+
+    public function getDeletedSince(): ?\DateTimeImmutable
+    {
+        return $this->deletedSince;
+    }
+
+    public function setDeletedSince(?\DateTimeImmutable $deletedSince): self
+    {
+        $this->deletedSince = $deletedSince;
 
         return $this;
     }

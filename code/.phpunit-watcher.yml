@@ -1,3 +1,4 @@
 hideManual: true
 phpunit:
-  binaryPath: "./bin/phpunit"
+  binaryPath: bin/phpunit
+  timeout: 120
