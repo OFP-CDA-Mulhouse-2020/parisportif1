@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\CompetitorRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CompetitorRepository::class)
@@ -21,6 +22,8 @@ final class Competitor
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Type("string")
+     * @Assert\Length(min = 2)
      */
     private $name;
 

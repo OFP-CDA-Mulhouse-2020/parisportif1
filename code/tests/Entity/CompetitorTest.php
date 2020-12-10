@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\Competitor;
-use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class CompetitorTest extends KernelTestCase
@@ -46,9 +45,27 @@ final class CompetitorTest extends KernelTestCase
         ];
     }
 
+    /**
+     * @dataProvider validNameProvider
+     */
+    public function testSetValidName(string $name): void
+    {
+        $this->competitor->setName($name);
+        $errorsList = $this->validator->validate($this->competitor);
+        $this->assertEquals(0, count($errorsList));
+    }
+
+    public function validNameProvider(): array
+    {
+        return [
+            ["Codeur Online"]
+        ];
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();
         $this->competitor = null;
+        $this->validator = null;
     }
 }
