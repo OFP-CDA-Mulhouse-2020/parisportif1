@@ -38,8 +38,8 @@ final class EventTest extends KernelTestCase
     public function testSetInvalidCountry($name)
     {
         $this->event->setName($name);
-        $errorsList = $this->validator->validate($this->event->getName());
-        $this->assertEqual(0 , count($errorsList));
+        $errorsList = $this->validator->validate($this->event);
+        $this->assertEquals(0 , count($errorsList));
     }
 
     public function invalidCountryProvider(): array
@@ -58,8 +58,8 @@ final class EventTest extends KernelTestCase
     public function testSetValidName($name)
     {
         $this->event->setName($name);
-        $errorsList = $this->validator->validate($this->event->getName());
-        $this->assertEqual(0 , count($errorsList));
+        $errorsList = $this->validator->validate($this->event);
+        $this->assertEquals(0 , count($errorsList));
     }
 
     public function validNameProvider(): array
@@ -78,17 +78,16 @@ final class EventTest extends KernelTestCase
      */
     public function testSetValidEventDate($eventDate)
     {
-        
         $this->event->setEventDate($eventDate);
-        $errorsList = $this->validator->validate($this->event->getEventDate());
-        $this->assertEqual(0 , count($errorsList));
+        $errorsList = $this->validator->validate($this->event);
+        $this->assertEquals(0 , count($errorsList));
     }
 
     public function validEventDateProvider(): array
     {
         return [
-            [\DateTime::createFromFormat('Y-m-d','2018-09-09')],
-            [\DateTime::createFromFormat('Y-m-d', '2018-09-09')]
+            [new \DateTime('@'.strtotime('now'))],
+            [new \DateTime('@'.strtotime('now'))]
             
         ];
     }
