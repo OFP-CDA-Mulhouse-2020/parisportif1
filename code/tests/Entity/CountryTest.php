@@ -35,8 +35,7 @@ final class CountryTest extends KernelTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->country->setName($country);
         $this->assertSame($country ,$this->country->getName());
-        var_dump($this->country->getName());
-        var_dump($this->country->getName());
+        
     }
 
     public function invalidCountryProvider(): array
