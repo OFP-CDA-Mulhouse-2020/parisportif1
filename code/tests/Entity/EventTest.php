@@ -138,7 +138,6 @@ final class EventTest extends KernelTestCase
     public function testSetValidScore($score)
     {
         $this->event->setScore($score);
-        var_dump($this->event->getScore());
         $errorsList = $this->validator->validate($this->event);
         $this->assertEquals(0 , count($errorsList));
     }
