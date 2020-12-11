@@ -86,8 +86,70 @@ final class EventTest extends KernelTestCase
     public function validEventDateProvider(): array
     {
         return [
-            [new \DateTime('@'.strtotime('now'))],
-            [new \DateTime('@'.strtotime('now'))]
+            [new \DateTime('@'.strtotime('10-02-2021'))],
+            [new \DateTime('@'.strtotime('10-02-2021'))]
+            
+        ];
+    }
+
+    /**
+     * @dataProvider validLocationProvider
+     */
+    public function testSetValidLocation($location)
+    {
+        $this->event->setLocation($location);
+        $errorsList = $this->validator->validate($this->event);
+        $this->assertEquals(0 , count($errorsList));
+    }
+
+    public function validLocationProvider(): array
+    {
+        return [
+            ["Paris"],
+            ["Madrid"]
+            
+        ];
+    }
+    
+    
+    /**
+     * @dataProvider validIllustrationProvider
+     */
+    public function testSetValidIllustration($illustration)
+    {
+        $this->event->setIllustration($illustration);
+        $errorsList = $this->validator->validate($this->event);
+        $this->assertEquals(0 , count($errorsList));
+    }
+
+    public function validIllustrationProvider(): array
+    {
+        return [
+            ["Les Parisiens retrouveront-ils la victoire contre Lyon ?"],
+            ["les Americains sera-t-il champion du monde ?"]
+            
+        ];
+    }
+
+
+    /**
+     * @dataProvider validScoreProvider
+     */
+    public function testSetValidScore($score)
+    {
+        $this->event->setScore($score);
+        var_dump($this->event->getScore());
+        $errorsList = $this->validator->validate($this->event);
+        $this->assertEquals(0 , count($errorsList));
+    }
+
+    public function validScoreProvider(): array
+    {
+        return [
+            [0],
+            [5],
+            [4],
+            [8]
             
         ];
     }
