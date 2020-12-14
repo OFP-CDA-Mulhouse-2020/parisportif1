@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TimeZoneRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=TimeZoneRepository::class)
  */
@@ -19,11 +19,15 @@ class TimeZone
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Length(min = 2)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Length(min = 2)
      */
     private $code;
 

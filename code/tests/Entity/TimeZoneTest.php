@@ -36,12 +36,30 @@ final class TimeZoneTest extends KernelTestCase
     {
         $this->timeZone->setName($name);
         $errorsList = $this->validator->validate($this->timeZone);
-        $this->assertEquals(0 , count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
     public function validTimeZoneNameProvider(): array
     {
         return [
+            ["France"],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidTimeZoneNameProvider
+     */
+    public function testSetInvalidTimeZoneName(string $name): void
+    {
+        $this->timeZone->setName($name);
+        $errorsList = $this->validator->validate($this->timeZone);
+        $this->assertGreaterThan(0, count($errorsList));
+    }
+
+    public function invalidTimeZoneNameProvider(): array
+    {
+        return [
+            [""],
             ["France"],
         ];
     }
@@ -54,12 +72,30 @@ final class TimeZoneTest extends KernelTestCase
     {
         $this->timeZone->setCode($code);
         $errorsList = $this->validator->validate($this->timeZone);
-        $this->assertEquals(0 , count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
     public function validTimeZoneCodeProvider(): array
     {
         return [
+            ["GMT+1"],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidTimeZoneCodeProvider
+     */
+    public function testSetInvalidTimeZoneCode(string $code): void
+    {
+        $this->timeZone->setName($code);
+        $errorsList = $this->validator->validate($this->timeZone);
+        $this->assertGreaterThan(0, count($errorsList));
+    }
+
+    public function invalidTimeZoneCodeProvider(): array
+    {
+        return [
+            [""],
             ["GMT+1"],
         ];
     }

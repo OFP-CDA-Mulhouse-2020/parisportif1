@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\StatusRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=StatusRepository::class)
  */
@@ -19,11 +19,14 @@ class Status
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\Length(min = 2)
      */
     private $description;
 

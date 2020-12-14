@@ -33,42 +33,42 @@ final class EventTest extends KernelTestCase
     }
 
     /**
-     * @dataProvider invalidCountryProvider
+     * @dataProvider validCountryProvider
      */
-    public function testSetInvalidCountry($name)
+    public function testSetvalidCountry($name)
     {
         $this->event->setName($name);
         $errorsList = $this->validator->validate($this->event);
-        $this->assertEquals(0 , count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
-    public function invalidCountryProvider(): array
-    {
-        return [
-            ["paris vs lyon"],
-            ["amerique vs japon"],
-            ["japon vs chine"],
-            ["allemagne vs mexique"]
-        ];
-    }
-
-    /**
-     * @dataProvider validNameProvider
-     */
-    public function testSetValidName($name)
-    {
-        $this->event->setName($name);
-        $errorsList = $this->validator->validate($this->event);
-        $this->assertEquals(0 , count($errorsList));
-    }
-
-    public function validNameProvider(): array
+    public function validCountryProvider(): array
     {
         return [
             ["Paris vs Lyon"],
             ["Amerique vs Japon"],
             ["Japon vs Chine"],
             ["Allemagne vs Mexique"]
+
+        ];
+    }
+
+    /**
+     * @dataProvider invalidCountryProvider
+     */
+    public function testSetInvalidCountry($name)
+    {
+        $this->event->setName($name);
+        $errorsList = $this->validator->validate($this->event);
+        $this->assertGreaterThan(0, count($errorsList));
+    }
+
+    public function invalidCountryProvider(): array
+    {
+        return [
+            [""],
+            ["Paris vs Lyon"],
+            
         ];
     }
 
@@ -80,17 +80,39 @@ final class EventTest extends KernelTestCase
     {
         $this->event->setEventDate($eventDate);
         $errorsList = $this->validator->validate($this->event);
-        $this->assertEquals(0 , count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
     public function validEventDateProvider(): array
     {
         return [
-            [new \DateTime('@'.strtotime('10-02-2021'))],
-            [new \DateTime('@'.strtotime('10-02-2021'))]
-            
+            [new \DateTime('@' . strtotime('10-02-2021'))],
+            [new \DateTime('@' . strtotime('10-02-2021'))]
+
         ];
     }
+
+
+    /**
+     * @dataProvider invalidLocationProvider
+     */
+    public function testSetInvalidLocation(string $location): void
+    {
+        $this->event->setLocation($location);
+        $errorsList = $this->validator->validate($this->event);
+        $this->assertGreaterThan(0, count($errorsList));
+    }
+
+    public function invalidLocationProvider(): array
+    {
+        return [
+           [""],
+           ["Paris"],
+           ["Madrid"]
+        ];
+    }
+
+
 
     /**
      * @dataProvider validLocationProvider
@@ -99,7 +121,7 @@ final class EventTest extends KernelTestCase
     {
         $this->event->setLocation($location);
         $errorsList = $this->validator->validate($this->event);
-        $this->assertEquals(0 , count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
     public function validLocationProvider(): array
@@ -107,11 +129,31 @@ final class EventTest extends KernelTestCase
         return [
             ["Paris"],
             ["Madrid"]
-            
+
         ];
     }
-    
-    
+
+
+     /**
+     * @dataProvider invalidIllustrationProvider
+     */
+    public function testSetInvalidIllustration(string $illustration): void
+    {
+        $this->event->setIllustration($illustration);
+        $errorsList = $this->validator->validate($this->event);
+        $this->assertGreaterThan(0, count($errorsList));
+    }
+
+    public function invalidIllustrationProvider(): array
+    {
+        return [
+           [""],
+           ["Les Parisiens retrouveront-ils la victoire contre Lyon ?"],
+           ["les Americains sera-t-il champion du monde ?"]
+        ];
+    }
+
+
     /**
      * @dataProvider validIllustrationProvider
      */
@@ -119,7 +161,7 @@ final class EventTest extends KernelTestCase
     {
         $this->event->setIllustration($illustration);
         $errorsList = $this->validator->validate($this->event);
-        $this->assertEquals(0 , count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
     public function validIllustrationProvider(): array
@@ -127,7 +169,7 @@ final class EventTest extends KernelTestCase
         return [
             ["Les Parisiens retrouveront-ils la victoire contre Lyon ?"],
             ["les Americains sera-t-il champion du monde ?"]
-            
+
         ];
     }
 
@@ -139,7 +181,7 @@ final class EventTest extends KernelTestCase
     {
         $this->event->setScore($score);
         $errorsList = $this->validator->validate($this->event);
-        $this->assertEquals(0 , count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
     public function validScoreProvider(): array
@@ -149,7 +191,7 @@ final class EventTest extends KernelTestCase
             [5],
             [4],
             [8]
-            
+
         ];
     }
 

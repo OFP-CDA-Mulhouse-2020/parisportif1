@@ -36,7 +36,7 @@ final class StatusTest extends KernelTestCase
     {
         $this->status->setName($name);
         $errorsList = $this->validator->validate($this->status);
-        $this->assertEquals(0 , count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
     public function validStatusNameProvider(): array
@@ -46,6 +46,23 @@ final class StatusTest extends KernelTestCase
         ];
     }
 
+    /**
+     * @dataProvider invalidStatusNameProvider
+     */
+    public function testSetInvalidStatusName(string $name): void
+    {
+        $this->status->setName($name);
+        $errorsList = $this->validator->validate($this->status);
+        $this->assertGreaterThan(0, count($errorsList));
+    }
+
+    public function invalidStatusNameProvider(): array
+    {
+        return [
+            [""],
+            ["Team France"],
+        ];
+    }
 
     /**
      * @dataProvider validStatusDescProvider
@@ -54,13 +71,31 @@ final class StatusTest extends KernelTestCase
     {
         $this->status->setDescription($description);
         $errorsList = $this->validator->validate($this->status);
-        $this->assertEquals(0 , count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
     public function validStatusDescProvider(): array
     {
         return [
             ["Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, consectetur!"],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidStatusDescProvider
+     */
+    public function testSetInvalidStatusDesc(string $description): void
+    {
+        $this->status->setDescription($description);
+        $errorsList = $this->validator->validate($this->status);
+        $this->assertGreaterThan(0, count($errorsList));
+    }
+
+    public function invalidStatusDescProvider(): array
+    {
+        return [
+            [""],
+            ["Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, consectetur!"]
         ];
     }
 }

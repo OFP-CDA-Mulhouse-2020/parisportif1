@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EventRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=EventRepository::class)
  */
@@ -19,6 +19,7 @@ class Event
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min = 2)
      */
     private $name;
 
@@ -29,11 +30,13 @@ class Event
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min = 2)
      */
     private $location;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min = 2)
      */
     private $illustration;
 
