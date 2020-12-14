@@ -19,13 +19,12 @@ class Status
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Type("string")
+     * @Assert\Length(min = 2)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Type("string")
      * @Assert\Length(min = 2)
      */
     private $description;

@@ -60,7 +60,7 @@ final class StatusTest extends KernelTestCase
     {
         return [
             [""],
-            ["Team France"],
+            ["L"]
         ];
     }
 
@@ -95,7 +95,7 @@ final class StatusTest extends KernelTestCase
     {
         return [
             [""],
-            ["Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, consectetur!"]
+            ["L"]
         ];
     }
 }

@@ -60,7 +60,7 @@ final class TimeZoneTest extends KernelTestCase
     {
         return [
             [""],
-            ["France"],
+            ["F"],
         ];
     }
 
@@ -96,7 +96,7 @@ final class TimeZoneTest extends KernelTestCase
     {
         return [
             [""],
-            ["GMT+1"],
+            ["G"],
         ];
     }
 }

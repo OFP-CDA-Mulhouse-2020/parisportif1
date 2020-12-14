@@ -67,7 +67,7 @@ final class EventTest extends KernelTestCase
     {
         return [
             [""],
-            ["Paris vs Lyon"],
+            ["P"],
             
         ];
     }
@@ -107,8 +107,8 @@ final class EventTest extends KernelTestCase
     {
         return [
            [""],
-           ["Paris"],
-           ["Madrid"]
+           ["P"],
+           ["M"]
         ];
     }
 
@@ -148,8 +148,8 @@ final class EventTest extends KernelTestCase
     {
         return [
            [""],
-           ["Les Parisiens retrouveront-ils la victoire contre Lyon ?"],
-           ["les Americains sera-t-il champion du monde ?"]
+           ["L"],
+           
         ];
     }
 
