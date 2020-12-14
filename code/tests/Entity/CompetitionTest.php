@@ -56,6 +56,6 @@ final class CompetitionTest extends KernelTestCase
 
     public function validNameProvider(): array
     {
-        return [["Coupe du monde de foorball"]];
+        return [["Coupe du monde de football"]];
     }
 }
