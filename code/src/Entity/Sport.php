@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\SportRepository;
@@ -9,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=SportRepository::class)
  */
-class Sport
+final class Sport
 {
     /**
      * @ORM\Id

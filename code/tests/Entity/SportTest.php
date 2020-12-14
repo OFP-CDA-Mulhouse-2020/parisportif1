@@ -42,7 +42,7 @@ final class SportTest extends KernelTestCase
     {
         return [
             [""],
-            ["Tenis de Table"]
+            ["T"]
         ];
     }
 
@@ -78,7 +78,7 @@ final class SportTest extends KernelTestCase
     {
         return [
             [""],
-            ["Hello world"]
+            ["h"]
         ];
     }
 
@@ -97,5 +97,12 @@ final class SportTest extends KernelTestCase
         return [
             ["Hello Word"]
         ];
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->competitor = null;
+        $this->validator = null;
     }
 }
