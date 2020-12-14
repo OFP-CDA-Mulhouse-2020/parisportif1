@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class CompetitionTest extends KernelTestCase
 {
-    private Competition $competition;
-    private ValidatorInterface $validator;
+    private ?Competition $competition;
+    private ?ValidatorInterface $validator;
 
     protected function setUp(): void
     {
@@ -19,7 +19,6 @@ final class CompetitionTest extends KernelTestCase
 
         $kernel = self::bootKernel();
         $kernel->boot();
-
         $this->validator = $kernel->getContainer()->get("validator");
     }
 
@@ -57,5 +56,12 @@ final class CompetitionTest extends KernelTestCase
     public function validNameProvider(): array
     {
         return [["Coupe du monde de football"]];
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->competition = null;
+        $this->validator = null;
     }
 }
