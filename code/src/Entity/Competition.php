@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CompetitionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CompetitionRepository::class)
@@ -18,7 +19,9 @@ class Competition
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="text")
+     * @Assert\Type("string")
+     * @Assert\Length(min = 1)
      */
     private $name;
 

@@ -28,4 +28,19 @@ final class CompetitionTest extends KernelTestCase
         $this->assertInstanceOf(Competition::class, $this->competition);
         $this->assertClassHasAttribute("name", Competition::class);
     }
+
+    /**
+     * @dataProvider invalidNameProvider
+     */
+    public function testSetInvalidCompetitionName(string $name)
+    {
+        $this->competition->setName($name);
+        $errorsList = $this->validator->validate($this->competition);
+        $this->assertGreaterThan(0, count($errorsList));
+    }
+
+    public function invalidNameProvider(): array
+    {
+        return [[""]];
+    }
 }
