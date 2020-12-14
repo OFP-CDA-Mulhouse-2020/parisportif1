@@ -20,11 +20,13 @@ class Sport
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min = 2)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min = 2)
      */
     private $description;
 
