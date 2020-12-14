@@ -23,7 +23,7 @@ final class Competitor
     /**
      * @ORM\Column(type="text")
      * @Assert\Type("string")
-     * @Assert\Length(min = 2)
+     * @Assert\Length(min = 1)
      */
     private $name;
 

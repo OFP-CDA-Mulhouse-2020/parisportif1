@@ -28,38 +28,33 @@ final class CompetitorTest extends KernelTestCase
     }
 
     /**
-     * @dataProvider invalidNameProvider
+     * @dataProvider invalidCompetitorNameProvider
      */
-    public function testSetInvalidName(string $name): void
+    public function testSetInvalidCompetitorName(string $name): void
     {
         $this->competitor->setName($name);
         $errorsList = $this->validator->validate($this->competitor);
         $this->assertGreaterThan(0, count($errorsList));
     }
 
-    public function invalidNameProvider(): array
+    public function invalidCompetitorNameProvider(): array
     {
-        return [
-            [""],
-            ["x"]
-        ];
+        return [[""]];
     }
 
     /**
-     * @dataProvider validNameProvider
+     * @dataProvider validCompetitorNameProvider
      */
-    public function testSetValidName(string $name): void
+    public function testSetValidCompetitorName(string $name): void
     {
         $this->competitor->setName($name);
         $errorsList = $this->validator->validate($this->competitor);
         $this->assertEquals(0, count($errorsList));
     }
 
-    public function validNameProvider(): array
+    public function validCompetitorNameProvider(): array
     {
-        return [
-            ["Codeur Online"]
-        ];
+        return [["Pierre de Coubertin"]];
     }
 
     protected function tearDown(): void
