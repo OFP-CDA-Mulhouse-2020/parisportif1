@@ -43,4 +43,19 @@ final class CompetitionTest extends KernelTestCase
     {
         return [[""]];
     }
+
+    /**
+     * @dataProvider validNameProvider()
+     */
+    public function testSetValidCompetitionName(string $name)
+    {
+        $this->competition->setName($name);
+        $errorsList = $this->validator->validate($this->competition);
+        $this->assertEquals(0, count($errorsList));
+    }
+
+    public function validNameProvider(): array
+    {
+        return [["Coupe du monde de foorball"]];
+    }
 }
