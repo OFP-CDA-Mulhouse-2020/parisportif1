@@ -7,7 +7,7 @@ namespace App\Tests\Entity;
 use App\Entity\SportType;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-final class SportTest extends KernelTestCase
+final class SportTypeTest extends KernelTestCase
 {
     private $sportType;
     private $validator;
