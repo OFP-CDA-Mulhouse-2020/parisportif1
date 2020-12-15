@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CompetitorTeamStatusRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CompetitorTeamStatusRepository::class)
@@ -19,6 +20,7 @@ class CompetitorTeamStatus
 
     /**
      * @ORM\Column(type="date_immutable")
+     * @Assert\NotNull
      */
     private $date;
 
