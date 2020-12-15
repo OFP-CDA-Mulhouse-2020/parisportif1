@@ -14,7 +14,7 @@ final class SportTypeTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        $this->sportType = new Sport();
+        $this->sportType = new SportType();
 
         $kernel = self::bootKernel();
         $kernel->boot();
@@ -23,9 +23,9 @@ final class SportTypeTest extends KernelTestCase
 
     public function testInstanceOfCompetitor(): void
     {
-        $this->assertInstanceOf(Sport::class, $this->sportType);
-        $this->assertClassHasAttribute("name", Sport::class);
-        $this->assertClassHasAttribute("description", Sport::class);
+        $this->assertInstanceOf(SportType::class, $this->sportType);
+        $this->assertClassHasAttribute("name", SportType::class);
+        $this->assertClassHasAttribute("description", SportType::class);
     }
 
     /**
