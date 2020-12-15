@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\CompetitorTeamStatus;
+use DateTimeImmutable;
+use DateTimeInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -31,8 +33,16 @@ final class CompetitorTeamStatusTest extends KernelTestCase
     /**
      * @dataProvider validCompetitorTeamStatusDate
      */
-    public function testSetValidCompetitorTeamStatusDate()
+    public function testSetValidCompetitorTeamStatusDate(DateTimeInterface $date): void
     {
+        $this->competitorTeamStatus->setDate($date);
+        $errorsList = $this->validator->validate($this->competitorTeamStatus);
+        $this->assertEquals(0, count($errorsList));
+    }
+
+    public function validCompetitorTeamStatusDate(): array
+    {
+        return [[new DateTimeImmutable("tomorrow")]];
     }
 
     protected function tearDown(): void
