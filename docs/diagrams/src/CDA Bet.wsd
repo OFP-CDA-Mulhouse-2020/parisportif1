@@ -84,7 +84,7 @@ namespace CdaBet {
     }
 
     class Wallet {
-        -Float balance
+        -Int balance
         #credit()
         #debit(balance)
         #history()
@@ -92,7 +92,7 @@ namespace CdaBet {
 
     class Order {
         -Date date
-        -Float total
+        -Int total
     }
 
     class Bet {
@@ -105,7 +105,7 @@ namespace CdaBet {
     }
 
     class Payment {
-        -Float amount
+        -Int amount
         -Date date
         -String transactionID
         -String description
