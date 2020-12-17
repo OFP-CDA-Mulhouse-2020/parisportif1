@@ -22,7 +22,7 @@ final class PaymentTest extends KernelTestCase
         $this->validator = $kernel->getContainer()->get("validator");
     }
 
-    public function testInstanceOfEvent(): void
+    public function testInstanceOfPayment(): void
     {
         $this->assertInstanceOf(Payment::class, $this->payment);
         $this->assertClassHasAttribute("amount", Payment::class);
