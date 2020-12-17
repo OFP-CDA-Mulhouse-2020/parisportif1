@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 namespace App\Tests\Entity;
 
@@ -47,7 +47,7 @@ final class PaymentTest extends KernelTestCase
             ["100"],
             ["1000"],
             ["10000"],
-            ["100000"]
+            ["100000"],
 
         ];
     }
@@ -84,7 +84,7 @@ final class PaymentTest extends KernelTestCase
     public function validPaymentDateProvider(): array
     {
         return [
-            [new \DateTime('@' . strtotime('now'))]
+            [new \DateTime('@' . strtotime('now'))],
 
         ];
     }
@@ -102,9 +102,9 @@ final class PaymentTest extends KernelTestCase
     public function invalidTransactionIDProvider(): array
     {
         return [
-           [""],
-           ["P"],
-           ["M"]
+            [""],
+            ["P"],
+            ["M"],
         ];
     }
 
@@ -121,13 +121,13 @@ final class PaymentTest extends KernelTestCase
     public function validTransactionIDProvider(): array
     {
         return [
-            ["Paris"],
-            ["Madrid"]
+            [uniqid()],
+            [uniqid()],
 
         ];
     }
 
-     /**
+    /**
      * @dataProvider validDescriptionProvider
      */
     public function testSetValidDescription($description)
@@ -140,12 +140,12 @@ final class PaymentTest extends KernelTestCase
     public function validDescriptionProvider(): array
     {
         return [
-           [""],
-           ["L"],
+
+            ["Payment de XXXX"],
+            ["Virement de XXXX"],
 
         ];
     }
-
 
     /**
      * @dataProvider invalidDescriptionProvider
@@ -160,8 +160,8 @@ final class PaymentTest extends KernelTestCase
     public function invalidDescriptionProvider(): array
     {
         return [
-            ["Les Parisiens retrouveront-ils la victoire contre Lyon ?"],
-            ["les Americains sera-t-il champion du monde ?"]
+            [""],
+            ["L"]
 
         ];
     }
