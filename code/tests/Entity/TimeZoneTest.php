@@ -22,7 +22,7 @@ final class TimeZoneTest extends KernelTestCase
         $this->validator = $kernel->getContainer()->get("validator");
     }
 
-    public function testInstanceOfEvent(): void
+    public function testInstanceOfTimeZone(): void
     {
         $this->assertInstanceOf(TimeZone::class, $this->timeZone);
         $this->assertClassHasAttribute("name", TimeZone::class);

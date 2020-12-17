@@ -22,7 +22,7 @@ final class StatusTest extends KernelTestCase
         $this->validator = $kernel->getContainer()->get("validator");
     }
 
-    public function testInstanceOfEvent(): void
+    public function testInstanceOfStatus(): void
     {
         $this->assertInstanceOf(Status::class, $this->status);
         $this->assertClassHasAttribute("name", Status::class);
