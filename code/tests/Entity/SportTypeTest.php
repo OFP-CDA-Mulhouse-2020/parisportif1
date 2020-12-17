@@ -21,7 +21,7 @@ final class SportTypeTest extends KernelTestCase
         $this->validator = $kernel->getContainer()->get("validator");
     }
 
-    public function testInstanceOfCompetitor(): void
+    public function testInstanceOfSportType(): void
     {
         $this->assertInstanceOf(SportType::class, $this->sportType);
         $this->assertClassHasAttribute("name", SportType::class);
