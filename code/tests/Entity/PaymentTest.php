@@ -15,7 +15,7 @@ final class PaymentTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        $this->payment = new Event();
+        $this->payment = new Payment();
 
         $kernel = self::bootKernel();
         $kernel->boot();
@@ -24,7 +24,7 @@ final class PaymentTest extends KernelTestCase
 
     public function testInstanceOfEvent(): void
     {
-        $this->assertInstanceOf(Event::class, $this->payment);
+        $this->assertInstanceOf(Payment::class, $this->payment);
         $this->assertClassHasAttribute("amount", Payment::class);
         $this->assertClassHasAttribute("paymentDate", Payment::class);
         $this->assertClassHasAttribute("transactionID", Payment::class);
@@ -44,10 +44,9 @@ final class PaymentTest extends KernelTestCase
     public function validAmountProvider(): array
     {
         return [
-            ["100"],
-            ["1000"],
-            ["10000"],
-            ["100000"],
+            [1000],
+            [10000],
+            [100000]
 
         ];
     }
@@ -65,8 +64,7 @@ final class PaymentTest extends KernelTestCase
     public function invalidAmountProvider(): array
     {
         return [
-            [""],
-            [1],
+            [10]
 
         ];
     }
@@ -134,7 +132,7 @@ final class PaymentTest extends KernelTestCase
     {
         $this->payment->setDescription($description);
         $errorsList = $this->validator->validate($this->payment);
-        $this->assertGreaterThan(0, count($errorsList));
+        $this->assertEquals(0, count($errorsList));
     }
 
     public function validDescriptionProvider(): array
@@ -154,7 +152,7 @@ final class PaymentTest extends KernelTestCase
     {
         $this->payment->setDescription($description);
         $errorsList = $this->validator->validate($this->payment);
-        $this->assertEquals(0, count($errorsList));
+        $this->assertGreaterThan(0, count($errorsList));
     }
 
     public function invalidDescriptionProvider(): array
