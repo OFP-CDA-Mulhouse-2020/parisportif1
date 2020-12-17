@@ -30,31 +30,34 @@ final class WalletTest extends KernelTestCase
     /**
      * @dataProvider invalidWalletProvider
      */
-    public function testSetInvalidWallet(string $balance): void
+    public function testSetInvalidWallet(float $balance): void
     {
-        $this->competitor->setBalance($balance);
+        $this->wallet->setBalance($balance);
         $errorsList = $this->validator->validate($this->wallet);
         $this->assertGreaterThan(0, count($errorsList));
     }
 
     public function invalidWalletProvider(): array
     {
-        return [[1,0]];
+        return [[1]];
     }
 
     /**
      * @dataProvider validWalletProvider
      */
-    public function testSetValidWallet(string $balance): void
+    public function testSetValidWallet(float $balance): void
     {
-        $this->competitor->setBalance($balance);
+        $this->wallet->setBalance($balance);
         $errorsList = $this->validator->validate($this->wallet);
         $this->assertEquals(0, count($errorsList));
     }
 
     public function validWalletProvider(): array
     {
-        return [[10,00]];
+        return [
+            [12.055],
+            [13.081]
+        ];
     }
 
     protected function tearDown(): void
