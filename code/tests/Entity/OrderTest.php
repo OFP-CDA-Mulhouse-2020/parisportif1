@@ -28,6 +28,7 @@ final class OrderTest extends KernelTestCase
     {
         $this->assertInstanceOf(Order::class, $this->order);
         $this->assertClassHasAttribute("date", Order::class);
+        $this->assertClassHasAttribute("total", Order::class);
     }
 
     /**
@@ -58,6 +59,36 @@ final class OrderTest extends KernelTestCase
     public function invalidOrderDate(): array
     {
         return [[new DateTimeImmutable("now - 1 minute")]];
+    }
+
+    /**
+     * @dataProvider validOrderTotal
+     */
+    public function testSetValidOrderTotal(int $total): void
+    {
+        $this->order->setTotal($total);
+        $errorsList = $this->validator->validate($this->order);
+        $this->assertEquals(0, count($errorsList));
+    }
+
+    public function validOrderTotal(): array
+    {
+        return [[100]];
+    }
+
+    /**
+     * @dataProvider invalidOrderTotal
+     */
+    public function testSetInvalidOrderTotal(int $total): void
+    {
+        $this->order->setTotal($total);
+        $errorsList = $this->validator->validate($this->order);
+        $this->assertGreaterThan(0, count($errorsList));
+    }
+
+    public function invalidOrderTotal(): array
+    {
+        return [[0], [-100]];
     }
 
     protected function tearDown(): void

@@ -27,6 +27,13 @@ final class Order
      */
     private $date;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotNull
+     * @Assert\GreaterThan(0)
+     */
+    private $total;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,6 +47,18 @@ final class Order
     public function setDate(\DateTimeImmutable $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getTotal(): ?int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(int $total): self
+    {
+        $this->total = $total;
 
         return $this;
     }
