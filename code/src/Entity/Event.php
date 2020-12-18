@@ -41,9 +41,9 @@ class Event
     private $illustration;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="text")
      */
-    private $score;
+    private $result;
 
     public function getId(): ?int
     {
@@ -98,14 +98,14 @@ class Event
         return $this;
     }
 
-    public function getScore(): ?int
+    public function getResult(): ?string
     {
-        return $this->score;
+        return $this->result;
     }
 
-    public function setScore(int $score): self
+    public function setResult(string $result): self
     {
-        $this->score = $score;
+        $this->result = $result;
 
         return $this;
     }

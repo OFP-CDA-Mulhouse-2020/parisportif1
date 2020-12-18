@@ -78,7 +78,7 @@ final class TimeZoneTest extends KernelTestCase
     public function validTimeZoneCodeProvider(): array
     {
         return [
-            ["GMT+1"],
+            ['Europe/Paris']
         ];
     }
 

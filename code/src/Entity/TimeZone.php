@@ -27,7 +27,8 @@ class TimeZone
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
-     * @Assert\Length(min = 2)
+     * @Assert\Timezone(zone=\DateTimeZone::ALL)
+     * @Assert\Length(min = 0)
      */
     private $code;
 

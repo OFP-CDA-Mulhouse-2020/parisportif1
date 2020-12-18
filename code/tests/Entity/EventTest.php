@@ -29,7 +29,7 @@ final class EventTest extends KernelTestCase
         $this->assertClassHasAttribute("eventDate", Event::class);
         $this->assertClassHasAttribute("location", Event::class);
         $this->assertClassHasAttribute("illustration", Event::class);
-        $this->assertClassHasAttribute("score", Event::class);
+        $this->assertClassHasAttribute("result", Event::class);
     }
 
     /**
@@ -175,22 +175,21 @@ final class EventTest extends KernelTestCase
 
 
     /**
-     * @dataProvider validScoreProvider
+     * @dataProvider validResultProvider
      */
-    public function testSetValidScore($score)
+    public function testSetValidScore($result)
     {
-        $this->event->setScore($score);
+        $this->event->setResult($result);
         $errorsList = $this->validator->validate($this->event);
         $this->assertEquals(0, count($errorsList));
     }
 
-    public function validScoreProvider(): array
+    public function validResultProvider(): array
     {
         return [
-            [0],
-            [5],
-            [4],
-            [8]
+            ["0 - 5"],
+            ["5 - 10"]
+            
 
         ];
     }
