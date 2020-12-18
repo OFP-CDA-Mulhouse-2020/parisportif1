@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -22,6 +23,7 @@ final class Order
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\GreaterThan("-1 minute")
      */
     private $date;
 
