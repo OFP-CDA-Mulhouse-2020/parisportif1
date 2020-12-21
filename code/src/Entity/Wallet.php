@@ -21,7 +21,7 @@ class Wallet
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\Length(min = 2)
+     * @Assert\GreaterThan(10)
      */
     private $balance;
 
