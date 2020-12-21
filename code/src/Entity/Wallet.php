@@ -20,8 +20,8 @@ class Wallet
     private $id;
 
     /**
-     * @ORM\Column(type="float")
-     * @Assert\GreaterThan(10)
+     * @ORM\Column(type="integer")
+     * @Assert\GreaterThanOrEqual(10)
      */
     private $balance;
 
@@ -30,12 +30,12 @@ class Wallet
         return $this->id;
     }
 
-    public function getBalance(): ?float
+    public function getBalance(): ?int
     {
         return $this->balance;
     }
 
-    public function setBalance(float $balance): self
+    public function setBalance(int $balance): self
     {
         $this->balance = $balance;
 
