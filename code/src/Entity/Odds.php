@@ -26,7 +26,7 @@ class Odds
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\Length(min = 3)
+     * @Assert\GreaterThan(1)
      */
     private $value;
 
@@ -54,6 +54,7 @@ class Odds
 
     public function setValue(float $value): self
     {
+
         $this->value = $value;
 
         return $this;

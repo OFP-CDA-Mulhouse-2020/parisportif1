@@ -66,7 +66,7 @@ final class OddsTest extends KernelTestCase
     /**
      * @dataProvider validOddsValueProvider
      */
-    public function testSetvalidStatusName($value)
+    public function testSetvalidOddsValue(float $value)
     {
         $this->odds->setValue($value);
         $errorsList = $this->validator->validate($this->odds);
@@ -84,7 +84,7 @@ final class OddsTest extends KernelTestCase
     /**
      * @dataProvider invalidOddsValueProvider
      */
-    public function testSetInvalidOddsValue($value): void
+    public function testSetInvalidOddsValue(float $value): void
     {
         $this->odds->setValue($value);
         $errorsList = $this->validator->validate($this->odds);
@@ -94,7 +94,7 @@ final class OddsTest extends KernelTestCase
     public function invalidOddsValueProvider(): array
     {
         return [
-            [12]
+            [-10]
             
         ];
     }
