@@ -47,6 +47,7 @@ namespace CdaBet {
     class Odds {
         -String description
         -Float value
+        -Bool winning
     }
 
     class Sport {
@@ -98,7 +99,6 @@ namespace CdaBet {
     class Bet {
         -Int amount
         -Float odds
-        -Bool winning
         -Bool resolved
         +make()
         +resolve()
