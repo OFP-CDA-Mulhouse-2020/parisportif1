@@ -103,7 +103,7 @@ final class SportTypeTest extends KernelTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $this->sport = null;
+        $this->sportType = null;
         $this->validator = null;
     }
 }
