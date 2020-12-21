@@ -26,9 +26,14 @@ class Odds
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\GreaterThan(1)
+     * @Assert\GreaterThanOrEqual(1)
      */
     private $value;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $winning;
 
     public function getId(): ?int
     {
@@ -56,6 +61,18 @@ class Odds
     {
 
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getWinning(): ?bool
+    {
+        return $this->winning;
+    }
+
+    public function setWinning(?bool $winning): self
+    {
+        $this->winning = $winning;
 
         return $this;
     }

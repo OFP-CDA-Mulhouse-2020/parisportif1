@@ -94,7 +94,27 @@ final class OddsTest extends KernelTestCase
     public function invalidOddsValueProvider(): array
     {
         return [
-            [-10]
+            [0.5]
+            
+        ];
+    }
+
+    /**
+     * @dataProvider validOddsWinningProvider
+     */
+    public function testSetValidWinning($value):void
+    {
+        $this->odds->setWinning($value);
+        $errorsList = $this->validator->validate($this->odds);
+        $this->assertEquals(0, count($errorsList));
+    }
+
+    public function validOddsWinningProvider(): array
+    {
+        return [
+            [true],
+            [false],
+            [false],
             
         ];
     }
