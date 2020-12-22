@@ -26,7 +26,7 @@ final class BetTest extends KernelTestCase
         $this->assertInstanceOf(Bet::class, $this->bet);
         $this->assertClassHasAttribute("amount", Bet::class);
         $this->assertClassHasAttribute("odds", Bet::class);
-        $this->assertClassHasAttribute("resolve", Bet::class);
+        $this->assertClassHasAttribute("resolved", Bet::class);
     }
 
 
@@ -110,7 +110,7 @@ final class BetTest extends KernelTestCase
      */
     public function testSetValidWinning($resolve):void
     {
-        $this->bet->setResolve($resolve);
+        $this->bet->setResolved($resolve);
         $errorsList = $this->validator->validate($this->bet);
         $this->assertEquals(0, count($errorsList));
     }
