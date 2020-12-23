@@ -70,9 +70,27 @@ class Event
      */
     private $sportType;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="events")
+     */
+    private $teams;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $country;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=TimeZone::class, inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $timeZone;
+
     public function __construct()
     {
         $this->competitors = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -196,6 +214,54 @@ class Event
     public function setSportType(?SportType $sportType): self
     {
         $this->sportType = $sportType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        $this->teams->removeElement($team);
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getTimeZone(): ?TimeZone
+    {
+        return $this->timeZone;
+    }
+
+    public function setTimeZone(?TimeZone $timeZone): self
+    {
+        $this->timeZone = $timeZone;
 
         return $this;
     }
