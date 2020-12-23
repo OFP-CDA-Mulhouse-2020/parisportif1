@@ -87,10 +87,16 @@ class Event
      */
     private $timeZone;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Odds::class, mappedBy="event", orphanRemoval=true)
+     */
+    private $odds;
+
     public function __construct()
     {
         $this->competitors = new ArrayCollection();
         $this->teams = new ArrayCollection();
+        $this->odds = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -262,6 +268,36 @@ class Event
     public function setTimeZone(?TimeZone $timeZone): self
     {
         $this->timeZone = $timeZone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Odds[]
+     */
+    public function getOdds(): Collection
+    {
+        return $this->odds;
+    }
+
+    public function addOdd(Odds $odd): self
+    {
+        if (!$this->odds->contains($odd)) {
+            $this->odds[] = $odd;
+            $odd->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOdd(Odds $odd): self
+    {
+        if ($this->odds->removeElement($odd)) {
+            // set the owning side to null (unless already changed)
+            if ($odd->getEvent() === $this) {
+                $odd->setEvent(null);
+            }
+        }
 
         return $this;
     }

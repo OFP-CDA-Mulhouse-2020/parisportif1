@@ -140,8 +140,8 @@ namespace CdaBet {
     User "0..n" *-- "1" Order
     (User, Odds) *.. "1" Bet
     Competition "0..1" --* "1..n" Competition
-    Competition "1" -- "0..n" Sport
-    Competition "1" -- "0..n" SportType
+    Competition "1..n" -- "0..n" Sport
+    Competition "1..n" -- "0..n" SportType
     Order "1" *-- "1" Payment
     Order "1" *-- "1" Bet
     Competitor "0..n" --o "2..n" Team

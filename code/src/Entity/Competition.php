@@ -32,9 +32,15 @@ class Competition
      */
     private $events;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Competition::class, inversedBy="competitions")
+     */
+    private $competitions;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->competitions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,6 +84,40 @@ class Competition
             // set the owning side to null (unless already changed)
             if ($event->getCompetition() === $this) {
                 $event->setCompetition(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCompetitions(): ?self
+    {
+        return $this->competitions;
+    }
+
+    public function setCompetitions(?self $competitions): self
+    {
+        $this->competitions = $competitions;
+
+        return $this;
+    }
+
+    public function addCompetition(self $competition): self
+    {
+        if (!$this->competitions->contains($competition)) {
+            $this->competitions[] = $competition;
+            $competition->setCompetitions($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetition(self $competition): self
+    {
+        if ($this->competitions->removeElement($competition)) {
+            // set the owning side to null (unless already changed)
+            if ($competition->getCompetitions() === $this) {
+                $competition->setCompetitions(null);
             }
         }
 
