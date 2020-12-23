@@ -108,7 +108,7 @@ final class BetTest extends KernelTestCase
     /**
      * @dataProvider validBetResolveProvider
      */
-    public function testSetValidWinning($resolve):void
+    public function testSetValidBetResolve($resolve):void
     {
         $this->bet->setResolved($resolve);
         $errorsList = $this->validator->validate($this->bet);
