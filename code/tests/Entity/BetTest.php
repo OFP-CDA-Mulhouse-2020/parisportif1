@@ -52,7 +52,7 @@ final class BetTest extends KernelTestCase
     /**
      * @dataProvider invalidBetAmountProvider
      */
-    public function testSetInvalidOddsValue(int $amount): void
+    public function testSetInvalidBetAmount(int $amount): void
     {
         $this->bet->setAmount($amount);
         $errorsList = $this->validator->validate($this->bet);
@@ -90,7 +90,7 @@ final class BetTest extends KernelTestCase
     /**
      * @dataProvider invalidBetOddsProvider
      */
-    public function testSetInvalidOdds(float $odds): void
+    public function testSetInvalidBetOdds(float $odds): void
     {
         $this->bet->setOdds($odds);
         $errorsList = $this->validator->validate($this->bet);
