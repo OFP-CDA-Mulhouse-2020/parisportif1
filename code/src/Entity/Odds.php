@@ -35,6 +35,12 @@ class Odds
      */
     private $winning;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="odds")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $event;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -73,6 +79,18 @@ class Odds
     public function setWinning(?bool $winning): self
     {
         $this->winning = $winning;
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): self
+    {
+        $this->event = $event;
 
         return $this;
     }

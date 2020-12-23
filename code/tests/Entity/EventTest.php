@@ -37,6 +37,7 @@ final class EventTest extends KernelTestCase
         $this->assertClassHasAttribute("sportType", Event::class);
         $this->assertClassHasAttribute("country", Event::class);
         $this->assertClassHasAttribute("timeZone", Event::class);
+        $this->assertClassHasAttribute("odds", Event::class);
     }
 
     /**

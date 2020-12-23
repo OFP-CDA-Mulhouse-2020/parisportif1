@@ -26,6 +26,8 @@ final class CompetitionTest extends KernelTestCase
     {
         $this->assertInstanceOf(Competition::class, $this->competition);
         $this->assertClassHasAttribute("name", Competition::class);
+        $this->assertClassHasAttribute("competitions", Competition::class);
+        $this->assertClassHasAttribute("sport", Competition::class);
     }
 
     /**
