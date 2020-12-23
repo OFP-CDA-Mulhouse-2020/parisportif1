@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,6 +47,33 @@ class Event
      * @ORM\Column(type="text")
      */
     private $result;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Sport::class, inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $sport;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Competition::class, inversedBy="events")
+     */
+    private $competition;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Competitor::class, inversedBy="events")
+     */
+    private $competitors;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=SportType::class, inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $sportType;
+
+    public function __construct()
+    {
+        $this->competitors = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -107,6 +136,66 @@ class Event
     public function setResult(string $result): self
     {
         $this->result = $result;
+
+        return $this;
+    }
+
+    public function getSport(): ?Sport
+    {
+        return $this->sport;
+    }
+
+    public function setSport(?Sport $sport): self
+    {
+        $this->sport = $sport;
+
+        return $this;
+    }
+
+    public function getCompetition(): ?Competition
+    {
+        return $this->competition;
+    }
+
+    public function setCompetition(?Competition $competition): self
+    {
+        $this->competition = $competition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Competitor[]
+     */
+    public function getCompetitors(): Collection
+    {
+        return $this->competitors;
+    }
+
+    public function addCompetitor(Competitor $competitor): self
+    {
+        if (!$this->competitors->contains($competitor)) {
+            $this->competitors[] = $competitor;
+        }
+
+        return $this;
+    }
+
+    public function removeCompetitor(Competitor $competitor): self
+    {
+        $this->competitors->removeElement($competitor);
+
+        return $this;
+    }
+
+    public function getSportType(): ?SportType
+    {
+        return $this->sportType;
+    }
+
+    public function setSportType(?SportType $sportType): self
+    {
+        $this->sportType = $sportType;
 
         return $this;
     }
