@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
@@ -101,14 +101,14 @@ final class BetTest extends KernelTestCase
     {
         return [
             [0.5]
-            
+
         ];
     }
 
     /**
      * @dataProvider validBetResolveProvider
      */
-    public function testSetValidBetResolve($resolve):void
+    public function testSetValidBetResolve($resolve): void
     {
         $this->bet->setResolved($resolve);
         $errorsList = $this->validator->validate($this->bet);
@@ -121,7 +121,7 @@ final class BetTest extends KernelTestCase
             [true],
             [false],
             [false],
-            
+
         ];
     }
 
@@ -131,5 +131,4 @@ final class BetTest extends KernelTestCase
         $this->bet = null;
         $this->validator = null;
     }
-
 }

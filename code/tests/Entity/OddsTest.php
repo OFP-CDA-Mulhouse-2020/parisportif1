@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
@@ -95,14 +95,14 @@ final class OddsTest extends KernelTestCase
     {
         return [
             [0.5]
-            
+
         ];
     }
 
     /**
      * @dataProvider validOddsWinningProvider
      */
-    public function testSetValidWinning($value):void
+    public function testSetValidWinning($value): void
     {
         $this->odds->setWinning($value);
         $errorsList = $this->validator->validate($this->odds);
@@ -115,7 +115,7 @@ final class OddsTest extends KernelTestCase
             [true],
             [false],
             [false],
-            
+
         ];
     }
 
@@ -125,5 +125,4 @@ final class OddsTest extends KernelTestCase
         $this->odds = null;
         $this->validator = null;
     }
-
 }
