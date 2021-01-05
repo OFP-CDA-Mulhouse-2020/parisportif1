@@ -68,7 +68,7 @@ final class EventTest extends KernelTestCase
         return [
             [""],
             ["P"],
-            
+
         ];
     }
 
@@ -149,7 +149,7 @@ final class EventTest extends KernelTestCase
         return [
            [""],
            ["L"],
-           
+
         ];
     }
 
@@ -189,9 +189,8 @@ final class EventTest extends KernelTestCase
         return [
             ["0 - 5"],
             ["5 - 10"]
-            
+
 
         ];
     }
-
 }

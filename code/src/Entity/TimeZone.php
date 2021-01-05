@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TimeZoneRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=TimeZoneRepository::class)
  */

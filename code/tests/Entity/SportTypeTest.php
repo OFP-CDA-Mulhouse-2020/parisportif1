@@ -96,7 +96,7 @@ final class SportTypeTest extends KernelTestCase
     {
         return [
             ["Lorem ipsum dolor sit amet."]
-            
+
         ];
     }
 
