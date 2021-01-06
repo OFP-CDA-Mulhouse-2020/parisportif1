@@ -38,9 +38,9 @@ final class OrderTest extends KernelTestCase
     {
         $this->order->setDate($date);
         $errorsList = $this->validator->validate($this->order);
-        $this->assertEquals(0, count($errorsList));
+        $this->assertEquals(1, count($errorsList));
     }
-
+    
     public function validOrderDate(): array
     {
         return [[new DateTimeImmutable("now")]];

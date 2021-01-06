@@ -23,7 +23,7 @@ final class Order
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Assert\GreaterThan("-1 minute")
+     * @Assert\GreaterThanOrEqual("now - 10 seconds")
      */
     private $date;
 
