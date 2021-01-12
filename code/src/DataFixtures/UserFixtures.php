@@ -30,6 +30,8 @@ final class UserFixtures extends Fixture
         ));
         $user->setFirstname("Ben");
         $user->setLastname("Dupont");
+        $user->setBirthDate(new DateTimeImmutable("now"));
+        $user->setCreationDate(new DateTimeImmutable("now"));
 
         $manager->persist($user);
         $manager->flush();
