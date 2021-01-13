@@ -14,6 +14,7 @@ class EditFormType extends AbstractType
         $builder
             ->add('lastname')
             ->add('firstname')
+            ->add('email')
             ->add('password')
         ;
     }
