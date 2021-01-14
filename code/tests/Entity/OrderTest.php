@@ -7,6 +7,7 @@ namespace App\Tests\Entity;
 use App\Entity\Order;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -34,7 +35,7 @@ final class OrderTest extends KernelTestCase
     /**
      * @dataProvider validOrderDate
      */
-    public function testSetValidOrderDate(DateTimeInterface $date): void
+    public function testSetValidOrderDate($date)
     {
         $this->order->setDate($date);
         $errorsList = $this->validator->validate($this->order);
@@ -43,13 +44,15 @@ final class OrderTest extends KernelTestCase
 
     public function validOrderDate(): array
     {
-        return [[new DateTimeImmutable("now")]];
+        return [
+            [new \DateTime('@' . strtotime('now'))],
+        ];
     }
 
     /**
      * @dataProvider invalidOrderDate
      */
-    public function testSetInvalidOrderDate(DateTimeInterface $date): void
+    public function testSetInvalidOrderDate($date)
     {
         $this->order->setDate($date);
         $errorsList = $this->validator->validate($this->order);
@@ -58,8 +61,12 @@ final class OrderTest extends KernelTestCase
 
     public function invalidOrderDate(): array
     {
-        return [[new DateTimeImmutable("now - 1 minute")]];
+        return [
+            [new \DateTime('@' . strtotime('now -1 minute'))]
+        ];
     }
+
+    
 
     /**
      * @dataProvider validOrderTotal

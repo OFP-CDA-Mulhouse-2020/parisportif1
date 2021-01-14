@@ -24,8 +24,8 @@ final class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank
-     * @Assert\Email
+     * @Assert\NotBlank(groups={"create", "read"})
+     * @Assert\Email(groups={"create", "read"})
      */
     private $email;
 
@@ -37,16 +37,20 @@ final class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(groups={"update"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"update"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(groups={"update"})
+     * @Assert\GreaterThanOrEqual(2)
      */
     private $firstname;
 
@@ -64,10 +68,6 @@ final class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $deleted;
-    /*
-     * @ORM\Column(type="date_immutable")
-     */
-    private $birthdate;
 
     /**
      * @ORM\Column(type="date_immutable")
@@ -94,6 +94,10 @@ final class User implements UserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $wallet;
+    /**
+     * @ORM\Column(type="date_immutable")
+     */
+    private $birthdate;
 
     public function __construct()
     {
@@ -101,6 +105,7 @@ final class User implements UserInterface
         $this->suspended = false;
         $this->deleted = false;
         $this->creationDate = new \DateTimeImmutable();
+        $this->birthdate = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -251,18 +256,6 @@ final class User implements UserInterface
         return $this;
     }
 
-    public function getBirthDate(): ?\DateTimeImmutable
-    {
-        return $this->birthdate;
-    }
-
-    public function setBirthDate(\DateTimeImmutable $birthdate): self
-    {
-        $this->birthdate = $birthdate;
-
-        return $this;
-    }
-
     public function getCreationDate(): ?\DateTimeImmutable
     {
         return $this->creationDate;
@@ -319,6 +312,15 @@ final class User implements UserInterface
     public function setWallet(Wallet $wallet): self
     {
         $this->wallet = $wallet;
+    }
+    public function getBirthdate(): ?\DateTimeImmutable
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(\DateTimeImmutable $birthdate): self
+    {
+        $this->birthdate = $birthdate;
 
         return $this;
     }
