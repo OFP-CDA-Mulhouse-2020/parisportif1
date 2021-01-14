@@ -14,7 +14,7 @@ class EditFormType extends AbstractType
         $builder
             ->add('lastname')
             ->add('firstname')
-            ->add('email')
+            ->add('birthdate')
             ->add('password')
         ;
     }
@@ -23,6 +23,7 @@ class EditFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'validation_groups' => ['update']
         ]);
     }
 }
