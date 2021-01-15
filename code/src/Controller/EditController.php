@@ -32,7 +32,6 @@ class EditController extends AbstractController
 
             $form = $this->createForm(EditFormType::class, $userTmp);
             $form->handleRequest($request);
-            
 
         if ($form->isSubmitted()&& $form->isValid()) {
             
@@ -47,6 +46,7 @@ class EditController extends AbstractController
                     $userTmp,
                     $userTmp->getPassword()
                 ));
+                $user->setBirthdate($userTmp->getBirthdate());
                 $em->persist($user);
                 $em->flush();
             }

@@ -55,6 +55,12 @@ final class User implements UserInterface
     private $firstname;
 
     /**
+     * @ORM\Column(type="date_immutable")
+     */
+    private $birthdate;
+
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $active;
@@ -88,11 +94,6 @@ final class User implements UserInterface
      * @ORM\Column(type="date_immutable", nullable=true)
      */
     private $deletedSince;
-
-    /**
-     * @ORM\Column(type="date_immutable")
-     */
-    private $birthdate;
 
     public function __construct()
     {
@@ -214,6 +215,18 @@ final class User implements UserInterface
         return $this;
     }
 
+    public function getBirthdate(): ?\DateTimeImmutable
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(\DateTimeImmutable $birthdate): self
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
     public function getactive(): ?bool
     {
         return $this->active;
@@ -299,15 +312,5 @@ final class User implements UserInterface
         return $this;
     }
 
-    public function getBirthdate(): ?\DateTimeImmutable
-    {
-        return $this->birthdate;
-    }
-
-    public function setBirthdate(\DateTimeImmutable $birthdate): self
-    {
-        $this->birthdate = $birthdate;
-
-        return $this;
-    }
+    
 }
