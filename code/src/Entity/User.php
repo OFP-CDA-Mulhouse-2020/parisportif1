@@ -89,6 +89,12 @@ final class User implements UserInterface
      */
     private $deletedSince;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Wallet::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $wallet;
+
     public function __construct()
     {
         $this->active = false;
@@ -301,6 +307,18 @@ final class User implements UserInterface
     public function setDeletedSince(?\DateTimeImmutable $deletedSince): self
     {
         $this->deletedSince = $deletedSince;
+
+        return $this;
+    }
+
+    public function getWallet(): ?Wallet
+    {
+        return $this->wallet;
+    }
+
+    public function setWallet(Wallet $wallet): self
+    {
+        $this->wallet = $wallet;
 
         return $this;
     }
