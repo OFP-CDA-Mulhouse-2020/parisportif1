@@ -36,6 +36,7 @@ final class UserTest extends KernelTestCase
         $this->assertClassHasAttribute("suspendedSince", User::class);
         $this->assertClassHasAttribute("deleted", User::class);
         $this->assertClassHasAttribute("deletedSince", User::class);
+        $this->assertClassHasAttribute("wallet", User::class);
     }
 
     public function testSetLastName()
