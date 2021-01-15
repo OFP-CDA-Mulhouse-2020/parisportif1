@@ -26,6 +26,7 @@ final class SportTest extends KernelTestCase
         $this->assertInstanceOf(Sport::class, $this->sport);
         $this->assertClassHasAttribute("name", Sport::class);
         $this->assertClassHasAttribute("description", Sport::class);
+        $this->assertClassHasAttribute("competitions", Sport::class);
     }
 
     /**

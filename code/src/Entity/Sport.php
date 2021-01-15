@@ -39,9 +39,15 @@ final class Sport
      */
     private $events;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Competition::class, mappedBy="sports")
+     */
+    private $competitions;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->competitions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,6 +104,33 @@ final class Sport
             if ($event->getSport() === $this) {
                 $event->setSport(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Competition[]
+     */
+    public function getCompetitions(): Collection
+    {
+        return $this->competitions;
+    }
+
+    public function addCompetition(Competition $competition): self
+    {
+        if (!$this->competitions->contains($competition)) {
+            $this->competitions[] = $competition;
+            $competition->addSport($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetition(Competition $competition): self
+    {
+        if ($this->competitions->removeElement($competition)) {
+            $competition->removeSport($this);
         }
 
         return $this;
