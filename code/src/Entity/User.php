@@ -94,6 +94,7 @@ final class User implements UserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $wallet;
+    
     /**
      * @ORM\Column(type="date_immutable")
      */
