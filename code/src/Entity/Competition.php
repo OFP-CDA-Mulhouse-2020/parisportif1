@@ -37,10 +37,16 @@ class Competition
      */
     private $competitions;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Sport::class, inversedBy="competitions")
+     */
+    private $sports;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->competitions = new ArrayCollection();
+        $this->sports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,6 +126,30 @@ class Competition
                 $competition->setCompetitions(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sport[]
+     */
+    public function getSports(): Collection
+    {
+        return $this->sports;
+    }
+
+    public function addSport(Sport $sport): self
+    {
+        if (!$this->sports->contains($sport)) {
+            $this->sports[] = $sport;
+        }
+
+        return $this;
+    }
+
+    public function removeSport(Sport $sport): self
+    {
+        $this->sports->removeElement($sport);
 
         return $this;
     }
