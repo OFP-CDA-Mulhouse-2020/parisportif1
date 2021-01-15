@@ -55,6 +55,12 @@ final class User implements UserInterface
     private $firstname;
 
     /**
+     * @ORM\Column(type="date_immutable")
+     */
+    private $birthdate;
+
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $active;
@@ -220,6 +226,18 @@ final class User implements UserInterface
         return $this;
     }
 
+    public function getBirthdate(): ?\DateTimeImmutable
+    {
+        return $this->birthdate;
+    }
+
+    public function setBirthdate(\DateTimeImmutable $birthdate): self
+    {
+        $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
     public function getactive(): ?bool
     {
         return $this->active;
@@ -305,6 +323,7 @@ final class User implements UserInterface
         return $this;
     }
 
+<<<<<<< HEAD
     public function getWallet(): ?Wallet
     {
         return $this->wallet;
@@ -325,4 +344,7 @@ final class User implements UserInterface
 
         return $this;
     }
+=======
+    
+>>>>>>> 289f902aa6dabb168e3063ad2e12a27987e51c9e
 }
