@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -30,6 +31,8 @@ final class UserFixtures extends Fixture
         ));
         $user->setFirstname("Ben");
         $user->setLastname("Dupont");
+        $user->setBirthDate(new DateTimeImmutable("now"));
+        $user->setCreationDate(new DateTimeImmutable("now"));
 
         $manager->persist($user);
         $manager->flush();

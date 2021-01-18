@@ -21,9 +21,10 @@ final class Order
      */
     private $id;
 
+    
     /**
-     * @ORM\Column(type="datetime_immutable")
-     * @Assert\GreaterThanOrEqual("now - 10 seconds")
+     * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan("now - 60 seconds")
      */
     private $date;
 
@@ -39,12 +40,12 @@ final class Order
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeImmutable
+    public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeImmutable $date): self
+    public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
 

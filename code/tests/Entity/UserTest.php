@@ -67,14 +67,14 @@ final class UserTest extends KernelTestCase
         $this->assertSame("B", $this->user->getFirstname());
     }
 
-    //email
+
     /**
      * @dataProvider invalidEmailProvider
      */
     public function testSetInvalidEmail($email)
     {
         $this->user->setEmail($email);
-        $errorsList = $this->validator->validate($this->user);
+        $errorsList = $this->validator->validate($this->user ,null , ['read']);
         $this->assertGreaterThan(0, count($errorsList));
     }
 
@@ -82,9 +82,9 @@ final class UserTest extends KernelTestCase
     {
         return [
             [""],
-            ["doejcodeuronline"],
-            ["doe@j@codeur.online"],
-            ["john.doe.com"]
+            ["doe.j@codeuronline"],
+            ["johndoe.com"]
+               
         ];
     }
 
