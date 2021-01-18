@@ -21,9 +21,10 @@ final class Order
      */
     private $id;
 
-    //@Assert\GreaterThanOrEqual("now - 10 seconds")
+    
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan("now - 60 seconds")
      */
     private $date;
 
