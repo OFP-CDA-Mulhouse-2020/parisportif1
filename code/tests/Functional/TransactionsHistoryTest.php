@@ -8,11 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class TransactionsHistoryTest extends WebTestCase
 {
-    public function testGeTransactionsHistoryPageWhenLoggedIn()
+    public function testGeTransactionsHistoryPageWhenNotLoggedIn()
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/transactions-history');
 
-        $this->assertResponseIsSuccessful();
+        $this->assertResponseRedirects('/login');
     }
 }
