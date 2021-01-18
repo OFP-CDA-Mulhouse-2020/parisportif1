@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\User;
 use DateTimeImmutable;
+use App\DataFixtures\WalletFixtures;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-final class UserFixtures extends Fixture
+final class UserFixtures extends Fixture implements DependentFixtureInterface
 {
-
     private $encode;
 
     public function __construct(UserPasswordEncoderInterface $encoder)
@@ -20,7 +21,7 @@ final class UserFixtures extends Fixture
         $this->encode = $encoder;
     }
 
-    public function load(ObjectManager $manager )
+    public function load(ObjectManager $manager)
     {
         $user = new User();
 
@@ -33,8 +34,16 @@ final class UserFixtures extends Fixture
         $user->setLastname("Dupont");
         $user->setBirthDate(new DateTimeImmutable("now"));
         $user->setCreationDate(new DateTimeImmutable("now"));
+        $user->setWallet($this->getReference(WalletFixtures::WALLET_REFERENCE));
 
         $manager->persist($user);
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return array(
+            WalletFixtures::class,
+        );
     }
 }
