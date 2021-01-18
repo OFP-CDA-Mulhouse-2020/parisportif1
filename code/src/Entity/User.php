@@ -327,5 +327,6 @@ final class User implements UserInterface
     public function setWallet(Wallet $wallet): self
     {
         $this->wallet = $wallet;
+        return $this;
     }
 }
