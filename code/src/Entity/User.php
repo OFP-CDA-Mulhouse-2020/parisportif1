@@ -101,10 +101,6 @@ final class User implements UserInterface
      */
     private $wallet;
     
-    /**
-     * @ORM\Column(type="date_immutable")
-     */
-    private $birthdate;
 
     public function __construct()
     {
@@ -323,7 +319,6 @@ final class User implements UserInterface
         return $this;
     }
 
-<<<<<<< HEAD
     public function getWallet(): ?Wallet
     {
         return $this->wallet;
@@ -333,18 +328,4 @@ final class User implements UserInterface
     {
         $this->wallet = $wallet;
     }
-    public function getBirthdate(): ?\DateTimeImmutable
-    {
-        return $this->birthdate;
-    }
-
-    public function setBirthdate(\DateTimeImmutable $birthdate): self
-    {
-        $this->birthdate = $birthdate;
-
-        return $this;
-    }
-=======
-    
->>>>>>> 289f902aa6dabb168e3063ad2e12a27987e51c9e
 }
