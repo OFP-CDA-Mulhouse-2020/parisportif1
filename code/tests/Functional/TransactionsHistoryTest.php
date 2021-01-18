@@ -36,7 +36,7 @@ final class TransactionsHistoryTest extends WebTestCase
 
         $userRepository = static::$container->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail("test@test.fr");
-        // $client->loginUser($testUser);
+        $client->loginUser($testUser);
 
         $crawler = $client->request('GET', '/transactions-history');
 
