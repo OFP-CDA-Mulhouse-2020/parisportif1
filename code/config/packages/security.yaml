@@ -38,3 +38,4 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/edit, roles: ROLE_USER }
+        - { path: ^/transactions-history, roles: ROLE_USER }
