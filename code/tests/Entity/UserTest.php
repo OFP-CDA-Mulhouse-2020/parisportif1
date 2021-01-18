@@ -82,6 +82,8 @@ final class UserTest extends KernelTestCase
     {
         return [
             [""],
+            ["doe.j@codeuronline"],
+            ["johndoe.com"]
                
         ];
     }
