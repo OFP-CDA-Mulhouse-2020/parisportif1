@@ -27,6 +27,6 @@ final class TransactionsHistoryTest extends WebTestCase
 
         $client->request('GET', '/transactions-history');
 
-        $this->assertResponseIsSuccessful();
+        $this->assertResponseRedirects('/login');
     }
 }
