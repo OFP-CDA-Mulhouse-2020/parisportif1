@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\PaymentRepository;
@@ -9,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=PaymentRepository::class)
  */
-class Payment
+final class Payment
 {
     /**
      * @ORM\Id
@@ -40,6 +42,12 @@ class Payment
      * @Assert\Length(min = 5)
      */
     private $description;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Wallet::class, inversedBy="payments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $wallet;
 
     public function getId(): ?int
     {
@@ -90,6 +98,18 @@ class Payment
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getWallet(): ?Wallet
+    {
+        return $this->wallet;
+    }
+
+    public function setWallet(?Wallet $wallet): self
+    {
+        $this->wallet = $wallet;
 
         return $this;
     }

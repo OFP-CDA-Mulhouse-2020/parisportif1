@@ -26,6 +26,7 @@ final class WalletTest extends KernelTestCase
         $this->assertInstanceOf(Wallet::class, $this->wallet);
         $this->assertClassHasAttribute("balance", Wallet::class);
         $this->assertClassHasAttribute("user", Wallet::class);
+        $this->assertClassHasAttribute("payments", Wallet::class);
     }
 
     /**
