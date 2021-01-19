@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class EditFormType extends AbstractType
 {
@@ -39,7 +40,7 @@ class EditFormType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('password', null , array(
+            ->add('password', PasswordType::class , array(
                 'label_attr' => array(
                     "class" => "col-form-label"
                 ),
