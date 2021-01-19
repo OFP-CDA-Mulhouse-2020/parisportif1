@@ -50,7 +50,6 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(groups={"update"})
-     * @Assert\GreaterThanOrEqual(2)
      */
     private $firstname;
 
@@ -325,7 +324,7 @@ final class User implements UserInterface
     }
 
     public function setWallet(Wallet $wallet): self
-    {
+    {   
         $this->wallet = $wallet;
         return $this;
     }
