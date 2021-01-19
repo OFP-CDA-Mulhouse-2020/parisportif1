@@ -55,12 +55,23 @@ From 26/11/2020 to 08/12/2020
 - Use TDD for all tests (unit and functional tests)
 
 Keep using git flow features for the features, start using Pull Requests to merge code change
-Declare strict types in php and make all classes final, unless they are abstracts
+Declare strict types in php and make all classes final, unless they are abstracts or cannot be made final (depencies fixtures)
 
 ## Sprint 4 - Business objects
 
-Details to be provided later
+Create the business objects
 
-From 09/12/2020 to TBD
+From 09/12/2020 to 13/01/2021
 
-- Create and test the remaining business entity (unit test)
+- Create and test the remaining business entity (unit tests and functional tests)
+
+## Sprint 5 - Bet end to end
+
+Details: https://github.com/OFP-CDA-Mulhouse-2020/specs/blob/master/objectif-fin-semaine.md
+
+From 14/01/2021 to 22/01/2021
+
+- As a user, create a bet and add it to the order
+- Pay a pending bet in the order, from the money available in the wallet
+- Define the outcome of a bet (win or lose)
+- If the bet is successful, pay the money won back into the user's wallet
