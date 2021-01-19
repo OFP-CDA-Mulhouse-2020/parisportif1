@@ -29,6 +29,7 @@ final class PaymentTest extends KernelTestCase
         $this->assertClassHasAttribute("paymentDate", Payment::class);
         $this->assertClassHasAttribute("transactionID", Payment::class);
         $this->assertClassHasAttribute("description", Payment::class);
+        $this->assertClassHasAttribute("wallet", Payment::class);
     }
 
     /**
