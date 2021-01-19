@@ -66,7 +66,7 @@ final class OrderTest extends KernelTestCase
         ];
     }
 
-    
+
 
     /**
      * @dataProvider validOrderTotal

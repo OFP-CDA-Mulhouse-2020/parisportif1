@@ -14,7 +14,7 @@ class RegisterFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', null , array(
+            ->add('email', null, array(
                 'label_attr' => array(
                     "class" => "col-form-label"
                 ),
@@ -22,7 +22,7 @@ class RegisterFormType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('password', PasswordType::class , array(
+            ->add('password', PasswordType::class, array(
                 'label_attr' => array(
                     "class" => "col-form-label"
                 ),
@@ -30,7 +30,7 @@ class RegisterFormType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('lastname', null , array(
+            ->add('lastname', null, array(
                 'label_attr' => array(
                     "class" => "col-form-label"
                 ),
@@ -38,7 +38,7 @@ class RegisterFormType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('firstname', null , array(
+            ->add('firstname', null, array(
                 'label_attr' => array(
                     "class" => "col-form-label"
                 ),
@@ -46,7 +46,7 @@ class RegisterFormType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            
+
             ->add('birthdate', DateType::class, array(
                 'widget' => 'single_text',
                 'input'  => 'datetime_immutable',

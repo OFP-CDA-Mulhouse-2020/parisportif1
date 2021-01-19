@@ -21,9 +21,9 @@ final class RegisterController extends AbstractController
     public function index(Request $request, EntityManagerInterface $em): Response
     {
         $user = new User();
-        
 
-        
+
+
 
 
         $form = $this->createForm(RegisterFormType::class, $user);
@@ -32,8 +32,6 @@ final class RegisterController extends AbstractController
         var_dump($user);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
-
             $walletUser = new Wallet();
             $walletUser
                 ->setBalance(0)

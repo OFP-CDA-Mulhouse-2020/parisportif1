@@ -14,7 +14,7 @@ class EditFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastname', null , array(
+            ->add('lastname', null, array(
                 'label_attr' => array(
                     "class" => "col-form-label"
                 ),
@@ -22,7 +22,7 @@ class EditFormType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('firstname', null , array(
+            ->add('firstname', null, array(
                 'label_attr' => array(
                     "class" => "col-form-label"
                 ),
@@ -40,7 +40,7 @@ class EditFormType extends AbstractType
                     "class" => 'form-control'
                 )
             ))
-            ->add('password', PasswordType::class , array(
+            ->add('password', PasswordType::class, array(
                 'label_attr' => array(
                     "class" => "col-form-label"
                 ),

@@ -34,9 +34,6 @@ final class SecurityController extends AbstractController
         }else{*/
             return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
         //}
-        
-
-        
     }
 
     /**

@@ -99,7 +99,7 @@ final class User implements UserInterface
      * @ORM\JoinColumn(nullable=false)
      */
     private $wallet;
-    
+
 
     public function __construct()
     {
@@ -324,7 +324,7 @@ final class User implements UserInterface
     }
 
     public function setWallet(Wallet $wallet): self
-    {   
+    {
         $this->wallet = $wallet;
         return $this;
     }
