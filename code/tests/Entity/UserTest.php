@@ -74,7 +74,7 @@ final class UserTest extends KernelTestCase
     public function testSetInvalidEmail($email)
     {
         $this->user->setEmail($email);
-        $errorsList = $this->validator->validate($this->user ,null , ['read']);
+        $errorsList = $this->validator->validate($this->user, null, ['read']);
         $this->assertGreaterThan(0, count($errorsList));
     }
 
@@ -84,7 +84,7 @@ final class UserTest extends KernelTestCase
             [""],
             ["doe.j@codeuronline"],
             ["johndoe.com"]
-               
+
         ];
     }
 

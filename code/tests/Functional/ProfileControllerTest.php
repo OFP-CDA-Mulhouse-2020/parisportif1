@@ -11,7 +11,7 @@ class ProfileControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
 
-        
+
         $form = $crawler->filter('form')->form();
         $form['email'] = "test@test.fr";
         $form['password'] = "Test95qz@a";
@@ -28,7 +28,7 @@ class ProfileControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/edit');
 
-        
+
         $form = $crawler->filter('form')->form();
         $form['email'] = "test@test.fr";
         $form['password'] = "Test95qz@a";
@@ -49,7 +49,7 @@ class ProfileControllerTest extends WebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
 
-        
+
         $form = $crawler->filter('form')->form();
         $form['email'] = "test@test.fr";
         $form['password'] = "Test95qz@a";
@@ -61,7 +61,7 @@ class ProfileControllerTest extends WebTestCase
         $crawler = $client->clickLink('Edit');
         $this->assertResponseIsSuccessful();
         /*
-        
+
         $this->assertSelectorTextContains('h1', 'Hello World');*/
     }
 }

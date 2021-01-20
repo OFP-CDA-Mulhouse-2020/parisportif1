@@ -24,7 +24,7 @@ class Wallet
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\GreaterThanOrEqual(10)
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $balance;
 

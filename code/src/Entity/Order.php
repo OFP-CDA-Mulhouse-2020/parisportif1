@@ -21,7 +21,7 @@ final class Order
      */
     private $id;
 
-    
+
     /**
      * @ORM\Column(type="datetime")
      * @Assert\GreaterThan("now - 60 seconds")

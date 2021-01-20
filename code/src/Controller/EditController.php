@@ -33,12 +33,10 @@ class EditController extends AbstractController
             $form = $this->createForm(EditFormType::class, $userTmp);
             $form->handleRequest($request);
 
-        if ($form->isSubmitted()&& $form->isValid()) {
-            
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $entityManager->getRepository(User::class)->findOneByEmail($authenticationUtils->getLastUsername());
 
-            if($user)
-            {
+            if ($user) {
                 $user->setLastname($userTmp->getLastname());
                 $user->setFirstname($userTmp->getFirstname());
                 //$user[0]->setEmail($userTmp->getEmail());
