@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=SportRepository::class)
  */
-final class Sport
+class Sport
 {
     /**
      * @ORM\Id

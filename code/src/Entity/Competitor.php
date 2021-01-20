@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=CompetitorRepository::class)
  */
-final class Competitor
+class Competitor
 {
     /**
      * @ORM\Id
