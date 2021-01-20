@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
  */
-final class Team
+class Team
 {
     /**
      * @ORM\Id

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=PaymentRepository::class)
  */
-final class Payment
+class Payment
 {
     /**
      * @ORM\Id

@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-final class User implements UserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id
