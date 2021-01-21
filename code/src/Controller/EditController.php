@@ -28,6 +28,7 @@ class EditController extends AbstractController
     public function index(AuthenticationUtils $authenticationUtils, Request $request, EntityManagerInterface $em): Response
     {
             $userTmp = new User();
+            $user = $this->getUser();
             $entityManager = $this->getDoctrine()->getManager();
 
             $form = $this->createForm(EditFormType::class, $userTmp);
