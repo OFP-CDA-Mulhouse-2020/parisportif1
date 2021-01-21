@@ -5,6 +5,7 @@ Enhancement: Manage the payment type
 Enhancement: Extract the location from the event
 Enhancement: Abstract people (user, competitor)
 Enhancement: Add template for odds
+Enhancement: Create a relation between Competitor, Sport and SportType
 '/
 
 @startuml "CDA Bet Class Diagram"

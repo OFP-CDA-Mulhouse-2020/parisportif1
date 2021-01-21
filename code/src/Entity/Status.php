@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StatusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,6 +32,16 @@ class Status
      */
     private $description;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CompetitorTeamStatus::class, mappedBy="status", orphanRemoval=true)
+     */
+    private $competitorTeamStatuses;
+
+    public function __construct()
+    {
+        $this->competitorTeamStatuses = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,6 +67,36 @@ class Status
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CompetitorTeamStatus[]
+     */
+    public function getCompetitorTeamStatuses(): Collection
+    {
+        return $this->competitorTeamStatuses;
+    }
+
+    public function addCompetitorTeamStatus(CompetitorTeamStatus $competitorTeamStatus): self
+    {
+        if (!$this->competitorTeamStatuses->contains($competitorTeamStatus)) {
+            $this->competitorTeamStatuses[] = $competitorTeamStatus;
+            $competitorTeamStatus->setStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetitorTeamStatus(CompetitorTeamStatus $competitorTeamStatus): self
+    {
+        if ($this->competitorTeamStatuses->removeElement($competitorTeamStatus)) {
+            // set the owning side to null (unless already changed)
+            if ($competitorTeamStatus->getStatus() === $this) {
+                $competitorTeamStatus->setStatus(null);
+            }
+        }
 
         return $this;
     }

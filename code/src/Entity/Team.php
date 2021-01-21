@@ -41,9 +41,27 @@ final class Team
      */
     private $events;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Competitor::class, mappedBy="teams")
+     */
+    private $competitors;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CompetitorTeamStatus::class, mappedBy="team", orphanRemoval=true)
+     */
+    private $competitorTeamStatuses;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="teams")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $country;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->competitors = new ArrayCollection();
+        $this->competitorTeamStatuses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -98,6 +116,75 @@ final class Team
         if ($this->events->removeElement($event)) {
             $event->removeTeam($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Competitor[]
+     */
+    public function getCompetitors(): Collection
+    {
+        return $this->competitors;
+    }
+
+    public function addCompetitor(Competitor $competitor): self
+    {
+        if (!$this->competitors->contains($competitor)) {
+            $this->competitors[] = $competitor;
+            $competitor->addTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetitor(Competitor $competitor): self
+    {
+        if ($this->competitors->removeElement($competitor)) {
+            $competitor->removeTeam($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CompetitorTeamStatus[]
+     */
+    public function getCompetitorTeamStatuses(): Collection
+    {
+        return $this->competitorTeamStatuses;
+    }
+
+    public function addCompetitorTeamStatus(CompetitorTeamStatus $competitorTeamStatus): self
+    {
+        if (!$this->competitorTeamStatuses->contains($competitorTeamStatus)) {
+            $this->competitorTeamStatuses[] = $competitorTeamStatus;
+            $competitorTeamStatus->setTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetitorTeamStatus(CompetitorTeamStatus $competitorTeamStatus): self
+    {
+        if ($this->competitorTeamStatuses->removeElement($competitorTeamStatus)) {
+            // set the owning side to null (unless already changed)
+            if ($competitorTeamStatus->getTeam() === $this) {
+                $competitorTeamStatus->setTeam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }
