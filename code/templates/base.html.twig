@@ -14,19 +14,19 @@
 		{% block header %}
 			<nav class="navbar navbar-light bg-light">
 				<div class="container-fluid">
-					<a class="navbar-brand">Navbar</a>
+					<a href="/" class="navbar-brand">Navbar</a>
 					{% if app.user %}
 						
 						<div>
                             connected
-                            <span class="border">User : {{app.user.email}}</span>
+                            <a><span class="border">User : {{app.user.email}}</span></a>
                             <span class="border">balance : {{app.user.wallet.balance}}€</span>
-							<a href="/logout" class="btn btn-primary stretched-link">log out</a>
+							<a href="/logout" class="btn btn-primary">log out</a>
 						</div>
 					{% else %}
 						<div>
-							<a href="/login" class="btn btn-primary stretched-link">Sign In</a>
-							<a href="/register" class="btn btn-primary stretched-link">Sign Up</a>
+							<a href="/login" class="btn btn-primary">Sign In</a>
+							<a href="/register" class="btn btn-primary">Sign Up</a>
 						</div>
 
 					{% endif %}
