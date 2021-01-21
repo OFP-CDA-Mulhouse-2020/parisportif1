@@ -38,15 +38,15 @@ class Odds
     private $winning;
 
     /**
+     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="odd", orphanRemoval=true)
+     */
+    private $bets;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="odds")
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="odd", orphanRemoval=true)
-     */
-    private $bets;
 
     public function __construct()
     {
@@ -95,17 +95,6 @@ class Odds
         return $this;
     }
 
-    public function getEvent(): ?Event
-    {
-        return $this->event;
-    }
-
-    public function setEvent(?Event $event): self
-    {
-        $this->event = $event;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Bet[]
@@ -133,6 +122,18 @@ class Odds
                 $bet->setOdd(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): self
+    {
+        $this->event = $event;
 
         return $this;
     }

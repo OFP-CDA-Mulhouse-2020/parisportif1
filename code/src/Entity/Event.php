@@ -88,9 +88,11 @@ class Event
     private $timeZone;
 
     /**
-     * @ORM\OneToMany(targetEntity=Odds::class, mappedBy="event", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Odds::class, mappedBy="event")
      */
     private $odds;
+
+    
 
     public function __construct()
     {
@@ -301,4 +303,6 @@ class Event
 
         return $this;
     }
+
+    
 }
