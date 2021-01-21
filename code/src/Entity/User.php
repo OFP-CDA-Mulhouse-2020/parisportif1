@@ -52,7 +52,6 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(groups={"update"})
-     * @Assert\GreaterThanOrEqual(2)
      */
     private $firstname;
 
@@ -124,7 +123,6 @@ final class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="user", orphanRemoval=true)
      */
     private $bets;
-
 
     public function __construct()
     {

@@ -1,4 +1,5 @@
 security:
+    access_denied_url: /
     encoders:
         App\Entity\User:
             algorithm: auto
@@ -25,6 +26,9 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
+            form_login:
+                always_use_default_target_path: true
+                default_target_path: app_profile
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -37,5 +41,7 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login, allow_if: "not is_granted('ROLE_USER')" }
+        - { path: ^/Register, allow_if: "not is_granted('ROLE_USER')" }
         - { path: ^/edit, roles: ROLE_USER }
         - { path: ^/transactions-history, roles: ROLE_USER }
