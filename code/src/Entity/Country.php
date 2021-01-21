@@ -43,11 +43,23 @@ class Country
      */
     private $timeZones;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Competitor::class, mappedBy="country")
+     */
+    private $competitors;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Team::class, mappedBy="country", orphanRemoval=true)
+     */
+    private $teams;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->timeZones = new ArrayCollection();
+        $this->competitors = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +162,66 @@ class Country
     public function removeTimeZone(TimeZone $timeZone): self
     {
         $this->timeZones->removeElement($timeZone);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Competitor[]
+     */
+    public function getCompetitors(): Collection
+    {
+        return $this->competitors;
+    }
+
+    public function addCompetitor(Competitor $competitor): self
+    {
+        if (!$this->competitors->contains($competitor)) {
+            $this->competitors[] = $competitor;
+            $competitor->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetitor(Competitor $competitor): self
+    {
+        if ($this->competitors->removeElement($competitor)) {
+            // set the owning side to null (unless already changed)
+            if ($competitor->getCountry() === $this) {
+                $competitor->setCountry(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->removeElement($team)) {
+            // set the owning side to null (unless already changed)
+            if ($team->getCountry() === $this) {
+                $team->setCountry(null);
+            }
+        }
 
         return $this;
     }

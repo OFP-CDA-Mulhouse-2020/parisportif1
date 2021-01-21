@@ -37,9 +37,21 @@ class SportType
      */
     private $events;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Competition::class, mappedBy="sportTypes")
+     */
+    private $competitions;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Sport::class, mappedBy="sportTypes")
+     */
+    private $sports;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->competitions = new ArrayCollection();
+        $this->sports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,6 +108,60 @@ class SportType
             if ($event->getSportType() === $this) {
                 $event->setSportType(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Competition[]
+     */
+    public function getCompetitions(): Collection
+    {
+        return $this->competitions;
+    }
+
+    public function addCompetition(Competition $competition): self
+    {
+        if (!$this->competitions->contains($competition)) {
+            $this->competitions[] = $competition;
+            $competition->addSportType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetition(Competition $competition): self
+    {
+        if ($this->competitions->removeElement($competition)) {
+            $competition->removeSportType($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sport[]
+     */
+    public function getSports(): Collection
+    {
+        return $this->sports;
+    }
+
+    public function addSport(Sport $sport): self
+    {
+        if (!$this->sports->contains($sport)) {
+            $this->sports[] = $sport;
+            $sport->addSportType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSport(Sport $sport): self
+    {
+        if ($this->sports->removeElement($sport)) {
+            $sport->removeSportType($this);
         }
 
         return $this;
