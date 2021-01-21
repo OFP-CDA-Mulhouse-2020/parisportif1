@@ -12,7 +12,7 @@ hide empty members
 skinparam linetype ortho
 caption CDA Bet Class Diagram
 footer Joël L & Bertrand C
-header Last updated 15/11/2020
+header Last updated 21/01/2021
 title CDA Bet
 
 namespace CdaBet {
@@ -142,7 +142,7 @@ namespace CdaBet {
     Competition "0..1" --* "1..n" Competition
     Competition "1..n" -- "0..n" Sport
     Competition "1..n" -- "0..n" SportType
-    Order "1" *-- "1" Payment
+    Order "1..2" *-- "1" Payment
     Order "1" *-- "1" Bet
     Competitor "0..n" --o "2..n" Team
     CompetitorTeamStatus "1" -- "0..n" Status

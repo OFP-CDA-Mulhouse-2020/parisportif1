@@ -37,6 +37,23 @@ final class Bet
      */
     private $resolved;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Order::class, mappedBy="bet", cascade={"persist", "remove"})
+     */
+    private $betOrder;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Odds::class, inversedBy="bets")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $odd;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bets")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +91,47 @@ final class Bet
     public function setResolved(?bool $resolved): self
     {
         $this->resolved = $resolved;
+
+        return $this;
+    }
+
+    public function getBetOrder(): ?Order
+    {
+        return $this->betOrder;
+    }
+
+    public function setBetOrder(Order $betOrder): self
+    {
+        $this->betOrder = $betOrder;
+
+        // set the owning side of the relation if necessary
+        if ($betOrder->getBet() !== $this) {
+            $betOrder->setBet($this);
+        }
+
+        return $this;
+    }
+
+    public function getOdd(): ?Odds
+    {
+        return $this->odd;
+    }
+
+    public function setOdd(?Odds $odd): self
+    {
+        $this->odd = $odd;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
