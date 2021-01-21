@@ -23,7 +23,7 @@ class IndexController extends AbstractController
 
         for ($i = 0 ; $i < sizeof($showAll) ; $i++ )
         {
-            dump($showAll[$i]->getEvent());
+            dump($showAll[$i]);
         }
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
