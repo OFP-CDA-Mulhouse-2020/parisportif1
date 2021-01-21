@@ -33,9 +33,21 @@ class Country
      */
     private $events;
 
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="country")
+     */
+    private $users;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=TimeZone::class, inversedBy="countries")
+     */
+    private $timeZones;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->timeZones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -84,6 +96,60 @@ class Country
                 $event->setCountry(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setCountry($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            // set the owning side to null (unless already changed)
+            if ($user->getCountry() === $this) {
+                $user->setCountry(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TimeZone[]
+     */
+    public function getTimeZones(): Collection
+    {
+        return $this->timeZones;
+    }
+
+    public function addTimeZone(TimeZone $timeZone): self
+    {
+        if (!$this->timeZones->contains($timeZone)) {
+            $this->timeZones[] = $timeZone;
+        }
+
+        return $this;
+    }
+
+    public function removeTimeZone(TimeZone $timeZone): self
+    {
+        $this->timeZones->removeElement($timeZone);
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OddsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -40,6 +42,16 @@ class Odds
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="odd", orphanRemoval=true)
+     */
+    private $bets;
+
+    public function __construct()
+    {
+        $this->bets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -91,6 +103,36 @@ class Odds
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bet[]
+     */
+    public function getBets(): Collection
+    {
+        return $this->bets;
+    }
+
+    public function addBet(Bet $bet): self
+    {
+        if (!$this->bets->contains($bet)) {
+            $this->bets[] = $bet;
+            $bet->setOdd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBet(Bet $bet): self
+    {
+        if ($this->bets->removeElement($bet)) {
+            // set the owning side to null (unless already changed)
+            if ($bet->getOdd() === $this) {
+                $bet->setOdd(null);
+            }
+        }
 
         return $this;
     }

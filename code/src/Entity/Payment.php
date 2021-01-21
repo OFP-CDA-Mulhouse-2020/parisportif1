@@ -49,6 +49,12 @@ final class Payment
      */
     private $wallet;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="payments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $paymentOrder;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,6 +116,18 @@ final class Payment
     public function setWallet(?Wallet $wallet): self
     {
         $this->wallet = $wallet;
+
+        return $this;
+    }
+
+    public function getPaymentOrder(): ?Order
+    {
+        return $this->paymentOrder;
+    }
+
+    public function setPaymentOrder(?Order $paymentOrder): self
+    {
+        $this->paymentOrder = $paymentOrder;
 
         return $this;
     }
