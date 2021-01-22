@@ -20,7 +20,26 @@
     not connected 
 {% endif %}
 
+<div class="card" style="width: 18rem;">
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{% for odds in odds %}
 
+	<ul class="list-group list-group-flush mt-3">
+        <li class="list-group-item">ID : {{odds.id}}</li>
+        <li class="list-group-item">team : {{odds.description}}</li>
+        <li class="list-group-item">Odds {{odds.value}}</li>
+        <li class="list-group-item">
+        select : 
+        <input type="radio" name="bet[odds]" id="bet_{{odds.description}}" value={{odds.id}} required>
+        </li>
+    </ul>
+
+{% endfor %}
+    <button class="btn">{{ button_label|default('Savegarder') }}</button>
+    {{ form_end(form) }}
+        
+</div>
     <ul>
         <li>Your controller at <code><a href="{{ 'C:/wamp64/www/joel/php/projet_bet/parisportif1/code/src/Controller/BetController.php'|file_link(0) }}">src/Controller/BetController.php</a></code></li>
         <li>Your template at <code><a href="{{ 'C:/wamp64/www/joel/php/projet_bet/parisportif1/code/templates/bet/index.html.twig'|file_link(0) }}">templates/bet/index.html.twig</a></code></li>
