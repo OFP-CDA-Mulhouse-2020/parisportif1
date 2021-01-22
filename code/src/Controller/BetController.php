@@ -39,7 +39,7 @@ class BetController extends AbstractController
         dump($bet->getOdds());
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $oddsDb = $oddsRepository->findBy(['event' => json_decode(json_encode($extraData))->odds]);
+            $oddsDb = $oddsRepository->findOneByEvent(json_decode(json_encode($extraData))->odds);
 
             //$bet->setOdds(json_decode(json_encode($extraData))->odds); 
             //$bet->setUser($user.id);
