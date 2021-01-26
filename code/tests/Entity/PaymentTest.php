@@ -83,7 +83,7 @@ final class PaymentTest extends KernelTestCase
     public function validPaymentDateProvider(): array
     {
         return [
-            [new \DateTime('@' . strtotime('now'))],
+            [new DateTime('@' . strtotime('now'))],
 
         ];
     }
