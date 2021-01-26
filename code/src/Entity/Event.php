@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -118,12 +119,12 @@ class Event
         return $this;
     }
 
-    public function getEventDate(): ?\DateTimeInterface
+    public function getEventDate(): ?DateTimeInterface
     {
         return $this->eventDate;
     }
 
-    public function setEventDate(\DateTimeInterface $eventDate): self
+    public function setEventDate(DateTimeInterface $eventDate): self
     {
         $this->eventDate = $eventDate;
 
