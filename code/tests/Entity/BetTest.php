@@ -30,7 +30,6 @@ final class BetTest extends KernelTestCase
     }
 
 
-
     /**
      * @dataProvider validBetAmountProvider
      */
@@ -65,8 +64,6 @@ final class BetTest extends KernelTestCase
             [1]
         ];
     }
-
-
 
 
     /**
