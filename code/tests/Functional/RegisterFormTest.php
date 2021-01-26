@@ -13,7 +13,7 @@ final class RegisterFormTest extends WebTestCase
     public function testGetRegistrationPage()
     {
         $client = static::createClient();
-        $crawler = $client->request("GET", "/register");
+        $client->request("GET", "/register");
 
         $this->assertResponseIsSuccessful();
     }
@@ -29,7 +29,7 @@ final class RegisterFormTest extends WebTestCase
         $form["register_form[lastname]"] = "test";
         $form["register_form[firstname]"] = "test";
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
         $this->assertResponseIsSuccessful();
     }
 
@@ -45,7 +45,7 @@ final class RegisterFormTest extends WebTestCase
         $form["register_form[lastname]"] = "DOE";
         $form["register_form[firstname]"] = "John";
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains("title", "Welcome!");

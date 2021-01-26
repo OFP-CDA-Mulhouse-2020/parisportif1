@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -15,7 +15,7 @@ class ProfileControllerTest extends WebTestCase
         $form['email'] = "test@test.fr";
         $form['password'] = "Test95qz@a";
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
         $this->assertResponseRedirects('/profile');
         $client->followRedirect();
         $this->assertResponseIsSuccessful();
@@ -30,10 +30,10 @@ class ProfileControllerTest extends WebTestCase
         $form['email'] = "test@test.fr";
         $form['password'] = "Test95qz@a";
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
         $this->assertResponseRedirects('/profile');
         $client->followRedirect();
-        $crawler = $client->clickLink('Logout');
+        $client->clickLink('Logout');
     }
 
     public function testEdit()
@@ -45,10 +45,10 @@ class ProfileControllerTest extends WebTestCase
         $form['email'] = "test@test.fr";
         $form['password'] = "Test95qz@a";
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
         $this->assertResponseRedirects('/profile');
         $client->followRedirect();
-        $crawler = $client->clickLink('Edit');
+        $client->clickLink('Edit');
         $this->assertResponseIsSuccessful();
     }
 }

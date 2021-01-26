@@ -11,7 +11,7 @@ final class LoginFormTest extends WebTestCase
     public function testGetLoginPage()
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/login');
+        $client->request('GET', '/login');
 
         $this->assertResponseIsSuccessful();
     }
@@ -41,7 +41,7 @@ final class LoginFormTest extends WebTestCase
         $form['email'] = "test@test.fr";
         $form['password'] = "Test95qz@a";
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
         $this->assertResponseRedirects('/profile');
         $client->followRedirect();
     }
@@ -55,7 +55,7 @@ final class LoginFormTest extends WebTestCase
         $form['email'] = "test@test.fr";
         $form['password'] = "Test95qz";
 
-        $crawler = $client->submit($form);
+        $client->submit($form);
         $this->assertResponseRedirects();
         $client->followRedirect();
         $this->assertSelectorExists('.alert.alert-danger');
