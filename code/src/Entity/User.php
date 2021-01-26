@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -129,8 +130,8 @@ class User implements UserInterface
         $this->active = false;
         $this->suspended = false;
         $this->deleted = false;
-        $this->creationDate = new \DateTimeImmutable();
-        $this->birthdate = new \DateTimeImmutable();
+        $this->creationDate = new DateTimeImmutable();
+        $this->birthdate = new DateTimeImmutable();
         $this->orders = new ArrayCollection();
         $this->bets = new ArrayCollection();
     }
@@ -159,7 +160,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -186,7 +187,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -246,12 +247,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBirthdate(): ?\DateTimeImmutable
+    public function getBirthdate(): ?DateTimeImmutable
     {
         return $this->birthdate;
     }
 
-    public function setBirthdate(\DateTimeImmutable $birthdate): self
+    public function setBirthdate(DateTimeImmutable $birthdate): self
     {
         $this->birthdate = $birthdate;
 
@@ -265,7 +266,6 @@ class User implements UserInterface
 
     public function setActive(bool $active): self
     {
-
         $this->active = $active;
 
         return $this;
@@ -295,48 +295,48 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreationDate(): ?\DateTimeImmutable
+    public function getCreationDate(): ?DateTimeImmutable
     {
         return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTimeImmutable $creationDate): self
+    public function setCreationDate(DateTimeImmutable $creationDate): self
     {
         $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    public function getActiveSince(): ?\DateTimeImmutable
+    public function getActiveSince(): ?DateTimeImmutable
     {
         return $this->activeSince;
     }
 
-    public function setActiveSince(?\DateTimeImmutable $activeSince): self
+    public function setActiveSince(?DateTimeImmutable $activeSince): self
     {
         $this->activeSince = $activeSince;
 
         return $this;
     }
 
-    public function getSuspendedSince(): ?\DateTimeImmutable
+    public function getSuspendedSince(): ?DateTimeImmutable
     {
         return $this->suspendedSince;
     }
 
-    public function setSuspendedSince(?\DateTimeImmutable $suspendedSince): self
+    public function setSuspendedSince(?DateTimeImmutable $suspendedSince): self
     {
         $this->suspendedSince = $suspendedSince;
 
         return $this;
     }
 
-    public function getDeletedSince(): ?\DateTimeImmutable
+    public function getDeletedSince(): ?DateTimeImmutable
     {
         return $this->deletedSince;
     }
 
-    public function setDeletedSince(?\DateTimeImmutable $deletedSince): self
+    public function setDeletedSince(?DateTimeImmutable $deletedSince): self
     {
         $this->deletedSince = $deletedSince;
 
