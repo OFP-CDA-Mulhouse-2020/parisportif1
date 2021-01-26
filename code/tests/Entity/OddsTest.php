@@ -31,7 +31,7 @@ final class OddsTest extends KernelTestCase
     /**
      * @dataProvider validDescriptionProvider
      */
-    public function testSetvalidDescription($description)
+    public function testSetValidDescription($description)
     {
         $this->odds->setDescription($description);
         $errorsList = $this->validator->validate($this->odds);
@@ -66,7 +66,7 @@ final class OddsTest extends KernelTestCase
     /**
      * @dataProvider validOddsValueProvider
      */
-    public function testSetvalidOddsValue(float $value)
+    public function testSetValidOddsValue(float $value)
     {
         $this->odds->setValue($value);
         $errorsList = $this->validator->validate($this->odds);

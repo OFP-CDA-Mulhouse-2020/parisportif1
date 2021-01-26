@@ -43,7 +43,7 @@ final class EventTest extends KernelTestCase
     /**
      * @dataProvider validCountryProvider
      */
-    public function testSetvalidCountry($name)
+    public function testSetValidCountry($name)
     {
         $this->event->setName($name);
         $errorsList = $this->validator->validate($this->event);

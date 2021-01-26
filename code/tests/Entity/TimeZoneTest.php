@@ -32,7 +32,7 @@ final class TimeZoneTest extends KernelTestCase
     /**
      * @dataProvider validTimeZoneNameProvider
      */
-    public function testSetvalidTimeZoneName($name)
+    public function testSetValidTimeZoneName($name)
     {
         $this->timeZone->setName($name);
         $errorsList = $this->validator->validate($this->timeZone);
@@ -68,7 +68,7 @@ final class TimeZoneTest extends KernelTestCase
     /**
      * @dataProvider validTimeZoneCodeProvider
      */
-    public function testSetvalidTimeZoneCode($code)
+    public function testSetValidTimeZoneCode($code)
     {
         $this->timeZone->setCode($code);
         $errorsList = $this->validator->validate($this->timeZone);
