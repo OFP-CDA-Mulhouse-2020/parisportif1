@@ -41,6 +41,7 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
 
     public function findOneBySomeField($value): ?User
     {
+        //TODO Use DQL instead of QueryBuilder
         return $this->createQueryBuilder('u')
             ->andWhere('u.email = :val')
             ->setParameter('val', $value)
