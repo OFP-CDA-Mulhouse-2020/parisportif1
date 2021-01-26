@@ -8,7 +8,6 @@ use App\Entity\User;
 use App\Entity\Wallet;
 use App\Form\RegisterFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,49 +15,35 @@ use Symfony\Component\Routing\Annotation\Route;
 
 final class RegisterController extends AbstractController
 {
-
-    public function __construct(UserPasswordEncoderInterface $encoder)
-    {
-        $this->encode = $encoder;
-    }
-
     /**
      * @Route("/register", name="app_register")
      */
     public function index(Request $request, EntityManagerInterface $em): Response
     {
-        $userRegister = new User();
-        $user = $this->getUser();
+        $user = new User();
 
-
-
-
-
-        $form = $this->createForm(RegisterFormType::class, $userRegister);
+        $form = $this->createForm(RegisterFormType::class, $user);
         $form->handleRequest($request);
-
-        var_dump($userRegister);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $walletUser = new Wallet();
             $walletUser
                 ->setBalance(0)
-                ->setUser($userRegister);
+                ->setUser($user);
 
-            $userRegister->setWallet($walletUser);
-            $userRegister->setPassword($this->encode->encodePassword(
-                $userRegister,
-                $userRegister->getPassword()
-            ));
-            $em->persist($userRegister);
+            $user->setWallet($walletUser);
+            $em->persist($user);
             $em->flush();
 
-            return $this->redirect('/', 301);
+            return $this->render("base.html.twig");
         }
 
-        return $this->render('register/index.html.twig', [
-            'controller_name' => 'RegisterController',
-            'form' => $form->createView(),
-        ]);
+        return $this->render(
+            'register/index.html.twig',
+            [
+                'controller_name' => 'RegisterController',
+                'form' => $form->createView(),
+            ]
+        );
     }
 }
