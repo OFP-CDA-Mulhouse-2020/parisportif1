@@ -14,48 +14,65 @@ class EditFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('lastname', null, array(
-                'label_attr' => array(
-                    "class" => "col-form-label"
-                ),
-                'attr' => array(
-                    "class" => 'form-control'
+            ->add(
+                'lastname',
+                null,
+                array(
+                    'label_attr' => array(
+                        "class" => "col-form-label"
+                    ),
+                    'attr' => array(
+                        "class" => 'form-control'
+                    )
                 )
-            ))
-            ->add('firstname', null, array(
-                'label_attr' => array(
-                    "class" => "col-form-label"
-                ),
-                'attr' => array(
-                    "class" => 'form-control'
+            )
+            ->add(
+                'firstname',
+                null,
+                array(
+                    'label_attr' => array(
+                        "class" => "col-form-label"
+                    ),
+                    'attr' => array(
+                        "class" => 'form-control'
+                    )
                 )
-            ))
-            ->add('birthdate', DateType::class, array(
-                'widget' => 'single_text',
-                'input'  => 'datetime_immutable',
-                'label_attr' => array(
-                    "class" => "col-form-label"
-                ),
-                'attr' => array(
-                    "class" => 'form-control'
+            )
+            ->add(
+                'birthdate',
+                DateType::class,
+                array(
+                    'widget' => 'single_text',
+                    'input' => 'datetime_immutable',
+                    'label_attr' => array(
+                        "class" => "col-form-label"
+                    ),
+                    'attr' => array(
+                        "class" => 'form-control'
+                    )
                 )
-            ))
-            ->add('password', PasswordType::class, array(
-                'label_attr' => array(
-                    "class" => "col-form-label"
-                ),
-                'attr' => array(
-                    "class" => 'form-control'
+            )
+            ->add(
+                'password',
+                PasswordType::class,
+                array(
+                    'label_attr' => array(
+                        "class" => "col-form-label"
+                    ),
+                    'attr' => array(
+                        "class" => 'form-control'
+                    )
                 )
-            ))
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-            'validation_groups' => ['update']
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => User::class,
+                'validation_groups' => ['update']
+            ]
+        );
     }
 }
