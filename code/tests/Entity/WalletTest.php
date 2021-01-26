@@ -65,7 +65,6 @@ final class WalletTest extends KernelTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        $this->competitor = null;
         $this->validator = null;
     }
 }
