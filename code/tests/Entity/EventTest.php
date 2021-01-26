@@ -94,8 +94,8 @@ final class EventTest extends KernelTestCase
     public function validEventDateProvider(): array
     {
         return [
-            [new \DateTime('@' . strtotime('10-02-2021'))],
-            [new \DateTime('@' . strtotime('10-02-2021'))]
+            [new DateTime('@' . strtotime('10-02-2021'))],
+            [new DateTime('@' . strtotime('10-02-2021'))]
 
         ];
     }
@@ -114,12 +114,11 @@ final class EventTest extends KernelTestCase
     public function invalidLocationProvider(): array
     {
         return [
-           [""],
-           ["P"],
-           ["M"]
+            [""],
+            ["P"],
+            ["M"]
         ];
     }
-
 
 
     /**
@@ -142,7 +141,7 @@ final class EventTest extends KernelTestCase
     }
 
 
-     /**
+    /**
      * @dataProvider invalidIllustrationProvider
      */
     public function testSetInvalidIllustration(string $illustration): void
@@ -155,8 +154,8 @@ final class EventTest extends KernelTestCase
     public function invalidIllustrationProvider(): array
     {
         return [
-           [""],
-           ["L"],
+            [""],
+            ["L"],
 
         ];
     }
