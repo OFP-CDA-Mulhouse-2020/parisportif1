@@ -38,7 +38,6 @@ class ProfileControllerTest extends WebTestCase
         $client->followRedirect();
         //$this->assertSelectorTextContains('h1', 'Hello World');
         $crawler = $client->clickLink('Logout');
-
         /*
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h1', 'Hello World');*/
