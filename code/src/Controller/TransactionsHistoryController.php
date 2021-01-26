@@ -15,8 +15,11 @@ final class TransactionsHistoryController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('transactions_history/index.html.twig', [
-            'controller_name' => 'TransactionsHistoryController',
-        ]);
+        return $this->render(
+            'transactions_history/index.html.twig',
+            [
+                'controller_name' => 'TransactionsHistoryController'
+            ]
+        );
     }
 }
