@@ -9,7 +9,6 @@ use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -192,9 +191,6 @@ class User implements UserInterface
 
     public function setPassword(string $password): self
     {
-        if (!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&_*(),.?":{}|<>])(?!.*\s).{8,128}$/', $password)) {
-            throw new Exception('Password invalided');
-        }
         $this->password = $password;
 
         return $this;
@@ -224,9 +220,6 @@ class User implements UserInterface
 
     public function setLastname(string $lastname): self
     {
-        if (!preg_match('/^[a-zA-ZÀ-ÿ_.-]{2,16}$/', $lastname)) {
-            throw new Exception('last name invalided');
-        }
         $this->lastname = $lastname;
 
         return $this;
@@ -239,9 +232,6 @@ class User implements UserInterface
 
     public function setFirstname(string $firstname): self
     {
-        if (!preg_match('/^[a-zA-ZÀ-ÿ_.-]{2,16}$/', $firstname)) {
-            throw new Exception('first name invalided');
-        }
         $this->firstname = $firstname;
 
         return $this;
