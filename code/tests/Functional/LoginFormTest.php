@@ -20,13 +20,13 @@ final class LoginFormTest extends WebTestCase
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
-        //check if the form exist
+
         $this->assertSelectorExists('form', "not form exist");
         $this->assertCount(1, $crawler->filter('form'), "form exist");
-        //check if the input email exists
+
         $this->assertSelectorExists('input[name*=email]', "not input email exist");
         $this->assertCount(1, $crawler->filter('input[name*=email]'), "input email exist");
-        //check if the input password exists
+
         $this->assertSelectorExists('input[name*=password]', "not input password exist");
         $this->assertCount(1, $crawler->filter('input[name*=password]'), "input password exist");
     }
