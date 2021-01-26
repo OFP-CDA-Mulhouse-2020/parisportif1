@@ -77,7 +77,6 @@ class Odds
 
     public function setValue(float $value): self
     {
-
         $this->value = $value;
 
         return $this;
