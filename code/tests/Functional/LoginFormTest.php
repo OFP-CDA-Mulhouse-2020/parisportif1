@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class LoginFormTest extends WebTestCase
@@ -36,7 +34,6 @@ final class LoginFormTest extends WebTestCase
 
     public function testLoginPage()
     {
-
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
 
@@ -51,7 +48,6 @@ final class LoginFormTest extends WebTestCase
 
     public function testLoginPageInvalid()
     {
-
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
 
