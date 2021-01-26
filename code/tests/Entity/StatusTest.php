@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\Status;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class StatusTest extends KernelTestCase
