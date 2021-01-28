@@ -18,34 +18,43 @@ class Competition
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\Type("string")
      * @Assert\Length(min = 1)
      */
-    private $name;
+    private string $name;
 
     /**
+     * @var Collection<int, Event>
+     *
      * @ORM\OneToMany(targetEntity=Event::class, mappedBy="competition")
      */
-    private $events;
+    private Collection $events;
 
     /**
+     * @var Collection<int, Competition>
+     *
      * @ORM\ManyToOne(targetEntity=Competition::class, inversedBy="competitions")
      */
-    private $competitions;
+    private Collection $competitions;
 
     /**
+     * @var Collection<int, Sport>
+     *
      * @ORM\ManyToMany(targetEntity=Sport::class, inversedBy="competitions")
      */
-    private $sports;
+    private Collection $sports;
 
     /**
+     * @var Collection<int, SportType>
+     *
      * @ORM\ManyToMany(targetEntity=SportType::class, inversedBy="competitions")
      */
-    private $sportTypes;
+    private Collection $sportTypes;
+
 
     public function __construct()
     {
@@ -55,12 +64,12 @@ class Competition
         $this->sportTypes = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -72,9 +81,7 @@ class Competition
         return $this;
     }
 
-    /**
-     * @return Collection|Event[]
-     */
+    /** @return Collection<int, Event> */
     public function getEvents(): Collection
     {
         return $this->events;
@@ -102,29 +109,30 @@ class Competition
         return $this;
     }
 
-    public function getCompetitions(): ?self
+    /** @return Collection<int, Competition> */
+    public function getCompetitions(): Collection
     {
         return $this->competitions;
     }
 
-    public function setCompetitions(?self $competitions): self
+    /** @param Collection<int, Competition> $competitions */
+    public function setCompetitions(Collection $competitions): self
     {
         $this->competitions = $competitions;
 
         return $this;
     }
 
-    public function addCompetition(self $competition): self
+    public function addCompetition(Competition $competition): self
     {
         if (!$this->competitions->contains($competition)) {
             $this->competitions[] = $competition;
-            $competition->setCompetitions($this);
         }
 
         return $this;
     }
 
-    public function removeCompetition(self $competition): self
+    public function removeCompetition(Competition $competition): self
     {
         if ($this->competitions->removeElement($competition)) {
             // set the owning side to null (unless already changed)
@@ -136,9 +144,7 @@ class Competition
         return $this;
     }
 
-    /**
-     * @return Collection|Sport[]
-     */
+    /** @return Collection<int, Sport> */
     public function getSports(): Collection
     {
         return $this->sports;
@@ -160,9 +166,7 @@ class Competition
         return $this;
     }
 
-    /**
-     * @return Collection|SportType[]
-     */
+    /** @return Collection<int, SportType> */
     public function getSportTypes(): Collection
     {
         return $this->sportTypes;
