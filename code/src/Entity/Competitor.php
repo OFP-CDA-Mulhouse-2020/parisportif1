@@ -35,12 +35,6 @@ class Competitor
     private $events;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="competitors")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $country;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="competitors")
      */
     private $teams;
@@ -97,18 +91,6 @@ class Competitor
         if ($this->events->removeElement($event)) {
             $event->removeCompetitor($this);
         }
-
-        return $this;
-    }
-
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
 
         return $this;
     }

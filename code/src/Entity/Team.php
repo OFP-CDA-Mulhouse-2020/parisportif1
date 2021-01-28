@@ -51,12 +51,6 @@ class Team
      */
     private $competitorTeamStatuses;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="teams")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $country;
-
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -173,18 +167,6 @@ class Team
                 $competitorTeamStatus->setTeam(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
 
         return $this;
     }

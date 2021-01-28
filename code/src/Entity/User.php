@@ -102,18 +102,6 @@ class User implements UserInterface
      */
     private $wallet;
 
-    // * @ORM\JoinColumn(nullable=false)
-    /**
-     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="users")
-     */
-    private $country;
-
-    // * @ORM\JoinColumn(nullable=false)
-    /**
-     * @ORM\ManyToOne(targetEntity=TimeZone::class, inversedBy="users")
-     */
-    private $timeZone;
-
     /**
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="user", orphanRemoval=true)
      */
@@ -341,30 +329,6 @@ class User implements UserInterface
     public function setWallet(Wallet $wallet): self
     {
         $this->wallet = $wallet;
-        return $this;
-    }
-
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getTimeZone(): ?TimeZone
-    {
-        return $this->timeZone;
-    }
-
-    public function setTimeZone(?TimeZone $timeZone): self
-    {
-        $this->timeZone = $timeZone;
-
         return $this;
     }
 
