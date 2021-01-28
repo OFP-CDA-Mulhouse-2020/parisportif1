@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\TimeZone;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class TimeZoneTest extends KernelTestCase
@@ -32,7 +31,7 @@ final class TimeZoneTest extends KernelTestCase
     /**
      * @dataProvider validTimeZoneNameProvider
      */
-    public function testSetvalidTimeZoneName($name)
+    public function testSetValidTimeZoneName($name)
     {
         $this->timeZone->setName($name);
         $errorsList = $this->validator->validate($this->timeZone);
@@ -68,7 +67,7 @@ final class TimeZoneTest extends KernelTestCase
     /**
      * @dataProvider validTimeZoneCodeProvider
      */
-    public function testSetvalidTimeZoneCode($code)
+    public function testSetValidTimeZoneCode($code)
     {
         $this->timeZone->setCode($code);
         $errorsList = $this->validator->validate($this->timeZone);

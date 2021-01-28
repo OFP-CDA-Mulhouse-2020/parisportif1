@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use DateTimeImmutable;
-use App\DataFixtures\WalletFixtures;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -26,10 +25,12 @@ final class UserFixtures extends Fixture implements DependentFixtureInterface
         $user = new User();
 
         $user->setEmail("test@test.fr");
-        $user->setPassword($this->encode->encodePassword(
-            $user,
-            "Test95qz@a"
-        ));
+        $user->setPassword(
+            $this->encode->encodePassword(
+                $user,
+                "Test95qz@a"
+            )
+        );
         $user->setFirstname("Ben");
         $user->setLastname("Dupont");
         $user->setBirthDate(new DateTimeImmutable("now"));

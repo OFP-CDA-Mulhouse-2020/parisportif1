@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -129,8 +129,8 @@ class User implements UserInterface
         $this->active = false;
         $this->suspended = false;
         $this->deleted = false;
-        $this->creationDate = new \DateTimeImmutable();
-        $this->birthdate = new \DateTimeImmutable();
+        $this->creationDate = new DateTimeImmutable();
+        $this->birthdate = new DateTimeImmutable();
         $this->orders = new ArrayCollection();
         $this->bets = new ArrayCollection();
     }
@@ -159,7 +159,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -186,14 +186,11 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): self
     {
-        if (!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&_*(),.?":{}|<>])(?!.*\s).{8,128}$/', $password)) {
-            throw new Exception('Password invalided');
-        }
         $this->password = $password;
 
         return $this;
@@ -202,7 +199,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt()
+    public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
@@ -210,7 +207,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -223,9 +220,6 @@ class User implements UserInterface
 
     public function setLastname(string $lastname): self
     {
-        if (!preg_match('/^[a-zA-ZÀ-ÿ_.-]{2,16}$/', $lastname)) {
-            throw new Exception('last name invalided');
-        }
         $this->lastname = $lastname;
 
         return $this;
@@ -238,34 +232,30 @@ class User implements UserInterface
 
     public function setFirstname(string $firstname): self
     {
-        if (!preg_match('/^[a-zA-ZÀ-ÿ_.-]{2,16}$/', $firstname)) {
-            throw new Exception('first name invalided');
-        }
         $this->firstname = $firstname;
 
         return $this;
     }
 
-    public function getBirthdate(): ?\DateTimeImmutable
+    public function getBirthdate(): ?DateTimeImmutable
     {
         return $this->birthdate;
     }
 
-    public function setBirthdate(\DateTimeImmutable $birthdate): self
+    public function setBirthdate(DateTimeImmutable $birthdate): self
     {
         $this->birthdate = $birthdate;
 
         return $this;
     }
 
-    public function getactive(): ?bool
+    public function getActive(): ?bool
     {
         return $this->active;
     }
 
-    public function setactive(bool $active): self
+    public function setActive(bool $active): self
     {
-
         $this->active = $active;
 
         return $this;
@@ -295,48 +285,48 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreationDate(): ?\DateTimeImmutable
+    public function getCreationDate(): ?DateTimeImmutable
     {
         return $this->creationDate;
     }
 
-    public function setCreationDate(\DateTimeImmutable $creationDate): self
+    public function setCreationDate(DateTimeImmutable $creationDate): self
     {
         $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    public function getActiveSince(): ?\DateTimeImmutable
+    public function getActiveSince(): ?DateTimeImmutable
     {
         return $this->activeSince;
     }
 
-    public function setActiveSince(?\DateTimeImmutable $activeSince): self
+    public function setActiveSince(?DateTimeImmutable $activeSince): self
     {
         $this->activeSince = $activeSince;
 
         return $this;
     }
 
-    public function getSuspendedSince(): ?\DateTimeImmutable
+    public function getSuspendedSince(): ?DateTimeImmutable
     {
         return $this->suspendedSince;
     }
 
-    public function setSuspendedSince(?\DateTimeImmutable $suspendedSince): self
+    public function setSuspendedSince(?DateTimeImmutable $suspendedSince): self
     {
         $this->suspendedSince = $suspendedSince;
 
         return $this;
     }
 
-    public function getDeletedSince(): ?\DateTimeImmutable
+    public function getDeletedSince(): ?DateTimeImmutable
     {
         return $this->deletedSince;
     }
 
-    public function setDeletedSince(?\DateTimeImmutable $deletedSince): self
+    public function setDeletedSince(?DateTimeImmutable $deletedSince): self
     {
         $this->deletedSince = $deletedSince;
 

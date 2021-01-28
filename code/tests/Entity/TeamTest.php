@@ -43,11 +43,13 @@ final class TeamTest extends KernelTestCase
     {
         return [
             [""],
-            ["Amon Rattanakosin Krung Thep Mahanakhon Mahinthara Mahadilok Phop Noppharat Ratchathani
-             Ayuthaya Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya Witsanukam
-              Prasit Bravo Association Amon Rattanakosin Krung Thep Mahanakhon Mahinthara Mahadilok Phop
-               Noppharat Ratchathani Ayuthaya Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit
-                Sakkathattiya Witsanukam Prasit Bravo Association Football Club"]
+            [
+                "Amon Rattanakosin Krung Thep Mahanakhon Mahinthara Mahadilok Phop Noppharat Ratchathani " .
+                "Ayuthaya Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya Witsanukam " .
+                "Prasit Bravo Association Amon Rattanakosin Krung Thep Mahanakhon Mahinthara Mahadilok Phop Noppharat " .
+                "Ratchathani Ayuthaya Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya " .
+                "Witsanukam Prasit Bravo Association Football Club"
+            ]
         ];
     }
 
@@ -63,9 +65,13 @@ final class TeamTest extends KernelTestCase
 
     public function validNameProvider(): array
     {
-        return [["Amon Rattanakosin Krung Thep Mahanakhon Mahinthara Mahadilok Phop Noppharat Ratchathani
-         Ayuthaya Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya Witsanukam Prasit
-          Bravo Association Football Club"]];
+        return [
+            [
+                "Amon Rattanakosin Krung Thep Mahanakhon Mahinthara Mahadilok Phop Noppharat Ratchathani Ayuthaya " .
+                "Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya Witsanukam Prasit Bravo " .
+                "Association Football Club"
+            ]
+        ];
     }
 
     /**
@@ -80,8 +86,12 @@ final class TeamTest extends KernelTestCase
 
     public function validDescriptionProvider(): array
     {
-        return [["Bangkok Bravo FC is a Thai club based in the country's capital. Bangkok Bravo FC officially
-         has the longest club name in football at the moment"]];
+        return [
+            [
+                "Bangkok Bravo FC is a Thai club based in the country's capital. " .
+                "Bangkok Bravo FC officially has the longest club name in football at the moment"
+            ]
+        ];
     }
 
     protected function tearDown(): void

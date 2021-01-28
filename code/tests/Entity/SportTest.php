@@ -65,7 +65,7 @@ final class SportTest extends KernelTestCase
     }
 
 
-        /**
+    /**
      * @dataProvider invalidDescriptionProvider
      */
     public function testSetInvalidDescription(string $description): void

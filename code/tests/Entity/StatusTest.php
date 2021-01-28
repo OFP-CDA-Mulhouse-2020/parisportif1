@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\Status;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class StatusTest extends KernelTestCase
@@ -32,7 +31,7 @@ final class StatusTest extends KernelTestCase
     /**
      * @dataProvider validStatusNameProvider
      */
-    public function testSetvalidStatusName($name)
+    public function testSetValidStatusName($name)
     {
         $this->status->setName($name);
         $errorsList = $this->validator->validate($this->status);
@@ -67,7 +66,7 @@ final class StatusTest extends KernelTestCase
     /**
      * @dataProvider validStatusDescProvider
      */
-    public function testSetvalidStatusDesc($description)
+    public function testSetValidStatusDesc($description)
     {
         $this->status->setDescription($description);
         $errorsList = $this->validator->validate($this->status);

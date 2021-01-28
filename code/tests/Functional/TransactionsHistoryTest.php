@@ -12,7 +12,7 @@ final class TransactionsHistoryTest extends WebTestCase
     public function testGetTransactionsHistoryPageWhenNotLoggedIn(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/transactions-history');
+        $client->request('GET', '/transactions-history');
 
         $this->assertResponseRedirects('/login');
     }
@@ -25,7 +25,7 @@ final class TransactionsHistoryTest extends WebTestCase
         $testUser = $userRepository->findOneByEmail("test@test.fr");
         $client->loginUser($testUser);
 
-        $crawler = $client->request('GET', '/transactions-history');
+        $client->request('GET', '/transactions-history');
 
         $this->assertResponseIsSuccessful();
     }

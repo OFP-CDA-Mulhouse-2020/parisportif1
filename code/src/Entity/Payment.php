@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\PaymentRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -72,12 +73,12 @@ class Payment
         return $this;
     }
 
-    public function getPaymentDate(): ?\DateTimeInterface
+    public function getPaymentDate(): ?DateTimeInterface
     {
         return $this->paymentDate;
     }
 
-    public function setPaymentDate(\DateTimeInterface $paymentDate): self
+    public function setPaymentDate(DateTimeInterface $paymentDate): self
     {
         $this->paymentDate = $paymentDate;
 
