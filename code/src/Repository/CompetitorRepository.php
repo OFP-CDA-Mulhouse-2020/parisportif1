@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Competitor>
+ *
  * @method Competitor|null find($id, $lockMode = null, $lockVersion = null)
  * @method Competitor|null findOneBy(array $criteria, array $orderBy = null)
  * @method Competitor[]    findAll()

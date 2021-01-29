@@ -20,29 +20,36 @@ class Competitor
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\Type("string")
      * @Assert\Length(min = 1)
      */
-    private $name;
+    private string $name;
 
     /**
+     * @var Collection<int, Event>
+     *
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="competitors")
      */
-    private $events;
+    private Collection $events;
 
     /**
+     * @var Collection<int, Team>
+     *
      * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="competitors")
      */
-    private $teams;
+    private Collection $teams;
 
     /**
+     * @var Collection<int, CompetitorTeamStatus>
+     *
      * @ORM\OneToMany(targetEntity=CompetitorTeamStatus::class, mappedBy="competitor", orphanRemoval=true)
      */
-    private $competitorTeamStatuses;
+    private Collection $competitorTeamStatuses;
+
 
     public function __construct()
     {
@@ -51,12 +58,12 @@ class Competitor
         $this->competitorTeamStatuses = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -68,9 +75,7 @@ class Competitor
         return $this;
     }
 
-    /**
-     * @return Collection|Event[]
-     */
+    /** @return Collection<int, Event> */
     public function getEvents(): Collection
     {
         return $this->events;
@@ -95,9 +100,7 @@ class Competitor
         return $this;
     }
 
-    /**
-     * @return Collection|Team[]
-     */
+    /** @return Collection<int, Team> */
     public function getTeams(): Collection
     {
         return $this->teams;
@@ -119,9 +122,7 @@ class Competitor
         return $this;
     }
 
-    /**
-     * @return Collection|CompetitorTeamStatus[]
-     */
+    /** @return Collection<int, CompetitorTeamStatus> */
     public function getCompetitorTeamStatuses(): Collection
     {
         return $this->competitorTeamStatuses;
