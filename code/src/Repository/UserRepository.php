@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @extends ServiceEntityRepository<User>
+ *
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
  * @method User|null findOneBy(array $criteria, array $orderBy = null)
  * @method User|null findOneByEmail(string $email)
@@ -37,15 +39,5 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
         $user->setPassword($newEncodedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
-    }
-
-    public function findOneBySomeField($value): ?User
-    {
-        //TODO Use DQL instead of QueryBuilder
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.email = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult();
     }
 }
