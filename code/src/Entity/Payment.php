@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=PaymentRepository::class)
  */
-class Payment
+final class Payment
 {
     /**
      * @ORM\Id

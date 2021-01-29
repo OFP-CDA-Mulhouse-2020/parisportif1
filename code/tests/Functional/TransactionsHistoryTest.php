@@ -27,6 +27,21 @@ final class TransactionsHistoryTest extends WebTestCase
 
         $client->request('GET', '/transactions-history');
 
-        $this->assertResponseIsSuccessful();
+        $this->assertResponseRedirects('/login');
     }
+
+    // public function testGetTransactionsHistory(): void
+    // {
+    //     $client = static::createClient();
+
+    //     $userRepository = static::$container->get(UserRepository::class);
+    //     $testUser = $userRepository->findOneByEmail("test@test.fr");
+    //     $client->loginUser($testUser);
+
+    //     $crawler = $client->request('GET', '/transactions-history');
+
+    //     $this->assertResponseIsSuccessful();
+    //     $this->assertSelectorExists("form", "Payment");
+
+    // }
 }
