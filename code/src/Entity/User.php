@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,125 +23,123 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(groups={"create", "read"})
      * @Assert\Email(groups={"create", "read"})
      */
-    private $email;
+    private string $email;
 
     /**
+     * @var array<int, string>
+     *
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
-     * @var string The hashed password
      * @ORM\Column(type="string")
      * @Assert\NotBlank(groups={"update"})
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(groups={"update"})
      */
-    private $lastname;
+    private string $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(groups={"update"})
      */
-    private $firstname;
+    private string $firstname;
 
     /**
      * @ORM\Column(type="date_immutable")
      */
-    private $birthdate;
-
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $active;
+    private DateTimeInterface $birthdate;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $suspended;
+    private bool $active;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $deleted;
+    private bool $suspended;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $deleted;
 
     /**
      * @ORM\Column(type="date_immutable")
      */
-    private $creationDate;
+    private DateTimeInterface $creationDate;
 
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
-    private $activeSince;
+    private ?DateTimeInterface $activeSince;
 
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
-    private $suspendedSince;
+    private ?DateTimeInterface $suspendedSince;
 
     /**
      * @ORM\Column(type="date_immutable", nullable=true)
      */
-    private $deletedSince;
+    private ?DateTimeInterface $deletedSince;
 
     /**
      * @ORM\OneToOne(targetEntity=Wallet::class, inversedBy="user", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $wallet;
-
-    // * @ORM\JoinColumn(nullable=false)
-    /**
-     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="users")
-     */
-    private $country;
-
-    // * @ORM\JoinColumn(nullable=false)
-    /**
-     * @ORM\ManyToOne(targetEntity=TimeZone::class, inversedBy="users")
-     */
-    private $timeZone;
+    private Wallet $wallet;
 
     /**
+     * @var Collection<int, Order>
+     *
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="user", orphanRemoval=true)
      */
-    private $orders;
+    private Collection $orders;
 
     /**
+     * @var Collection<int, Bet>
+     *
      * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="user", orphanRemoval=true)
      */
-    private $bets;
+    private Collection $bets;
+
 
     public function __construct()
     {
         $this->active = false;
         $this->suspended = false;
         $this->deleted = false;
+
+        $this->activeSince = null;
+        $this->suspendedSince = null;
+        $this->deletedSince = null;
+
         $this->creationDate = new DateTimeImmutable();
-        $this->birthdate = new DateTimeImmutable();
+
         $this->orders = new ArrayCollection();
         $this->bets = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -159,7 +158,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string)$this->email;
+        return $this->email;
     }
 
     /**
@@ -174,6 +173,7 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /** @param array<int, string> $roles */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -199,9 +199,10 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt(): void
+    public function getSalt(): ?string
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
+        return null;
     }
 
     /**
@@ -213,7 +214,7 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getLastname(): ?string
+    public function getLastname(): string
     {
         return $this->lastname;
     }
@@ -225,7 +226,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFirstname(): ?string
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
@@ -237,19 +238,19 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getBirthdate(): ?DateTimeImmutable
+    public function getBirthdate(): DateTimeInterface
     {
         return $this->birthdate;
     }
 
-    public function setBirthdate(DateTimeImmutable $birthdate): self
+    public function setBirthdate(DateTimeInterface $birthdate): self
     {
         $this->birthdate = $birthdate;
 
         return $this;
     }
 
-    public function getActive(): ?bool
+    public function getActive(): bool
     {
         return $this->active;
     }
@@ -261,7 +262,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getSuspended(): ?bool
+    public function getSuspended(): bool
     {
         return $this->suspended;
     }
@@ -273,7 +274,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getDeleted(): ?bool
+    public function getDeleted(): bool
     {
         return $this->deleted;
     }
@@ -285,55 +286,55 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreationDate(): ?DateTimeImmutable
+    public function getCreationDate(): DateTimeInterface
     {
         return $this->creationDate;
     }
 
-    public function setCreationDate(DateTimeImmutable $creationDate): self
+    public function setCreationDate(DateTimeInterface $creationDate): self
     {
         $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    public function getActiveSince(): ?DateTimeImmutable
+    public function getActiveSince(): ?DateTimeInterface
     {
         return $this->activeSince;
     }
 
-    public function setActiveSince(?DateTimeImmutable $activeSince): self
+    public function setActiveSince(?DateTimeInterface $activeSince): self
     {
         $this->activeSince = $activeSince;
 
         return $this;
     }
 
-    public function getSuspendedSince(): ?DateTimeImmutable
+    public function getSuspendedSince(): ?DateTimeInterface
     {
         return $this->suspendedSince;
     }
 
-    public function setSuspendedSince(?DateTimeImmutable $suspendedSince): self
+    public function setSuspendedSince(?DateTimeInterface $suspendedSince): self
     {
         $this->suspendedSince = $suspendedSince;
 
         return $this;
     }
 
-    public function getDeletedSince(): ?DateTimeImmutable
+    public function getDeletedSince(): ?DateTimeInterface
     {
         return $this->deletedSince;
     }
 
-    public function setDeletedSince(?DateTimeImmutable $deletedSince): self
+    public function setDeletedSince(?DateTimeInterface $deletedSince): self
     {
         $this->deletedSince = $deletedSince;
 
         return $this;
     }
 
-    public function getWallet(): ?Wallet
+    public function getWallet(): Wallet
     {
         return $this->wallet;
     }
@@ -344,33 +345,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getTimeZone(): ?TimeZone
-    {
-        return $this->timeZone;
-    }
-
-    public function setTimeZone(?TimeZone $timeZone): self
-    {
-        $this->timeZone = $timeZone;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Order[]
-     */
+    /** @return Collection<int, Order> */
     public function getOrders(): Collection
     {
         return $this->orders;
@@ -398,9 +373,7 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection|Bet[]
-     */
+    /** @return Collection<int, Bet> */
     public function getBets(): Collection
     {
         return $this->bets;

@@ -18,47 +18,49 @@ class Odds
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(min = 2)
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(type="float")
      * @Assert\GreaterThanOrEqual(1)
      */
-    private $value;
+    private float $value;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $winning;
+    private ?bool $winning;
 
     /**
+     * @var Collection<int, Bet>
+     *
      * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="odd", orphanRemoval=true)
      */
-    private $bets;
+    private Collection $bets;
 
     /**
      * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="odds")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $event;
+    private Event $event;
 
     public function __construct()
     {
         $this->bets = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -70,7 +72,7 @@ class Odds
         return $this;
     }
 
-    public function getValue(): ?float
+    public function getValue(): float
     {
         return $this->value;
     }
@@ -94,10 +96,7 @@ class Odds
         return $this;
     }
 
-
-    /**
-     * @return Collection|Bet[]
-     */
+    /** @return Collection<int, Bet> */
     public function getBets(): Collection
     {
         return $this->bets;
@@ -125,12 +124,12 @@ class Odds
         return $this;
     }
 
-    public function getEvent(): ?Event
+    public function getEvent(): Event
     {
         return $this->event;
     }
 
-    public function setEvent(?Event $event): self
+    public function setEvent(Event $event): self
     {
         $this->event = $event;
 

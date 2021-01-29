@@ -20,7 +20,7 @@ class Team
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -29,33 +29,33 @@ class Team
      *      max = 255
      * )
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private string $description;
 
     /**
+     * @var Collection<int, Event>
+     *
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="teams")
      */
-    private $events;
+    private Collection $events;
 
     /**
+     * @var Collection<int, Competitor>
+     *
      * @ORM\ManyToMany(targetEntity=Competitor::class, mappedBy="teams")
      */
-    private $competitors;
+    private Collection $competitors;
 
     /**
+     * @var Collection<int, CompetitorTeamStatus>
+     *
      * @ORM\OneToMany(targetEntity=CompetitorTeamStatus::class, mappedBy="team", orphanRemoval=true)
      */
-    private $competitorTeamStatuses;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="teams")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $country;
+    private Collection $competitorTeamStatuses;
 
     public function __construct()
     {
@@ -64,12 +64,12 @@ class Team
         $this->competitorTeamStatuses = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -81,21 +81,19 @@ class Team
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Event[]
-     */
+    /** @return Collection<int, Event> */
     public function getEvents(): Collection
     {
         return $this->events;
@@ -120,9 +118,7 @@ class Team
         return $this;
     }
 
-    /**
-     * @return Collection|Competitor[]
-     */
+    /** @return Collection<int, Competitor> */
     public function getCompetitors(): Collection
     {
         return $this->competitors;
@@ -147,9 +143,7 @@ class Team
         return $this;
     }
 
-    /**
-     * @return Collection|CompetitorTeamStatus[]
-     */
+    /** @return Collection<int, CompetitorTeamStatus> */
     public function getCompetitorTeamStatuses(): Collection
     {
         return $this->competitorTeamStatuses;
@@ -173,18 +167,6 @@ class Team
                 $competitorTeamStatus->setTeam(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
 
         return $this;
     }

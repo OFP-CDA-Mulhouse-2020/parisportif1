@@ -19,49 +19,50 @@ final class Payment
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\Length(min = 3)
      */
-    private $amount;
+    private int $amount;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $paymentDate;
+    private DateTimeInterface $paymentDate;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 5)
      */
-    private $transactionID;
+    private string $transactionID;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\Length(min = 5)
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=Wallet::class, inversedBy="payments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $wallet;
+    private Wallet $wallet;
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="payments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $paymentOrder;
+    private Order $paymentOrder;
 
-    public function getId(): ?int
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): int
     {
         return $this->amount;
     }
@@ -73,7 +74,7 @@ final class Payment
         return $this;
     }
 
-    public function getPaymentDate(): ?DateTimeInterface
+    public function getPaymentDate(): DateTimeInterface
     {
         return $this->paymentDate;
     }
@@ -85,7 +86,7 @@ final class Payment
         return $this;
     }
 
-    public function getTransactionID(): ?string
+    public function getTransactionID(): string
     {
         return $this->transactionID;
     }
@@ -97,7 +98,7 @@ final class Payment
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -109,24 +110,24 @@ final class Payment
         return $this;
     }
 
-    public function getWallet(): ?Wallet
+    public function getWallet(): Wallet
     {
         return $this->wallet;
     }
 
-    public function setWallet(?Wallet $wallet): self
+    public function setWallet(Wallet $wallet): self
     {
         $this->wallet = $wallet;
 
         return $this;
     }
 
-    public function getPaymentOrder(): ?Order
+    public function getPaymentOrder(): Order
     {
         return $this->paymentOrder;
     }
 
-    public function setPaymentOrder(?Order $paymentOrder): self
+    public function setPaymentOrder(Order $paymentOrder): self
     {
         $this->paymentOrder = $paymentOrder;
 

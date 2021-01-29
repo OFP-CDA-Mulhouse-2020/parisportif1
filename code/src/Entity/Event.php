@@ -19,81 +19,74 @@ class Event
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 2)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $eventDate;
+    private DateTimeInterface $eventDate;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 2)
      */
-    private $location;
+    private string $location;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 2)
      */
-    private $illustration;
+    private string $illustration;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $result;
+    private string $result;
 
     /**
      * @ORM\ManyToOne(targetEntity=Sport::class, inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $sport;
+    private Sport $sport;
 
     /**
      * @ORM\ManyToOne(targetEntity=Competition::class, inversedBy="events")
      */
-    private $competition;
+    private Competition $competition;
 
     /**
+     * @var Collection<int, Competitor>
+     *
      * @ORM\ManyToMany(targetEntity=Competitor::class, inversedBy="events")
      */
-    private $competitors;
+    private Collection $competitors;
 
     /**
      * @ORM\ManyToOne(targetEntity=SportType::class, inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $sportType;
+    private SportType $sportType;
 
     /**
+     * @var Collection<int, Team>
+     *
      * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="events")
      */
-    private $teams;
+    private Collection $teams;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $country;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=TimeZone::class, inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $timeZone;
-
-    /**
+     * @var Collection<int, Odds>
+     *
      * @ORM\OneToMany(targetEntity=Odds::class, mappedBy="event")
      */
-    private $odds;
+    private Collection $odds;
 
-    
 
     public function __construct()
     {
@@ -102,12 +95,12 @@ class Event
         $this->odds = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -119,7 +112,7 @@ class Event
         return $this;
     }
 
-    public function getEventDate(): ?DateTimeInterface
+    public function getEventDate(): DateTimeInterface
     {
         return $this->eventDate;
     }
@@ -131,7 +124,7 @@ class Event
         return $this;
     }
 
-    public function getLocation(): ?string
+    public function getLocation(): string
     {
         return $this->location;
     }
@@ -143,7 +136,7 @@ class Event
         return $this;
     }
 
-    public function getIllustration(): ?string
+    public function getIllustration(): string
     {
         return $this->illustration;
     }
@@ -155,7 +148,7 @@ class Event
         return $this;
     }
 
-    public function getResult(): ?string
+    public function getResult(): string
     {
         return $this->result;
     }
@@ -167,33 +160,31 @@ class Event
         return $this;
     }
 
-    public function getSport(): ?Sport
+    public function getSport(): Sport
     {
         return $this->sport;
     }
 
-    public function setSport(?Sport $sport): self
+    public function setSport(Sport $sport): self
     {
         $this->sport = $sport;
 
         return $this;
     }
 
-    public function getCompetition(): ?Competition
+    public function getCompetition(): Competition
     {
         return $this->competition;
     }
 
-    public function setCompetition(?Competition $competition): self
+    public function setCompetition(Competition $competition): self
     {
         $this->competition = $competition;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Competitor[]
-     */
+    /** @return Collection<int, Competitor> */
     public function getCompetitors(): Collection
     {
         return $this->competitors;
@@ -215,21 +206,19 @@ class Event
         return $this;
     }
 
-    public function getSportType(): ?SportType
+    public function getSportType(): SportType
     {
         return $this->sportType;
     }
 
-    public function setSportType(?SportType $sportType): self
+    public function setSportType(SportType $sportType): self
     {
         $this->sportType = $sportType;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Team[]
-     */
+    /** @return Collection<int, Team> */
     public function getTeams(): Collection
     {
         return $this->teams;
@@ -251,33 +240,7 @@ class Event
         return $this;
     }
 
-    public function getCountry(): ?Country
-    {
-        return $this->country;
-    }
-
-    public function setCountry(?Country $country): self
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
-    public function getTimeZone(): ?TimeZone
-    {
-        return $this->timeZone;
-    }
-
-    public function setTimeZone(?TimeZone $timeZone): self
-    {
-        $this->timeZone = $timeZone;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Odds[]
-     */
+    /** @return Collection<int, Odds> */
     public function getOdds(): Collection
     {
         return $this->odds;
@@ -304,6 +267,4 @@ class Event
 
         return $this;
     }
-
-    
 }

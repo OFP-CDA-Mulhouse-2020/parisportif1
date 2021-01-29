@@ -22,49 +22,52 @@ class Order
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\GreaterThan("now - 60 seconds")
      */
-    private $date;
+    private DateTimeInterface $date;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotNull
      * @Assert\GreaterThan(0)
      */
-    private $total;
+    private int $total;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private User $user;
 
     /**
      * @ORM\OneToOne(targetEntity=Bet::class, inversedBy="betOrder", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $bet;
+    private Bet $bet;
 
     /**
+     * @var Collection<int, Payment>
+     *
      * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="paymentOrder", orphanRemoval=true)
      */
-    private $payments;
+    private Collection $payments;
+
 
     public function __construct()
     {
         $this->payments = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getDate(): ?DateTimeInterface
+    public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
@@ -76,7 +79,7 @@ class Order
         return $this;
     }
 
-    public function getTotal(): ?int
+    public function getTotal(): int
     {
         return $this->total;
     }
@@ -88,19 +91,19 @@ class Order
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getBet(): ?Bet
+    public function getBet(): Bet
     {
         return $this->bet;
     }
@@ -113,7 +116,7 @@ class Order
     }
 
     /**
-     * @return Collection|Payment[]
+     * @return Collection<int, Payment>
      */
     public function getPayments(): Collection
     {

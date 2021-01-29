@@ -20,34 +20,41 @@ class Sport
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 2)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 2)
      */
-    private $description;
+    private string $description;
 
     /**
+     * @var Collection<int, Event>
+     *
      * @ORM\OneToMany(targetEntity=Event::class, mappedBy="sport", orphanRemoval=true)
      */
-    private $events;
+    private Collection $events;
 
     /**
+     * @var Collection<int, Competition>
+     *
      * @ORM\ManyToMany(targetEntity=Competition::class, mappedBy="sports")
      */
-    private $competitions;
+    private Collection $competitions;
 
     /**
+     * @var Collection<int, SportType>
+     *
      * @ORM\ManyToMany(targetEntity=SportType::class, inversedBy="sports")
      */
-    private $sportTypes;
+    private Collection $sportTypes;
+
 
     public function __construct()
     {
@@ -56,12 +63,12 @@ class Sport
         $this->sportTypes = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -73,7 +80,7 @@ class Sport
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -85,9 +92,7 @@ class Sport
         return $this;
     }
 
-    /**
-     * @return Collection|Event[]
-     */
+    /** @return Collection<int, Event> */
     public function getEvents(): Collection
     {
         return $this->events;
@@ -115,9 +120,7 @@ class Sport
         return $this;
     }
 
-    /**
-     * @return Collection|Competition[]
-     */
+    /** @return Collection<int, Competition> */
     public function getCompetitions(): Collection
     {
         return $this->competitions;
@@ -142,9 +145,7 @@ class Sport
         return $this;
     }
 
-    /**
-     * @return Collection|SportType[]
-     */
+    /** @return Collection<int, SportType> */
     public function getSportTypes(): Collection
     {
         return $this->sportTypes;

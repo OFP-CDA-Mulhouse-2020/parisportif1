@@ -18,48 +18,49 @@ class Bet
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\GreaterThanOrEqual(10)
      */
-    private $amount;
+    private int $amount;
 
     /**
      * @ORM\Column(type="float")
      * @Assert\GreaterThanOrEqual(1)
      */
-    private $odds;
+    private float $odds;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $resolved;
+    private ?bool $resolved;
 
     /**
      * @ORM\OneToOne(targetEntity=Order::class, mappedBy="bet", cascade={"persist", "remove"})
      */
-    private $betOrder;
+    private Order $betOrder;
 
     /**
      * @ORM\ManyToOne(targetEntity=Odds::class, inversedBy="bets")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $odd;
+    private Odds $odd;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bets")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private User $user;
 
-    public function getId(): ?int
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): int
     {
         return $this->amount;
     }
@@ -71,7 +72,7 @@ class Bet
         return $this;
     }
 
-    public function getOdds(): ?float
+    public function getOdds(): float
     {
         return $this->odds;
     }
@@ -95,7 +96,7 @@ class Bet
         return $this;
     }
 
-    public function getBetOrder(): ?Order
+    public function getBetOrder(): Order
     {
         return $this->betOrder;
     }
@@ -112,24 +113,24 @@ class Bet
         return $this;
     }
 
-    public function getOdd(): ?Odds
+    public function getOdd(): Odds
     {
         return $this->odd;
     }
 
-    public function setOdd(?Odds $odd): self
+    public function setOdd(Odds $odd): self
     {
         $this->odd = $odd;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
