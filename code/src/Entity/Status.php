@@ -18,36 +18,38 @@ class Status
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 2)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min = 2)
      */
-    private $description;
+    private string $description;
 
     /**
+     * @var Collection<int, CompetitorTeamStatus>
+     *
      * @ORM\OneToMany(targetEntity=CompetitorTeamStatus::class, mappedBy="status", orphanRemoval=true)
      */
-    private $competitorTeamStatuses;
+    private Collection $competitorTeamStatuses;
 
     public function __construct()
     {
         $this->competitorTeamStatuses = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -59,7 +61,7 @@ class Status
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -71,9 +73,7 @@ class Status
         return $this;
     }
 
-    /**
-     * @return Collection|CompetitorTeamStatus[]
-     */
+    /** @return Collection<int, CompetitorTeamStatus> */
     public function getCompetitorTeamStatuses(): Collection
     {
         return $this->competitorTeamStatuses;
