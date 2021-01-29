@@ -20,35 +20,37 @@ class Wallet
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\GreaterThanOrEqual(0)
      */
-    private $balance;
+    private int $balance;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="wallet", cascade={"persist", "remove"})
      */
-    private $user;
+    private User $user;
 
     /**
+     * @var Collection<int, Payment>
+     *
      * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="wallet", orphanRemoval=true)
      */
-    private $payments;
+    private Collection $payments;
 
     public function __construct()
     {
         $this->payments = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getBalance(): ?int
+    public function getBalance(): int
     {
         return $this->balance;
     }
@@ -60,7 +62,7 @@ class Wallet
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -77,9 +79,7 @@ class Wallet
         return $this;
     }
 
-    /**
-     * @return Collection|Payment[]
-     */
+    /** @return Collection<int, Payment> */
     public function getPayments(): Collection
     {
         return $this->payments;

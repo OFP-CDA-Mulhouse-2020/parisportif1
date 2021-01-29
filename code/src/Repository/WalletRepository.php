@@ -7,6 +7,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Wallet>
+ *
  * @method Wallet|null find($id, $lockMode = null, $lockVersion = null)
  * @method Wallet|null findOneBy(array $criteria, array $orderBy = null)
  * @method Wallet[]    findAll()
