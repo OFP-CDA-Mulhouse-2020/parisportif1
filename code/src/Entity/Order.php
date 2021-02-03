@@ -44,10 +44,17 @@ class Order
     private User $user;
 
     /**
-     * @ORM\OneToOne(targetEntity=Bet::class, inversedBy="betOrder", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @var Collection<int, Bet>
+     *
+     * @ORM\ManyToMany(targetEntity=BetPayment::class)
+     * @ORM\JoinTable(
+     *     inverseJoinColumns={@ORM\JoinColumn(unique=true)}
+     * )
+     *
+     * Not a ManyToMany! JoinColumn is set to unique for inverseJoinColumns.
+     * For more details look at {@link https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/association-mapping.html#one-to-many-unidirectional-with-join-table}
      */
-    private Bet $bet;
+    private Collection $betList;
 
     /**
      * @var Collection<int, BetPayment>
@@ -65,6 +72,7 @@ class Order
 
     public function __construct()
     {
+        $this->betList = new ArrayCollection();
         $this->betPayments = new ArrayCollection();
     }
 
@@ -109,21 +117,29 @@ class Order
         return $this;
     }
 
-    public function getBet(): Bet
+    /** @return Collection<int, Bet> */
+    public function getBetList(): Collection
     {
-        return $this->bet;
+        return $this->betList;
     }
 
-    public function setBet(Bet $bet): self
+    public function addBetToList(Bet $bet): self
     {
-        $this->bet = $bet;
+        if (!$this->betList->contains($bet)) {
+            $this->betList->add($bet);
+        }
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, BetPayment>
-     */
+    public function removeBetFromList(Bet $bet): self
+    {
+        $this->betList->removeElement($bet);
+
+        return $this;
+    }
+
+    /** @return Collection<int, BetPayment> */
     public function getBetPayments(): Collection
     {
         return $this->betPayments;

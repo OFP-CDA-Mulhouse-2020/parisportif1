@@ -38,11 +38,6 @@ class Bet
     private ?bool $resolved;
 
     /**
-     * @ORM\OneToOne(targetEntity=Order::class, mappedBy="bet", cascade={"persist", "remove"})
-     */
-    private Order $betOrder;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Odds::class, inversedBy="bets")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -92,23 +87,6 @@ class Bet
     public function setResolved(?bool $resolved): self
     {
         $this->resolved = $resolved;
-
-        return $this;
-    }
-
-    public function getBetOrder(): Order
-    {
-        return $this->betOrder;
-    }
-
-    public function setBetOrder(Order $betOrder): self
-    {
-        $this->betOrder = $betOrder;
-
-        // set the owning side of the relation if necessary
-        if ($betOrder->getBet() !== $this) {
-            $betOrder->setBet($this);
-        }
 
         return $this;
     }
