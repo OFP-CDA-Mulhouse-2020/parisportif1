@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
@@ -34,7 +35,6 @@ class Order
     /**
      * @ORM\Column(type="integer")
      *
-     * @Assert\NotNull
      * @Assert\GreaterThan(0)
      */
     private int $total;
@@ -72,6 +72,7 @@ class Order
         $this->betPayments = new ArrayCollection();
     }
 
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
@@ -143,5 +144,33 @@ class Order
        $this->betPayments->removeElement($betPayment);
 
         return $this;
+    }
+
+    /** @Assert\Callback */
+    public function validateBetList(ExecutionContextInterface $context): void
+    {
+        $validator = $context->getValidator();
+
+        foreach ($this->betList as $bet) {
+            if ($validator->validate($bet)->count() > 0) {
+                $context->buildViolation("betList contain a non valid Bet")
+                    ->atPath("betList")
+                    ->addViolation();
+            }
+        }
+    }
+
+    /** @Assert\Callback */
+    public function validateBetPayments(ExecutionContextInterface $context): void
+    {
+        $validator = $context->getValidator();
+
+        foreach ($this->betPayments as $betPayment) {
+            if ($validator->validate($betPayment)->count() > 0) {
+                $context->buildViolation("betPayments contain a non valid BetPayment")
+                    ->atPath("betList")
+                    ->addViolation();
+            }
+        }
     }
 }
