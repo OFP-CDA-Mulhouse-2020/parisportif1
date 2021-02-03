@@ -9,11 +9,13 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
+ * @UniqueEntity("id")
  */
 class Order
 {
@@ -26,12 +28,12 @@ class Order
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\GreaterThan("now - 60 seconds")
      */
     private DateTimeInterface $date;
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Assert\NotNull
      * @Assert\GreaterThan(0)
      */
@@ -130,7 +132,7 @@ class Order
     public function addPayment(BetPayment $betPayment): self
     {
         if (!$this->betPayments->contains($betPayment)) {
-            $this->betPayments[] = $betPayment;
+            $this->betPayments->add($betPayment);
         }
 
         return $this;
