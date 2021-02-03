@@ -8,6 +8,7 @@ use App\Repository\BetPaymentRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=BetPaymentRepository::class)
@@ -23,7 +24,6 @@ final class BetPayment
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\Length(min = 3)
      */
     private int $amount;
 
@@ -78,5 +78,16 @@ final class BetPayment
         $this->description = $description;
 
         return $this;
+    }
+
+    /** @Assert\Callback */
+    public function validateAmount(ExecutionContextInterface $context): void
+    {
+        if ($this->amount > -100 && $this->amount < 100) {
+            $context
+                ->buildViolation("Amount is not valid.")
+                ->atPath("amount")
+                ->addViolation();
+        }
     }
 }
