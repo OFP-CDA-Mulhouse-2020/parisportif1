@@ -33,22 +33,10 @@ final class BetPayment
     private DateTimeInterface $betPaymentDate;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min = 5)
-     */
-    private string $transactionID;
-
-    /**
      * @ORM\Column(type="text")
      * @Assert\Length(min = 5)
      */
     private string $description;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Wallet::class, inversedBy="betPayments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private Wallet $wallet;
 
     /**
      * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="betPayments")
@@ -86,18 +74,6 @@ final class BetPayment
         return $this;
     }
 
-    public function getTransactionID(): string
-    {
-        return $this->transactionID;
-    }
-
-    public function setTransactionID(string $transactionID): self
-    {
-        $this->transactionID = $transactionID;
-
-        return $this;
-    }
-
     public function getDescription(): string
     {
         return $this->description;
@@ -106,18 +82,6 @@ final class BetPayment
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getWallet(): Wallet
-    {
-        return $this->wallet;
-    }
-
-    public function setWallet(Wallet $wallet): self
-    {
-        $this->wallet = $wallet;
 
         return $this;
     }
