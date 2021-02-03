@@ -38,12 +38,6 @@ class Order
     private int $total;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orders")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private User $user;
-
-    /**
      * @var Collection<int, Bet>
      *
      * @ORM\ManyToMany(targetEntity=BetPayment::class)
@@ -101,18 +95,6 @@ class Order
     public function setTotal(int $total): self
     {
         $this->total = $total;
-
-        return $this;
-    }
-
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
 
         return $this;
     }
