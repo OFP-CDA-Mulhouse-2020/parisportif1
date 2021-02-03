@@ -40,9 +40,18 @@ class Wallet
      */
     private Collection $betPayments;
 
+    /**
+     * @var Collection<int, WalletPayment>
+     *
+     * @ORM\OneToMany(targetEntity=WalletPayment::class, mappedBy="wallet", orphanRemoval=true)
+     */
+    private Collection $walletPaymentHistory;
+
+
     public function __construct()
     {
         $this->betPayments = new ArrayCollection();
+        $this->walletPaymentHistory = new ArrayCollection();
     }
 
     public function getId(): int
@@ -101,6 +110,34 @@ class Wallet
             // set the owning side to null (unless already changed)
             if ($betPayment->getWallet() === $this) {
                 $betPayment->setWallet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /** @return Collection<int, WalletPayment> */
+    public function getWalletPaymentHistory(): Collection
+    {
+        return $this->walletPaymentHistory;
+    }
+
+    public function addWalletPaymentHistory(WalletPayment $walletPaymentHistory): self
+    {
+        if (!$this->walletPaymentHistory->contains($walletPaymentHistory)) {
+            $this->walletPaymentHistory[] = $walletPaymentHistory;
+            $walletPaymentHistory->setWallet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWalletPaymentHistory(WalletPayment $walletPaymentHistory): self
+    {
+        if ($this->walletPaymentHistory->removeElement($walletPaymentHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($walletPaymentHistory->getWallet() === $this) {
+                $walletPaymentHistory->setWallet(null);
             }
         }
 
