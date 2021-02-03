@@ -52,7 +52,13 @@ class Order
     /**
      * @var Collection<int, BetPayment>
      *
-     * @ORM\OneToMany(targetEntity=BetPayment::class, mappedBy="betPaymentOrder", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity=BetPayment::class)
+     * @ORM\JoinTable(
+     *     inverseJoinColumns={@ORM\JoinColumn(unique=true)}
+     * )
+     *
+     * Not a ManyToMany! JoinColumn is set to unique for inverseJoinColumns.
+     * For more details look at {@link https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/association-mapping.html#one-to-many-unidirectional-with-join-table}
      */
     private Collection $betPayments;
 
@@ -127,7 +133,6 @@ class Order
     {
         if (!$this->betPayments->contains($betPayment)) {
             $this->betPayments[] = $betPayment;
-            $betPayment->setBetPaymentOrder($this);
         }
 
         return $this;
@@ -135,12 +140,7 @@ class Order
 
     public function removePayment(BetPayment $betPayment): self
     {
-        if ($this->betPayments->removeElement($betPayment)) {
-            // set the owning side to null (unless already changed)
-            if ($betPayment->getBetPaymentOrder() === $this) {
-                $betPayment->setBetPaymentOrder(null);
-            }
-        }
+       $this->betPayments->removeElement($betPayment);
 
         return $this;
     }

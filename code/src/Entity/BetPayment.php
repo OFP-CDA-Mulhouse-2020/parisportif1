@@ -38,12 +38,6 @@ final class BetPayment
      */
     private string $description;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="betPayments")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private Order $betPaymentOrder;
-
 
     public function getId(): int
     {
@@ -82,18 +76,6 @@ final class BetPayment
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getBetPaymentOrder(): Order
-    {
-        return $this->betPaymentOrder;
-    }
-
-    public function setBetPaymentOrder(Order $betPaymentOrder): self
-    {
-        $this->betPaymentOrder = $betPaymentOrder;
 
         return $this;
     }
