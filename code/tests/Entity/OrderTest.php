@@ -5,100 +5,98 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\Order;
+use App\Tests\GeneralTestMethod;
+use DateTimeInterface;
 use DateTime;
+use DateTimeImmutable;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class OrderTest extends KernelTestCase
 {
-    private ?Order $order;
-    private ?ValidatorInterface $validator;
+    private Order $order;
+    private ValidatorInterface $validator;
+
 
     protected function setUp(): void
     {
         $this->order = new Order();
 
-        $kernel = self::bootKernel();
-        $kernel->boot();
-        $this->validator = $kernel->getContainer()->get("validator");
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
-    public function testInstanceOfOrder(): void
+    /********
+     * Test *
+     ********/
+
+    /** @dataProvider validOrderDate */
+    public function testSetValidOrderDate(DateTimeInterface $validDate): void
     {
-        $this->assertInstanceOf(Order::class, $this->order);
-        $this->assertClassHasAttribute("date", Order::class);
-        $this->assertClassHasAttribute("total", Order::class);
+        $this->order->setDate($validDate);
+
+        $violationList = $this->validator->validate($this->order);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("date", $violationList);
+        $obtainedValue = $this->order->getDate();
+
+        $this->assertSame($validDate, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    /**
-     * @dataProvider validOrderDate
-     */
-    public function testSetValidOrderDate($date)
+    /** @dataProvider validOrderTotal */
+    public function testSetValidOrderTotal(int $validTotal): void
     {
-        $this->order->setDate($date);
-        $errorsList = $this->validator->validate($this->order);
-        $this->assertEquals(1, count($errorsList));
+        $this->order->setTotal($validTotal);
+
+        $violationList = $this->validator->validate($this->order);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("total", $violationList);
+        $obtainedValue = $this->order->getTotal();
+
+        $this->assertSame($validTotal, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    public function validOrderDate(): array
+    /** @dataProvider invalidOrderTotal */
+    public function testSetInvalidOrderTotal(int $invalidTotal): void
     {
-        return [
-            [new DateTime('@' . strtotime('now'))],
-        ];
+        $this->order->setTotal($invalidTotal);
+
+        $violationList = $this->validator->validate($this->order);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("total", $violationList);
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
     }
 
-    /**
-     * @dataProvider invalidOrderDate
-     */
-    public function testSetInvalidOrderDate($date)
+    /*****************
+     * Data Provider *
+     *****************/
+
+    /** @return Generator<array<int, DateTimeInterface>> */
+    public function validOrderDate(): Generator
     {
-        $this->order->setDate($date);
-        $errorsList = $this->validator->validate($this->order);
-        $this->assertGreaterThan(0, count($errorsList));
+        yield [new DateTime()];
+        yield [new DateTimeImmutable()];
+        yield [new DateTime("now + 2 minutes")];
+        yield [new DateTimeImmutable("now + 2 minutes")];
+        yield [new DateTime("now + 2 weeks")];
+        yield [new DateTimeImmutable("now + 2 weeks")];
     }
 
-    public function invalidOrderDate(): array
+    /** @return Generator<array<int, int>> */
+    public function validOrderTotal(): Generator
     {
-        return [
-            [new DateTime('@' . strtotime('now -1 minute'))]
-        ];
+        yield [100];
+        yield [1];
+        yield [2000];
     }
 
-
-    /**
-     * @dataProvider validOrderTotal
-     */
-    public function testSetValidOrderTotal(int $total): void
+    /** @return Generator<array<int, int>> */
+    public function invalidOrderTotal(): Generator
     {
-        $this->order->setTotal($total);
-        $errorsList = $this->validator->validate($this->order);
-        $this->assertEquals(0, count($errorsList));
-    }
-
-    public function validOrderTotal(): array
-    {
-        return [[100]];
-    }
-
-    /**
-     * @dataProvider invalidOrderTotal
-     */
-    public function testSetInvalidOrderTotal(int $total): void
-    {
-        $this->order->setTotal($total);
-        $errorsList = $this->validator->validate($this->order);
-        $this->assertGreaterThan(0, count($errorsList));
-    }
-
-    public function invalidOrderTotal(): array
-    {
-        return [[0], [-100]];
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-        $this->order = null;
-        $this->validator = null;
+        yield [0];
+        yield [-1];
+        yield [-100];
+        yield [-2000];
     }
 }
