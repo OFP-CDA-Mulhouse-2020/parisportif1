@@ -8,10 +8,13 @@ use App\Repository\WalletRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=WalletRepository::class)
+ * @UniqueEntity("id")
  */
 class Wallet
 {
@@ -24,21 +27,10 @@ class Wallet
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Assert\GreaterThanOrEqual(0)
      */
     private int $balance;
-
-    /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="wallet", cascade={"persist", "remove"})
-     */
-    private User $user;
-
-    /**
-     * @var Collection<int, BetPayment>
-     *
-     * @ORM\OneToMany(targetEntity=BetPayment::class, mappedBy="wallet", orphanRemoval=true)
-     */
-    private Collection $betPayments;
 
     /**
      * @var Collection<int, WalletPayment>
@@ -50,7 +42,6 @@ class Wallet
 
     public function __construct()
     {
-        $this->betPayments = new ArrayCollection();
         $this->walletPaymentHistory = new ArrayCollection();
     }
 
@@ -71,51 +62,6 @@ class Wallet
         return $this;
     }
 
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        // set the owning side of the relation if necessary
-        if ($user->getWallet() !== $this) {
-            $user->setWallet($this);
-        }
-
-        return $this;
-    }
-
-    /** @return Collection<int, BetPayment> */
-    public function getBetPayments(): Collection
-    {
-        return $this->betPayments;
-    }
-
-    public function addPayment(BetPayment $betPayment): self
-    {
-        if (!$this->betPayments->contains($betPayment)) {
-            $this->betPayments[] = $betPayment;
-            $betPayment->setWallet($this);
-        }
-
-        return $this;
-    }
-
-    public function removePayment(BetPayment $betPayment): self
-    {
-        if ($this->betPayments->removeElement($betPayment)) {
-            // set the owning side to null (unless already changed)
-            if ($betPayment->getWallet() === $this) {
-                $betPayment->setWallet(null);
-            }
-        }
-
-        return $this;
-    }
-
     /** @return Collection<int, WalletPayment> */
     public function getWalletPaymentHistory(): Collection
     {
@@ -125,8 +71,7 @@ class Wallet
     public function addWalletPaymentHistory(WalletPayment $walletPaymentHistory): self
     {
         if (!$this->walletPaymentHistory->contains($walletPaymentHistory)) {
-            $this->walletPaymentHistory[] = $walletPaymentHistory;
-            $walletPaymentHistory->setWallet($this);
+            $this->walletPaymentHistory->add($walletPaymentHistory);
         }
 
         return $this;
@@ -134,13 +79,22 @@ class Wallet
 
     public function removeWalletPaymentHistory(WalletPayment $walletPaymentHistory): self
     {
-        if ($this->walletPaymentHistory->removeElement($walletPaymentHistory)) {
-            // set the owning side to null (unless already changed)
-            if ($walletPaymentHistory->getWallet() === $this) {
-                $walletPaymentHistory->setWallet(null);
-            }
-        }
+        $this->walletPaymentHistory->removeElement($walletPaymentHistory);
 
         return $this;
+    }
+
+    /** @Assert\Callback */
+    public function validateWalletPaymentHistory(ExecutionContextInterface $context): void
+    {
+        $validator = $context->getValidator();
+
+        foreach ($this->walletPaymentHistory as $walletPayment) {
+            if ($validator->validate($walletPayment)->count() > 0) {
+                $context->buildViolation("walletPaymentHistory contain a non valid WalletPayment")
+                    ->atPath("walletPaymentHistory")
+                    ->addViolation();
+            }
+        }
     }
 }
