@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
-use App\Entity\Payment;
+use App\Entity\BetPayment;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class PaymentTest extends KernelTestCase
 {
-    private $payment;
+    private $betPayment;
     private $validator;
 
     protected function setUp(): void
     {
-        $this->payment = new Payment();
+        $this->betPayment = new BetPayment();
 
         $kernel = self::bootKernel();
         $kernel->boot();
@@ -24,12 +24,12 @@ final class PaymentTest extends KernelTestCase
 
     public function testInstanceOfPayment(): void
     {
-        $this->assertInstanceOf(Payment::class, $this->payment);
-        $this->assertClassHasAttribute("amount", Payment::class);
-        $this->assertClassHasAttribute("paymentDate", Payment::class);
-        $this->assertClassHasAttribute("transactionID", Payment::class);
-        $this->assertClassHasAttribute("description", Payment::class);
-        $this->assertClassHasAttribute("wallet", Payment::class);
+        $this->assertInstanceOf(BetPayment::class, $this->betPayment);
+        $this->assertClassHasAttribute("amount", BetPayment::class);
+        $this->assertClassHasAttribute("betPaymentDate", BetPayment::class);
+        $this->assertClassHasAttribute("transactionID", BetPayment::class);
+        $this->assertClassHasAttribute("description", BetPayment::class);
+        $this->assertClassHasAttribute("wallet", BetPayment::class);
     }
 
     /**
@@ -37,8 +37,8 @@ final class PaymentTest extends KernelTestCase
      */
     public function testSetValidAmount($amount)
     {
-        $this->payment->setAmount($amount);
-        $errorsList = $this->validator->validate($this->payment);
+        $this->betPayment->setAmount($amount);
+        $errorsList = $this->validator->validate($this->betPayment);
         $this->assertEquals(0, count($errorsList));
     }
 
@@ -57,8 +57,8 @@ final class PaymentTest extends KernelTestCase
      */
     public function testSetInvalidAmount($amount)
     {
-        $this->payment->setAmount($amount);
-        $errorsList = $this->validator->validate($this->payment);
+        $this->betPayment->setAmount($amount);
+        $errorsList = $this->validator->validate($this->betPayment);
         $this->assertGreaterThan(0, count($errorsList));
     }
 
@@ -73,10 +73,10 @@ final class PaymentTest extends KernelTestCase
     /**
      * @dataProvider validPaymentDateProvider
      */
-    public function testSetValidPaymentDate($paymentDate)
+    public function testSetValidPaymentDate($betPaymentDate)
     {
-        $this->payment->setPaymentDate($paymentDate);
-        $errorsList = $this->validator->validate($this->payment);
+        $this->betPayment->setBetPaymentDate($betPaymentDate);
+        $errorsList = $this->validator->validate($this->betPayment);
         $this->assertEquals(0, count($errorsList));
     }
 
@@ -93,8 +93,8 @@ final class PaymentTest extends KernelTestCase
      */
     public function testSetInvalidTransactionID(string $transactionID): void
     {
-        $this->payment->setTransactionID($transactionID);
-        $errorsList = $this->validator->validate($this->payment);
+        $this->betPayment->setTransactionID($transactionID);
+        $errorsList = $this->validator->validate($this->betPayment);
         $this->assertGreaterThan(0, count($errorsList));
     }
 
@@ -112,8 +112,8 @@ final class PaymentTest extends KernelTestCase
      */
     public function testSetValidTransactionID($transactionID)
     {
-        $this->payment->setTransactionID($transactionID);
-        $errorsList = $this->validator->validate($this->payment);
+        $this->betPayment->setTransactionID($transactionID);
+        $errorsList = $this->validator->validate($this->betPayment);
         $this->assertEquals(0, count($errorsList));
     }
 
@@ -131,8 +131,8 @@ final class PaymentTest extends KernelTestCase
      */
     public function testSetValidDescription($description)
     {
-        $this->payment->setDescription($description);
-        $errorsList = $this->validator->validate($this->payment);
+        $this->betPayment->setDescription($description);
+        $errorsList = $this->validator->validate($this->betPayment);
         $this->assertEquals(0, count($errorsList));
     }
 
@@ -151,8 +151,8 @@ final class PaymentTest extends KernelTestCase
      */
     public function testSetInvalidDescription($description)
     {
-        $this->payment->setDescription($description);
-        $errorsList = $this->validator->validate($this->payment);
+        $this->betPayment->setDescription($description);
+        $errorsList = $this->validator->validate($this->betPayment);
         $this->assertGreaterThan(0, count($errorsList));
     }
 

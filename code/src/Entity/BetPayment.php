@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\PaymentRepository;
+use App\Repository\BetPaymentRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=PaymentRepository::class)
+ * @ORM\Entity(repositoryClass=BetPaymentRepository::class)
  */
-final class Payment
+final class BetPayment
 {
     /**
      * @ORM\Id
@@ -30,7 +30,7 @@ final class Payment
     /**
      * @ORM\Column(type="datetime")
      */
-    private DateTimeInterface $paymentDate;
+    private DateTimeInterface $betPaymentDate;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -45,16 +45,16 @@ final class Payment
     private string $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Wallet::class, inversedBy="payments")
+     * @ORM\ManyToOne(targetEntity=Wallet::class, inversedBy="betPayments")
      * @ORM\JoinColumn(nullable=false)
      */
     private Wallet $wallet;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="payments")
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="betPayments")
      * @ORM\JoinColumn(nullable=false)
      */
-    private Order $paymentOrder;
+    private Order $betPaymentOrder;
 
 
     public function getId(): int
@@ -74,14 +74,14 @@ final class Payment
         return $this;
     }
 
-    public function getPaymentDate(): DateTimeInterface
+    public function getBetPaymentDate(): DateTimeInterface
     {
-        return $this->paymentDate;
+        return $this->betPaymentDate;
     }
 
-    public function setPaymentDate(DateTimeInterface $paymentDate): self
+    public function setBetPaymentDate(DateTimeInterface $betPaymentDate): self
     {
-        $this->paymentDate = $paymentDate;
+        $this->betPaymentDate = $betPaymentDate;
 
         return $this;
     }
@@ -122,14 +122,14 @@ final class Payment
         return $this;
     }
 
-    public function getPaymentOrder(): Order
+    public function getBetPaymentOrder(): Order
     {
-        return $this->paymentOrder;
+        return $this->betPaymentOrder;
     }
 
-    public function setPaymentOrder(Order $paymentOrder): self
+    public function setBetPaymentOrder(Order $betPaymentOrder): self
     {
-        $this->paymentOrder = $paymentOrder;
+        $this->betPaymentOrder = $betPaymentOrder;
 
         return $this;
     }

@@ -50,16 +50,16 @@ class Order
     private Bet $bet;
 
     /**
-     * @var Collection<int, Payment>
+     * @var Collection<int, BetPayment>
      *
-     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="paymentOrder", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=BetPayment::class, mappedBy="betPaymentOrder", orphanRemoval=true)
      */
-    private Collection $payments;
+    private Collection $betPayments;
 
 
     public function __construct()
     {
-        $this->payments = new ArrayCollection();
+        $this->betPayments = new ArrayCollection();
     }
 
     public function getId(): int
@@ -116,29 +116,29 @@ class Order
     }
 
     /**
-     * @return Collection<int, Payment>
+     * @return Collection<int, BetPayment>
      */
-    public function getPayments(): Collection
+    public function getBetPayments(): Collection
     {
-        return $this->payments;
+        return $this->betPayments;
     }
 
-    public function addPayment(Payment $payment): self
+    public function addPayment(BetPayment $betPayment): self
     {
-        if (!$this->payments->contains($payment)) {
-            $this->payments[] = $payment;
-            $payment->setPaymentOrder($this);
+        if (!$this->betPayments->contains($betPayment)) {
+            $this->betPayments[] = $betPayment;
+            $betPayment->setBetPaymentOrder($this);
         }
 
         return $this;
     }
 
-    public function removePayment(Payment $payment): self
+    public function removePayment(BetPayment $betPayment): self
     {
-        if ($this->payments->removeElement($payment)) {
+        if ($this->betPayments->removeElement($betPayment)) {
             // set the owning side to null (unless already changed)
-            if ($payment->getPaymentOrder() === $this) {
-                $payment->setPaymentOrder(null);
+            if ($betPayment->getBetPaymentOrder() === $this) {
+                $betPayment->setBetPaymentOrder(null);
             }
         }
 

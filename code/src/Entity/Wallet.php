@@ -34,15 +34,15 @@ class Wallet
     private User $user;
 
     /**
-     * @var Collection<int, Payment>
+     * @var Collection<int, BetPayment>
      *
-     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="wallet", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=BetPayment::class, mappedBy="wallet", orphanRemoval=true)
      */
-    private Collection $payments;
+    private Collection $betPayments;
 
     public function __construct()
     {
-        $this->payments = new ArrayCollection();
+        $this->betPayments = new ArrayCollection();
     }
 
     public function getId(): int
@@ -79,28 +79,28 @@ class Wallet
         return $this;
     }
 
-    /** @return Collection<int, Payment> */
-    public function getPayments(): Collection
+    /** @return Collection<int, BetPayment> */
+    public function getBetPayments(): Collection
     {
-        return $this->payments;
+        return $this->betPayments;
     }
 
-    public function addPayment(Payment $payment): self
+    public function addPayment(BetPayment $betPayment): self
     {
-        if (!$this->payments->contains($payment)) {
-            $this->payments[] = $payment;
-            $payment->setWallet($this);
+        if (!$this->betPayments->contains($betPayment)) {
+            $this->betPayments[] = $betPayment;
+            $betPayment->setWallet($this);
         }
 
         return $this;
     }
 
-    public function removePayment(Payment $payment): self
+    public function removePayment(BetPayment $betPayment): self
     {
-        if ($this->payments->removeElement($payment)) {
+        if ($this->betPayments->removeElement($betPayment)) {
             // set the owning side to null (unless already changed)
-            if ($payment->getWallet() === $this) {
-                $payment->setWallet(null);
+            if ($betPayment->getWallet() === $this) {
+                $betPayment->setWallet(null);
             }
         }
 
