@@ -15,7 +15,7 @@ hide empty members
 skinparam linetype ortho
 caption CDA Bet Class Diagram
 footer Joël L & Bertrand C & Etienne S
-header Last updated 26/01/2021
+header Last updated 05/02/2021
 title CDA Bet
 
 namespace CdaBet {
@@ -115,7 +115,6 @@ namespace CdaBet {
     class WalletPayment {
         -Int amount
         -Date date
-        -Bool action
         -String transactionID
     }
 
