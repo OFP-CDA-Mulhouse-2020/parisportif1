@@ -69,6 +69,20 @@ class Wallet
         return $this;
     }
 
+    public function addToBalance(int $valueToAdd): self
+    {
+        $this->balance += $valueToAdd;
+
+        return $this;
+    }
+
+    public function removeFromBalance(int $valueToRemove): self
+    {
+        $this->balance -= $valueToRemove;
+
+        return $this;
+    }
+
     /** @return Collection<int, WalletPayment> */
     public function getWalletPaymentHistory(): Collection
     {

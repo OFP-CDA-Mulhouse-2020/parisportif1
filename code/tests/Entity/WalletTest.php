@@ -107,6 +107,35 @@ final class WalletTest extends KernelTestCase
         $this->assertFalse($violationOnAttribute);
     }
 
+    /** @dataProvider amountProvider */
+    public function testAddToBalance(int $amount): void
+    {
+        $this->wallet->setBalance(0);
+        $this->wallet->addToBalance($amount);
+
+        $violationList = $this->validator->validate($this->wallet);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("balance", $violationList);
+        $obtainedValue = $this->wallet->getBalance();
+
+        $this->assertSame($amount, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @dataProvider amountProvider */
+    public function testRemoveFromBalance(int $amount): void
+    {
+        $defaultBalanceValue = 50;
+        $this->wallet->setBalance($defaultBalanceValue + $amount);
+        $this->wallet->removeFromBalance($amount);
+
+        $violationList = $this->validator->validate($this->wallet);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("balance", $violationList);
+        $obtainedValue = $this->wallet->getBalance();
+
+        $this->assertSame($defaultBalanceValue, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
+    }
+
     /***********************
      **** Data Provider ****
      ***********************/
@@ -151,5 +180,14 @@ final class WalletTest extends KernelTestCase
     {
         yield [(new WalletPayment())->setAmount(500)];
         yield [(new WalletPayment())->setDate(new DateTime())];
+    }
+
+    /** @return Generator<array<int, int>> * */
+    public function amountProvider(): Generator
+    {
+        yield [200];
+        yield [300];
+        yield [5000];
+        yield [10000];
     }
 }
