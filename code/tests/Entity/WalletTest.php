@@ -63,7 +63,7 @@ final class WalletTest extends KernelTestCase
     /** @dataProvider validWalletPaymentProvider */
     public function testAddValidPaymentToHistory(WalletPayment $validWalletPayment): void
     {
-        $this->wallet->addWalletPaymentHistory($validWalletPayment);
+        $this->wallet->addWalletPaymentToHistory($validWalletPayment);
 
         $violationList = $this->validator->validate($this->wallet, null, ['updatePaymentHistory']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);
@@ -76,7 +76,7 @@ final class WalletTest extends KernelTestCase
     /** @dataProvider invalidWalletPaymentProvider */
     public function testAddInvalidPaymentToHistory(WalletPayment $invalidPayment): void
     {
-        $this->wallet->addWalletPaymentHistory($invalidPayment);
+        $this->wallet->addWalletPaymentToHistory($invalidPayment);
 
         $violationList = $this->validator->validate($this->wallet, null, ['updatePaymentHistory']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);
@@ -88,7 +88,7 @@ final class WalletTest extends KernelTestCase
     /** @dataProvider validWalletPaymentProvider */
     public function testRemovePaymentFromHistory(WalletPayment $payment): void
     {
-        $this->wallet->addWalletPaymentHistory($payment);
+        $this->wallet->addWalletPaymentToHistory($payment);
 
         $violationList = $this->validator->validate($this->wallet, null, ['updatePaymentHistory']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);
@@ -97,7 +97,7 @@ final class WalletTest extends KernelTestCase
         $this->assertContains($payment, $obtainedValue);
         $this->assertFalse($violationOnAttribute);
 
-        $this->wallet->removeWalletPaymentHistory($payment);
+        $this->wallet->removeWalletPaymentFromHistory($payment);
 
         $violationList = $this->validator->validate($this->wallet);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);

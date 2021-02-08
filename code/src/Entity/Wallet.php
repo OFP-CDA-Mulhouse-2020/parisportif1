@@ -75,7 +75,7 @@ class Wallet
         return $this->walletPaymentHistory;
     }
 
-    public function addWalletPaymentHistory(WalletPayment $walletPaymentHistory): self
+    public function addWalletPaymentToHistory(WalletPayment $walletPaymentHistory): self
     {
         if (!$this->walletPaymentHistory->contains($walletPaymentHistory)) {
             $this->walletPaymentHistory->add($walletPaymentHistory);
@@ -84,7 +84,7 @@ class Wallet
         return $this;
     }
 
-    public function removeWalletPaymentHistory(WalletPayment $walletPaymentHistory): self
+    public function removeWalletPaymentFromHistory(WalletPayment $walletPaymentHistory): self
     {
         $this->walletPaymentHistory->removeElement($walletPaymentHistory);
 
