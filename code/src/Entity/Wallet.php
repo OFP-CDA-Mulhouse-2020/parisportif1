@@ -28,7 +28,7 @@ class Wallet
     /**
      * @ORM\Column(type="integer")
      *
-     * @Assert\GreaterThanOrEqual(0)
+     * @Assert\GreaterThanOrEqual(value=0, groups={"changeWalletBalance"})
      */
     private int $balance;
 
@@ -91,13 +91,13 @@ class Wallet
         return $this;
     }
 
-    /** @Assert\Callback */
+    /** @Assert\Callback(groups={"updatePaymentHistory"}) */
     public function validateWalletPaymentHistory(ExecutionContextInterface $context): void
     {
         $validator = $context->getValidator();
 
         foreach ($this->walletPaymentHistory as $walletPayment) {
-            if ($validator->validate($walletPayment)->count() > 0) {
+            if ($validator->validate($walletPayment, null, ['newWalletPayment'])->count() > 0) {
                 $context->buildViolation("walletPaymentHistory contain a non valid WalletPayment")
                     ->atPath("walletPaymentHistory")
                     ->addViolation();

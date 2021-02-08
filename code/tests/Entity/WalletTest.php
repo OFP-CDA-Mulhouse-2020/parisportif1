@@ -40,7 +40,7 @@ final class WalletTest extends KernelTestCase
     {
         $this->wallet->setBalance($validBalance);
 
-        $violationList = $this->validator->validate($this->wallet);
+        $violationList = $this->validator->validate($this->wallet, null, ['changeWalletBalance']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("balance", $violationList);
         $obtainedValue = $this->wallet->getBalance();
 
@@ -53,7 +53,7 @@ final class WalletTest extends KernelTestCase
     {
         $this->wallet->setBalance($invalidBalance);
 
-        $violationList = $this->validator->validate($this->wallet);
+        $violationList = $this->validator->validate($this->wallet, null, ['changeWalletBalance']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("balance", $violationList);
 
         $this->assertGreaterThanOrEqual(1, count($violationList));
@@ -65,7 +65,7 @@ final class WalletTest extends KernelTestCase
     {
         $this->wallet->addWalletPaymentHistory($validWalletPayment);
 
-        $violationList = $this->validator->validate($this->wallet);
+        $violationList = $this->validator->validate($this->wallet, null, ['updatePaymentHistory']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);
         $obtainedValue = $this->wallet->getWalletPaymentHistory();
 
@@ -78,7 +78,7 @@ final class WalletTest extends KernelTestCase
     {
         $this->wallet->addWalletPaymentHistory($invalidPayment);
 
-        $violationList = $this->validator->validate($this->wallet);
+        $violationList = $this->validator->validate($this->wallet, null, ['updatePaymentHistory']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);
 
         $this->assertGreaterThanOrEqual(1, count($violationList));
@@ -90,7 +90,7 @@ final class WalletTest extends KernelTestCase
     {
         $this->wallet->addWalletPaymentHistory($payment);
 
-        $violationList = $this->validator->validate($this->wallet);
+        $violationList = $this->validator->validate($this->wallet, null, ['updatePaymentHistory']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);
         $obtainedValue = $this->wallet->getWalletPaymentHistory();
 
