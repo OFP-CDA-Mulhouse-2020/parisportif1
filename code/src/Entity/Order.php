@@ -44,7 +44,7 @@ class Order
      *
      * @ORM\ManyToMany(targetEntity=BetPayment::class)
      * @ORM\JoinTable(
-     *     inverseJoinColumns={@ORM\JoinColumn(unique=true)}
+     *     inverseJoinColumns={@ORM\JoinColumn(unique=true, nullable=false)}
      * )
      *
      * Not a ManyToMany! JoinColumn is set to unique for inverseJoinColumns.
@@ -57,7 +57,7 @@ class Order
      *
      * @ORM\ManyToMany(targetEntity=BetPayment::class)
      * @ORM\JoinTable(
-     *     inverseJoinColumns={@ORM\JoinColumn(unique=true)}
+     *     inverseJoinColumns={@ORM\JoinColumn(unique=true, nullable=false)}
      * )
      *
      * Not a ManyToMany! JoinColumn is set to unique for inverseJoinColumns.
