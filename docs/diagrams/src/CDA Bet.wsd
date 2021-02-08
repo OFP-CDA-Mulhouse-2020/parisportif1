@@ -15,7 +15,7 @@ hide empty members
 skinparam linetype ortho
 caption CDA Bet Class Diagram
 footer Joël L & Bertrand C & Etienne S
-header Last updated 08/02/2021
+header Last updated 09/02/2021
 title CDA Bet
 
 namespace CdaBet {
@@ -67,21 +67,29 @@ namespace CdaBet {
     ' Manage the website user
     ' Abstract class for people to extend later
     class User {
-        -String gender
-        -String lastname
-        -String firstname
-        -String address
-        -String timeZone
-        -String country
-        -String city
-        -Int postcode
-        -Date birthdate
-        -Int phonenumber
+        -Array roles
+        ..Personal data..
         -String email
         -String password
-        -Bool active
-        -Bool verified
-        -Float maximunWeeklyBet
+        -String lastname
+        -String firstName
+        -Date birthdate
+        -String country
+        -String timeZone
+        -String gender
+        -String address
+        -String city
+        -Int postcode
+        -Int phonenumber
+        ..Dates..
+        -Date createdAt
+        -Date|null activatedAt
+        -Date|null suspendedAt
+        -Date|null deletedAt
+        ..Status..
+        -Bool activated
+        -Bool suspended
+        -Bool deleted
     }
 
     class Wallet {
