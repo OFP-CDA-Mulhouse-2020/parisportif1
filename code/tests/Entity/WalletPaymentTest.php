@@ -37,7 +37,7 @@ class WalletPaymentTest extends KernelTestCase
     {
         $this->walletPayment->setDate($date);
 
-        $violationList = $this->validator->validate($this->walletPayment);
+        $violationList = $this->validator->validate($this->walletPayment, null, ['newWalletPayment', 'Default']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("date", $violationList);
         $obtainedValue = $this->walletPayment->getDate();
 
@@ -50,7 +50,7 @@ class WalletPaymentTest extends KernelTestCase
     {
         $this->walletPayment->setTransactionID($transactionId);
 
-        $violationList = $this->validator->validate($this->walletPayment);
+        $violationList = $this->validator->validate($this->walletPayment, null, ['newWalletPayment', 'Default']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("transactionID", $violationList);
         $obtainedValue = $this->walletPayment->getTransactionID();
 
@@ -63,7 +63,7 @@ class WalletPaymentTest extends KernelTestCase
     {
         $this->walletPayment->setAmount($amount);
 
-        $violationList = $this->validator->validate($this->walletPayment);
+        $violationList = $this->validator->validate($this->walletPayment, null, ['newWalletPayment', 'Default']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("amount", $violationList);
         $obtainedValue = $this->walletPayment->getAmount();
 

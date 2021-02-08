@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\WalletPaymentRepository;
-use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,14 +22,14 @@ class WalletPayment
     /**
      * @ORM\Column(type="datetime_immutable")
      *
-     * @Assert\NotNull
+     * @Assert\NotNull(groups={"newWalletPayment"})
      */
     private DateTimeInterface $date;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @Assert\NotNull
+     * @Assert\NotNull(groups={"newWalletPayment"})
      *
      * @TODO Specific validate one standardized
      */
@@ -39,7 +38,7 @@ class WalletPayment
     /**
      * @ORM\Column(type="integer")
      *
-     * @Assert\NotNull
+     * @Assert\NotNull(groups={"newWalletPayment"})
      */
     private int $amount;
 
