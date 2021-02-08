@@ -15,12 +15,9 @@ abstract class GeneralTestMethod extends WebTestCase
 {
     public static function getKernel(): KernelInterface
     {
-        $kernel = self::bootKernel();
-        $kernel->boot();
-        return $kernel;
+        return self::bootKernel();
     }
 
-    /** @return ValidatorInterface */
     public static function getValidator(): ValidatorInterface
     {
         /** @var ValidatorInterface $validator */
