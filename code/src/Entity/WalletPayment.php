@@ -5,10 +5,12 @@ namespace App\Entity;
 use App\Repository\WalletPaymentRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=WalletPaymentRepository::class)
+ * @UniqueEntity("id")
  */
 class WalletPayment
 {
