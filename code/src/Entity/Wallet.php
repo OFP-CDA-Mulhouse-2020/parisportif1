@@ -35,7 +35,13 @@ class Wallet
     /**
      * @var Collection<int, WalletPayment>
      *
-     * @ORM\OneToMany(targetEntity=WalletPayment::class, mappedBy="wallet", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity=WalletPayment::class)
+     * @ORM\JoinTable(
+     *     inverseJoinColumns={@ORM\JoinColumn(unique=true, nullable=false)}
+     * )
+     *
+     * Not a ManyToMany! JoinColumn is set to unique for inverseJoinColumns.
+     * For more details look at {@link https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/association-mapping.html#one-to-many-unidirectional-with-join-table}
      */
     private Collection $walletPaymentHistory;
 
@@ -45,6 +51,7 @@ class Wallet
         $this->walletPaymentHistory = new ArrayCollection();
     }
 
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
