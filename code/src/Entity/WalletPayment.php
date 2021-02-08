@@ -6,6 +6,7 @@ use App\Repository\WalletPaymentRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=WalletPaymentRepository::class)
@@ -21,20 +22,29 @@ class WalletPayment
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     *
+     * @Assert\NotNull
      */
     private DateTimeInterface $date;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotNull
+     *
+     * @TODO Specific validate one standardized
      */
     private string $transactionID;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Wallet::class, inversedBy="walletPaymentHistory")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="integer")
+     *
+     * @Assert\NotNull
      */
-    private Wallet $wallet;
+    private int $amount;
 
+
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
@@ -45,7 +55,7 @@ class WalletPayment
         return $this->date;
     }
 
-    public function setDate(DateTimeImmutable $date): self
+    public function setDate(DateTimeInterface $date): self
     {
         $this->date = $date;
 
@@ -64,14 +74,14 @@ class WalletPayment
         return $this;
     }
 
-    public function getWallet(): Wallet
+    public function getAmount(): int
     {
-        return $this->wallet;
+        return $this->amount;
     }
 
-    public function setWallet(Wallet $wallet): self
+    public function setAmount(int $amount): self
     {
-        $this->wallet = $wallet;
+        $this->amount = $amount;
 
         return $this;
     }
