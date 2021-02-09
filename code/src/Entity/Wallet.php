@@ -28,6 +28,7 @@ class Wallet
     /**
      * @ORM\Column(type="integer")
      *
+     * @Assert\NotBlank(groups={"changeWalletBalance"})
      * @Assert\GreaterThanOrEqual(value=0, groups={"changeWalletBalance"})
      */
     private int $balance;
@@ -37,7 +38,7 @@ class Wallet
      *
      * @ORM\ManyToMany(targetEntity=WalletPayment::class)
      * @ORM\JoinTable(
-     *     inverseJoinColumns={@ORM\JoinColumn(unique=true, nullable=false)}
+     *     inverseJoinColumns={@ORM\JoinColumn(unique=true)}
      * )
      *
      * Not a ManyToMany! JoinColumn is set to unique for inverseJoinColumns.
@@ -105,7 +106,7 @@ class Wallet
         return $this;
     }
 
-    /** @Assert\Callback(groups={"updatePaymentHistory"}) */
+    /** @Assert\Callback(groups={"updateWalletPaymentHistory"}) */
     public function validateWalletPaymentHistory(ExecutionContextInterface $context): void
     {
         $validator = $context->getValidator();

@@ -65,7 +65,7 @@ final class WalletTest extends KernelTestCase
     {
         $this->wallet->addWalletPaymentToHistory($validWalletPayment);
 
-        $violationList = $this->validator->validate($this->wallet, null, ['updatePaymentHistory']);
+        $violationList = $this->validator->validate($this->wallet, null, ['updateWalletPaymentHistory']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);
         $obtainedValue = $this->wallet->getWalletPaymentHistory();
 
@@ -78,7 +78,7 @@ final class WalletTest extends KernelTestCase
     {
         $this->wallet->addWalletPaymentToHistory($invalidPayment);
 
-        $violationList = $this->validator->validate($this->wallet, null, ['updatePaymentHistory']);
+        $violationList = $this->validator->validate($this->wallet, null, ['updateWalletPaymentHistory']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);
 
         $this->assertGreaterThanOrEqual(1, count($violationList));
@@ -90,7 +90,7 @@ final class WalletTest extends KernelTestCase
     {
         $this->wallet->addWalletPaymentToHistory($payment);
 
-        $violationList = $this->validator->validate($this->wallet, null, ['updatePaymentHistory']);
+        $violationList = $this->validator->validate($this->wallet, null, ['updateWalletPaymentHistory']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("walletPaymentHistory", $violationList);
         $obtainedValue = $this->wallet->getWalletPaymentHistory();
 
