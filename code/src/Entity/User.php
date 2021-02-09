@@ -7,14 +7,15 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity("id")
+ * @UniqueEntity("email")
  */
 class User implements UserInterface
 {
@@ -26,13 +27,6 @@ class User implements UserInterface
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(groups={"create", "read"})
-     * @Assert\Email(groups={"create", "read"})
-     */
-    private string $email;
-
-    /**
      * @var array<int, string>
      *
      * @ORM\Column(type="json")
@@ -40,42 +34,89 @@ class User implements UserInterface
     private array $roles = [];
 
     /**
+     * Personal data
+     */
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     *
+     * @Assert\NotBlank(groups={"registerUser", "updateUser"})
+     * @Assert\Email(mode="strict", groups={"registerUser", "updateUser"})
+     */
+    private string $email;
+
+    /**
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"update"})
+     *
+     * @Assert\NotBlank(groups={"registerUser", "updateUser"})
      */
     private string $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"update"})
+     *
+     * @Assert\NotBlank(groups={"registerUser", "updateUser"})
+     * @Assert\Regex(
+     *     pattern="/^\p{L}+(?:[' -]\p{L}+)*$/u",
+     *     groups={"registerUser", "updateUser"}
+     * )
      */
     private string $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(groups={"update"})
+     *
+     * @Assert\NotBlank(groups={"registerUser", "updateUser"})
+     * @Assert\Regex(
+     *     pattern="/^\p{L}+(?:[' -]\p{L}+)*$/u",
+     *     groups={"registerUser", "updateUser"}
+     * )
      */
     private string $firstname;
 
     /**
      * @ORM\Column(type="date_immutable")
+     *
+     * @Assert\LessThanOrEqual(value="-18 years", groups={"registerUser"})
      */
     private DateTimeInterface $birthdate;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(groups={"registerUser", "updateUser"})
+     * @Assert\Country(groups={"registerUser", "updateUser"})
      */
-    private bool $active;
+    private string $countryCode;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(groups={"registerUser", "updateUser"})
+     * @Assert\Timezone(groups={"registerUser", "updateUser"})
      */
-    private bool $suspended;
+    private string $timeZone;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @TODO Add missing attribute :
+     *        - Gender
+     *        - Address
+     *        - City
+     *        - PostCode
+     *        - PhoneNumber
      */
-    private bool $deleted;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Wallet::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid(groups={"registerUser", "updateWalletPaymentHistory", "changeWalletBalance"})
+     */
+    private Wallet $wallet;
+
+    /**
+     * Dates
+     */
 
     /**
      * @ORM\Column(type="date_immutable")
@@ -98,24 +139,23 @@ class User implements UserInterface
     private ?DateTimeInterface $deletedSince;
 
     /**
-     * @ORM\OneToOne(targetEntity=Wallet::class, inversedBy="user", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * Status
      */
-    private Wallet $wallet;
 
     /**
-     * @var Collection<int, Order>
-     *
-     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\Column(type="boolean")
      */
-    private Collection $orders;
+    private bool $active;
 
     /**
-     * @var Collection<int, Bet>
-     *
-     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\Column(type="boolean")
      */
-    private Collection $bets;
+    private bool $suspended;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $deleted;
 
 
     public function __construct()
@@ -129,14 +169,36 @@ class User implements UserInterface
         $this->deletedSince = null;
 
         $this->creationDate = new DateTimeImmutable();
-
-        $this->orders = new ArrayCollection();
-        $this->bets = new ArrayCollection();
     }
 
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @see UserInterface
+     * @codeCoverageIgnore
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param array<int, string> $roles
+     * @codeCoverageIgnore
+     */
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getEmail(): string
@@ -155,6 +217,7 @@ class User implements UserInterface
      * A visual identifier that represents this user.
      *
      * @see UserInterface
+     * @codeCoverageIgnore
      */
     public function getUsername(): string
     {
@@ -163,32 +226,14 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    /** @param array<int, string> $roles */
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
-     * @see UserInterface
+     * @codeCoverageIgnore
      */
     public function getPassword(): string
     {
         return $this->password;
     }
 
+    /** @codeCoverageIgnore */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -198,6 +243,7 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
+     * @codeCoverageIgnore
      */
     public function getSalt(): ?string
     {
@@ -207,6 +253,7 @@ class User implements UserInterface
 
     /**
      * @see UserInterface
+     * @codeCoverageIgnore
      */
     public function eraseCredentials(): void
     {
@@ -250,86 +297,26 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getActive(): bool
+    public function getCountryCode(): string
     {
-        return $this->active;
+        return $this->countryCode;
     }
 
-    public function setActive(bool $active): self
+    public function setCountryCode(string $countryCode): self
     {
-        $this->active = $active;
+        $this->countryCode = $countryCode;
 
         return $this;
     }
 
-    public function getSuspended(): bool
+    public function getTimeZone(): string
     {
-        return $this->suspended;
+        return $this->timeZone;
     }
 
-    public function setSuspended(bool $suspended): self
+    public function setTimeZone(string $timeZone): self
     {
-        $this->suspended = $suspended;
-
-        return $this;
-    }
-
-    public function getDeleted(): bool
-    {
-        return $this->deleted;
-    }
-
-    public function setDeleted(bool $deleted): self
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    public function getCreationDate(): DateTimeInterface
-    {
-        return $this->creationDate;
-    }
-
-    public function setCreationDate(DateTimeInterface $creationDate): self
-    {
-        $this->creationDate = $creationDate;
-
-        return $this;
-    }
-
-    public function getActiveSince(): ?DateTimeInterface
-    {
-        return $this->activeSince;
-    }
-
-    public function setActiveSince(?DateTimeInterface $activeSince): self
-    {
-        $this->activeSince = $activeSince;
-
-        return $this;
-    }
-
-    public function getSuspendedSince(): ?DateTimeInterface
-    {
-        return $this->suspendedSince;
-    }
-
-    public function setSuspendedSince(?DateTimeInterface $suspendedSince): self
-    {
-        $this->suspendedSince = $suspendedSince;
-
-        return $this;
-    }
-
-    public function getDeletedSince(): ?DateTimeInterface
-    {
-        return $this->deletedSince;
-    }
-
-    public function setDeletedSince(?DateTimeInterface $deletedSince): self
-    {
-        $this->deletedSince = $deletedSince;
+        $this->timeZone = $timeZone;
 
         return $this;
     }
@@ -342,61 +329,146 @@ class User implements UserInterface
     public function setWallet(Wallet $wallet): self
     {
         $this->wallet = $wallet;
-        return $this;
-    }
-
-    /** @return Collection<int, Order> */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Order $order): self
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->setUser($this);
-        }
 
         return $this;
     }
 
-    public function removeOrder(Order $order): self
+    /**
+     * @TODO Correctly test once setters correctly configured
+     * @codeCoverageIgnore
+     */
+    public function getCreationDate(): DateTimeInterface
     {
-        if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getUser() === $this) {
-                $order->setUser(null);
-            }
-        }
+        return $this->creationDate;
+    }
+
+    /**
+     * @TODO Remove and only set it once
+     * @codeCoverageIgnore
+     */
+    public function setCreationDate(DateTimeInterface $creationDate): self
+    {
+        $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    /** @return Collection<int, Bet> */
-    public function getBets(): Collection
+    /**
+     * @TODO Correctly test once setters correctly configured
+     * @codeCoverageIgnore
+     */
+    public function getActiveSince(): ?DateTimeInterface
     {
-        return $this->bets;
+        return $this->activeSince;
     }
 
-    public function addBet(Bet $bet): self
+    /**
+     * @TODO Remove when setActive($bool) has been replaced by activate()
+     * @codeCoverageIgnore
+     */
+    public function setActiveSince(?DateTimeInterface $activeSince): self
     {
-        if (!$this->bets->contains($bet)) {
-            $this->bets[] = $bet;
-            $bet->setUser($this);
-        }
+        $this->activeSince = $activeSince;
 
         return $this;
     }
 
-    public function removeBet(Bet $bet): self
+    /**
+     * @TODO Correctly test once setters correctly configured
+     * @codeCoverageIgnore
+     */
+    public function getSuspendedSince(): ?DateTimeInterface
     {
-        if ($this->bets->removeElement($bet)) {
-            // set the owning side to null (unless already changed)
-            if ($bet->getUser() === $this) {
-                $bet->setUser(null);
-            }
-        }
+        return $this->suspendedSince;
+    }
+
+    /**
+     * @TODO Remove when setSuspended($bool) has been replaced by suspend()
+     * @codeCoverageIgnore
+     */
+    public function setSuspendedSince(?DateTimeInterface $suspendedSince): self
+    {
+        $this->suspendedSince = $suspendedSince;
+
+        return $this;
+    }
+
+    /**
+     * @TODO Correctly test once setters correctly configured
+     * @codeCoverageIgnore
+     */
+    public function getDeletedSince(): ?DateTimeInterface
+    {
+        return $this->deletedSince;
+    }
+
+    /**
+     * @TODO Remove when setDeleted($bool) has been replaced by delete()
+     * @codeCoverageIgnore
+     */
+    public function setDeletedSince(?DateTimeInterface $deletedSince): self
+    {
+        $this->deletedSince = $deletedSince;
+
+        return $this;
+    }
+
+    /**
+     * @TODO Rename to isActive()
+     * @codeCoverageIgnore
+     */
+    public function getActiveState(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @TODO Replace by 2 method activate() & deactivate()
+     * @codeCoverageIgnore
+     */
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @TODO Rename to isSuspended()
+     * @codeCoverageIgnore
+     */
+    public function getSuspended(): bool
+    {
+        return $this->suspended;
+    }
+
+    /**
+     * @TODO Replace by 2 method suspend() & unsuspend()
+     * @codeCoverageIgnore
+     */
+    public function setSuspended(bool $suspended): self
+    {
+        $this->suspended = $suspended;
+
+        return $this;
+    }
+
+    /**
+     * @TODO Rename to isDeleted()
+     * @codeCoverageIgnore
+     */
+    public function getDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @TODO Replace by delete() and maybe add undelete()?
+     * @codeCoverageIgnore
+     */
+    public function setDeleted(bool $deleted): self
+    {
+        $this->deleted = $deleted;
 
         return $this;
     }
