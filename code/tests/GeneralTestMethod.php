@@ -45,7 +45,8 @@ abstract class GeneralTestMethod extends WebTestCase
         $violationsCount = count($violationsList);
 
         for ($i = 0; $i < $violationsCount; $i++) {
-            if ($violationsList->get($i)->getPropertyPath() === $testedAttribute) {
+            /** TODO When switching to php8 replace strpos() by str_contains() */
+            if (strpos($violationsList->get($i)->getPropertyPath(), $testedAttribute) !== false) {
                 return true;
             }
         }
