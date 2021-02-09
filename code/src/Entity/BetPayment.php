@@ -31,19 +31,18 @@ final class BetPayment
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
      */
-    private DateTimeInterface $betPaymentDate;
+    private DateTimeInterface $date;
 
     /**
      * @ORM\Column(type="text")
      *
-     * @Assert\Length(min = 5)
+     * @Assert\Length(min = 5, groups={"newBetPayment"})
      *
      * @TODO Validate description once standardized
      */
     private string $description;
+
 
     /** @codeCoverageIgnore */
     public function getId(): int
@@ -63,14 +62,14 @@ final class BetPayment
         return $this;
     }
 
-    public function getBetPaymentDate(): DateTimeInterface
+    public function getDate(): DateTimeInterface
     {
-        return $this->betPaymentDate;
+        return $this->date;
     }
 
-    public function setBetPaymentDate(DateTimeInterface $betPaymentDate): self
+    public function setDate(DateTimeInterface $date): self
     {
-        $this->betPaymentDate = $betPaymentDate;
+        $this->date = $date;
 
         return $this;
     }
@@ -87,10 +86,10 @@ final class BetPayment
         return $this;
     }
 
-    /** @Assert\Callback */
+    /** @Assert\Callback(groups={"newBetPayment"}) */
     public function validateAmount(ExecutionContextInterface $context): void
     {
-        if ($this->amount > -100 && $this->amount < 100) {
+        if (isset($this->amount) && $this->amount > -100 && $this->amount < 100) {
             $context
                 ->buildViolation("Amount is not valid.")
                 ->atPath("amount")

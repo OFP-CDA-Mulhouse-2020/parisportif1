@@ -24,12 +24,6 @@ final class BetPaymentTest extends KernelTestCase
         $this->validator = GeneralTestMethod::getValidator();
 
         $this->betPayment = new BetPayment();
-
-        $this->betPayment->setAmount(123);
-        $this->betPayment->setBetPaymentDate(new DateTime());
-
-        //TODO Change to valid description once standardized
-        $this->betPayment->setDescription("Here is a description longer than 5 char!");
     }
 
     /********
@@ -41,7 +35,7 @@ final class BetPaymentTest extends KernelTestCase
     {
         $this->betPayment->setAmount($validAmount);
 
-        $violationList = $this->validator->validate($this->betPayment);
+        $violationList = $this->validator->validate($this->betPayment, null, ['newBetPayment', 'Default']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("amount", $violationList);
         $obtainedValue = $this->betPayment->getAmount();
 
@@ -54,7 +48,7 @@ final class BetPaymentTest extends KernelTestCase
     {
         $this->betPayment->setAmount($invalidAmount);
 
-        $violationList = $this->validator->validate($this->betPayment);
+        $violationList = $this->validator->validate($this->betPayment, null, ['newBetPayment', 'Default']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("amount", $violationList);
 
         $this->assertGreaterThanOrEqual(1, count($violationList));
@@ -64,22 +58,25 @@ final class BetPaymentTest extends KernelTestCase
     /** @dataProvider validPaymentDateProvider */
     public function testSetValidPaymentDate(DateTimeInterface $betPaymentDate): void
     {
-        $this->betPayment->setBetPaymentDate($betPaymentDate);
+        $this->betPayment->setDate($betPaymentDate);
 
-        $violationList = $this->validator->validate($this->betPayment);
+        $violationList = $this->validator->validate($this->betPayment, null, ['newBetPayment', 'Default']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("betPaymentDate", $violationList);
-        $obtainedValue = $this->betPayment->getBetPaymentDate();
+        $obtainedValue = $this->betPayment->getDate();
 
         $this->assertSame($betPaymentDate, $obtainedValue);
         $this->assertFalse($violationOnAttribute);
     }
 
-    /** @dataProvider validDescriptionProvider */
+    /**
+     * @dataProvider validDescriptionProvider
+     * @TODO Change to valid description once standardized
+     */
     public function testSetValidDescription(string $validDescription): void
     {
         $this->betPayment->setDescription($validDescription);
 
-        $violationList = $this->validator->validate($this->betPayment);
+        $violationList = $this->validator->validate($this->betPayment, null, ['newBetPayment', 'Default']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("description", $violationList);
         $obtainedValue = $this->betPayment->getDescription();
 
@@ -92,7 +89,7 @@ final class BetPaymentTest extends KernelTestCase
     {
         $this->betPayment->setDescription($description);
 
-        $violationList = $this->validator->validate($this->betPayment);
+        $violationList = $this->validator->validate($this->betPayment, null, ['newBetPayment', 'Default']);
         $violationOnAttribute = GeneralTestMethod::isViolationOn("description", $violationList);
 
         $this->assertGreaterThanOrEqual(1, count($violationList));

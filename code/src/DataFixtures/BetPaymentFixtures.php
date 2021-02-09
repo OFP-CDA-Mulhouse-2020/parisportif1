@@ -21,7 +21,7 @@ final class BetPaymentFixtures extends Fixture implements DependentFixtureInterf
             $amount = $even ? $i : -$i;
 
             $betPayment->setAmount($amount);
-            $betPayment->setBetPaymentDate(new DateTimeImmutable("now - " . $i . " hours"));
+            $betPayment->setDate(new DateTimeImmutable("now - " . $i . " hours"));
             $betPayment->setTransactionID(uniqid("payment" . $i, true));
             $betPayment->setDescription("Payment of amount: " . $amount);
             $betPayment->setWallet($this->getReference(WalletFixtures::WALLET_REFERENCE));
