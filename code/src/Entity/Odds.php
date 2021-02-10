@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\OddsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,39 +20,25 @@ class Odds
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Length(min = 2)
+     *
+     * @Assert\Length(min = 2, groups={"newOdds"})
      */
     private string $description;
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\GreaterThanOrEqual(1)
+     *
+     * @Assert\GreaterThan(value=1.0, groups={"newOdds", "updateOdds"})
      */
-    private float $value;
+    private float $oddsValue;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private ?bool $winning;
 
-    /**
-     * @var Collection<int, Bet>
-     *
-     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="odd", orphanRemoval=true)
-     */
-    private Collection $bets;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Event::class, inversedBy="odds")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private Event $event;
-
-    public function __construct()
-    {
-        $this->bets = new ArrayCollection();
-    }
-
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
@@ -72,66 +56,34 @@ class Odds
         return $this;
     }
 
-    public function getValue(): float
+    public function getOddsValue(): float
     {
-        return $this->value;
+        return $this->oddsValue;
     }
 
-    public function setValue(float $value): self
+    public function setOddsValue(float $oddsValue): self
     {
-        $this->value = $value;
+        $this->oddsValue = $oddsValue;
 
         return $this;
     }
 
+    /**
+     * @TODO Rename as isWinning()
+     * @codeCoverageIgnore
+     */
     public function getWinning(): ?bool
     {
         return $this->winning;
     }
 
+    /**
+     * @TODO Rename as setWinningState
+     * @codeCoverageIgnore
+     */
     public function setWinning(?bool $winning): self
     {
         $this->winning = $winning;
-
-        return $this;
-    }
-
-    /** @return Collection<int, Bet> */
-    public function getBets(): Collection
-    {
-        return $this->bets;
-    }
-
-    public function addBet(Bet $bet): self
-    {
-        if (!$this->bets->contains($bet)) {
-            $this->bets[] = $bet;
-            $bet->setOdd($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBet(Bet $bet): self
-    {
-        if ($this->bets->removeElement($bet)) {
-            // set the owning side to null (unless already changed)
-            if ($bet->getOdd() === $this) {
-                $bet->setOdd(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getEvent(): Event
-    {
-        return $this->event;
-    }
-
-    public function setEvent(Event $event): self
-    {
-        $this->event = $event;
 
         return $this;
     }

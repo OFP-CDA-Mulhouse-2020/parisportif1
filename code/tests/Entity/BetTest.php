@@ -188,21 +188,21 @@ final class BetTest extends KernelTestCase
             (new Odds())
                 ->setDescription("This is a description")
                 ->setWinning(null)
-                ->setValue(1.75)
+                ->setOddsValue(1.75)
         ];
 
         yield [
             (new Odds())
                 ->setDescription("This is a description")
                 ->setWinning(true)
-                ->setValue(1.25)
+                ->setOddsValue(1.25)
         ];
 
         yield [
             (new Odds())
                 ->setDescription("This is a description")
                 ->setWinning(false)
-                ->setValue(4.55)
+                ->setOddsValue(4.55)
         ];
     }
 
@@ -211,12 +211,12 @@ final class BetTest extends KernelTestCase
     {
         yield [
             (new Odds())
-                ->setValue(-1.75)
+                ->setOddsValue(-1.75)
         ];
 
         yield [
             (new Odds())
-                ->setValue(0.90)
+                ->setOddsValue(0.90)
         ];
     }
 
