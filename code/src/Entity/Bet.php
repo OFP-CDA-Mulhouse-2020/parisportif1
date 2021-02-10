@@ -22,15 +22,17 @@ class Bet
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\GreaterThanOrEqual(10)
+     *
+     * @Assert\GreaterThanOrEqual(value=10, groups={"newBet"})
      */
     private int $amount;
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\GreaterThanOrEqual(1)
+     *
+     * @Assert\GreaterThan(value=1.0, groups={"newBet"})
      */
-    private float $odds;
+    private float $oddsWhenPayed;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -38,18 +40,23 @@ class Bet
     private ?bool $resolved;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Odds::class, inversedBy="bets")
+     * @ORM\ManyToOne(targetEntity=Odds::class)
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid(groups={"newBet", "newOdds", "updateOdds"})
      */
-    private Odds $odd;
+    private Odds $oddsReference;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="bets")
+     * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid(groups={"newBet", "updateUser"})
      */
     private User $user;
 
 
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
@@ -67,23 +74,31 @@ class Bet
         return $this;
     }
 
-    public function getOdds(): float
+    public function getOddsWhenPayed(): float
     {
-        return $this->odds;
+        return $this->oddsWhenPayed;
     }
 
-    public function setOdds(float $odds): self
+    public function setOddsWhenPayed(float $oddsWhenPayed): self
     {
-        $this->odds = $odds;
+        $this->oddsWhenPayed = $oddsWhenPayed;
 
         return $this;
     }
 
+    /**
+     * @TODO Rename to isResolved()
+     * @codeCoverageIgnore
+     */
     public function getResolved(): ?bool
     {
         return $this->resolved;
     }
 
+    /**
+     * @TODO Replace by resolve() and unresolved()?
+     * @codeCoverageIgnore
+     */
     public function setResolved(?bool $resolved): self
     {
         $this->resolved = $resolved;
@@ -91,14 +106,14 @@ class Bet
         return $this;
     }
 
-    public function getOdd(): Odds
+    public function getOddsReference(): Odds
     {
-        return $this->odd;
+        return $this->oddsReference;
     }
 
-    public function setOdd(Odds $odd): self
+    public function setOddsReference(Odds $oddsReference): self
     {
-        $this->odd = $odd;
+        $this->oddsReference = $oddsReference;
 
         return $this;
     }

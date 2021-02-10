@@ -3,14 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Bet;
-use App\Entity\User;
 use App\Entity\Odds;
-use App\Repository\BetRepository;
+use App\Entity\User;
 use App\Form\BetType;
 use App\Repository\OddsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BetController extends AbstractController
@@ -36,7 +35,7 @@ class BetController extends AbstractController
         
         dump($form);
 
-        dump($bet->getOdds());
+        dump($bet->getOddsWhenPayed());
 
         if ($form->isSubmitted() && $form->isValid()) {
             $oddsDb = $oddsRepository->findOneByEvent(json_decode(json_encode($extraData))->odds);
