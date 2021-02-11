@@ -3,13 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\StatusRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=StatusRepository::class)
+ * @UniqueEntity(
+ *     fields = {"id"},
+ *     groups = {"newStatus"}
+ * )
+ * @UniqueEntity(
+ *     fields = {"name"},
+ *     groups = {"newStatus"}
+ * )
  */
 class Status
 {
@@ -22,28 +29,30 @@ class Status
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min = 2)
+     *
+     * @Assert\NotBlank(
+     *     groups = {"newStatus", "editStatusName"},
+     *     normalizer = "trim"
+     * )
+     *
+     * @TODO Validate once standardized
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min = 2)
+     *
+     * @Assert\NotBlank(
+     *     groups = {"newStatus", "editStatusDescription"},
+     *     normalizer = "trim"
+     * )
+     *
+     * @TODO Validate once standardized
      */
     private string $description;
 
-    /**
-     * @var Collection<int, CompetitorTeamStatus>
-     *
-     * @ORM\OneToMany(targetEntity=CompetitorTeamStatus::class, mappedBy="status", orphanRemoval=true)
-     */
-    private Collection $competitorTeamStatuses;
 
-    public function __construct()
-    {
-        $this->competitorTeamStatuses = new ArrayCollection();
-    }
-
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
@@ -69,34 +78,6 @@ class Status
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /** @return Collection<int, CompetitorTeamStatus> */
-    public function getCompetitorTeamStatuses(): Collection
-    {
-        return $this->competitorTeamStatuses;
-    }
-
-    public function addCompetitorTeamStatus(CompetitorTeamStatus $competitorTeamStatus): self
-    {
-        if (!$this->competitorTeamStatuses->contains($competitorTeamStatus)) {
-            $this->competitorTeamStatuses[] = $competitorTeamStatus;
-            $competitorTeamStatus->setStatus($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompetitorTeamStatus(CompetitorTeamStatus $competitorTeamStatus): self
-    {
-        if ($this->competitorTeamStatuses->removeElement($competitorTeamStatus)) {
-            // set the owning side to null (unless already changed)
-            if ($competitorTeamStatus->getStatus() === $this) {
-                $competitorTeamStatus->setStatus(null);
-            }
-        }
 
         return $this;
     }
