@@ -7,10 +7,19 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=EventRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\EventRepository", repositoryClass=EventRepository::class)
+ * @UniqueEntity(
+ *     fields={"id"},
+ *     groups={"newEvent"}
+ * )
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     groups={"newEvent", "editEventName"}
+ * )
  */
 class Event
 {
@@ -22,8 +31,12 @@ class Event
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min = 2)
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank(
+     *     groups = {"newEvent", "editEventName"},
+     *     normalizer = "trim"
+     * )
      */
     private string $name;
 
@@ -33,68 +46,86 @@ class Event
     private DateTimeInterface $eventDate;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min = 2)
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank(
+     *     groups = {"newEvent", "editEventLocation"},
+     *     normalizer = "trim"
+     * )
      */
     private string $location;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min = 2)
+     *
+     * @Assert\NotBlank(
+     *     groups={"newEvent", "editEventCountry"}
+     * )
+     * @Assert\Country(
+     *     groups={"newEvent", "editEventCountry"}
+     * )
      */
-    private string $illustration;
+    private string $countryCode;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     groups = {"newEvent", "editEventTimeZone"},
+     *     normalizer = "trim"
+     * )
+     *
+     * @Assert\Timezone(
+     *     groups = {"newEvent", "editEventTimeZone"},
+     * )
+     */
+    private string $timeZone;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank(
+     *     groups = {"newEvent", "editEventDescription"},
+     *     normalizer = "trim"
+     * )
+     */
+    private string $description;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     groups = {"newEvent", "editEventResult"},
+     *     normalizer = "trim"
+     * )
      */
     private string $result;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Sport::class, inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private Sport $sport;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Competition::class, inversedBy="events")
-     */
-    private Competition $competition;
-
-    /**
-     * @var Collection<int, Competitor>
+     * @var Collection<int|null, Odds|null>
      *
-     * @ORM\ManyToMany(targetEntity=Competitor::class, inversedBy="events")
-     */
-    private Collection $competitors;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=SportType::class, inversedBy="events")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private SportType $sportType;
-
-    /**
-     * @var Collection<int, Team>
+     * @ORM\ManyToMany(targetEntity=Odds::class)
+     * @ORM\JoinTable(
+     *     inverseJoinColumns={@ORM\JoinColumn(unique=true)}
+     * )
      *
-     * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="events")
-     */
-    private Collection $teams;
-
-    /**
-     * @var Collection<int, Odds>
+     * Not a ManyToMany! JoinColumn is set to unique for inverseJoinColumns.
+     * For more details look at {@link https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/association-mapping.html#one-to-many-unidirectional-with-join-table}
      *
-     * @ORM\OneToMany(targetEntity=Odds::class, mappedBy="event")
+     * @Assert\Valid(
+     *     groups = {"newEvent", "editEventOdds", "newOdds"},
+     *     traverse = true
+     * )
      */
-    private Collection $odds;
+    private Collection $oddsList;
 
 
     public function __construct()
     {
-        $this->competitors = new ArrayCollection();
-        $this->teams = new ArrayCollection();
-        $this->odds = new ArrayCollection();
+        $this->oddsList = new ArrayCollection();
     }
 
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
@@ -136,14 +167,36 @@ class Event
         return $this;
     }
 
-    public function getIllustration(): string
+    public function getCountryCode(): string
     {
-        return $this->illustration;
+        return $this->countryCode;
     }
 
-    public function setIllustration(string $illustration): self
+    public function setCountryCode(string $countryCode): void
     {
-        $this->illustration = $illustration;
+        $this->countryCode = $countryCode;
+    }
+
+    public function getTimeZone(): string
+    {
+        return $this->timeZone;
+    }
+
+    public function setTimeZone(string $timeZone): self
+    {
+        $this->timeZone = $timeZone;
+
+        return $this;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }
@@ -160,110 +213,32 @@ class Event
         return $this;
     }
 
-    public function getSport(): Sport
+    /** @return Collection<int|null, Odds|null> */
+    public function getOddsList(): Collection
     {
-        return $this->sport;
+        return $this->oddsList;
     }
 
-    public function setSport(Sport $sport): self
+    /** @param Collection<int|null, Odds|null> $oddsList */
+    public function setOddsList(Collection $oddsList): self
     {
-        $this->sport = $sport;
+        $this->oddsList = $oddsList;
 
         return $this;
     }
 
-    public function getCompetition(): Competition
+    public function addOddsToList(Odds $odds): self
     {
-        return $this->competition;
-    }
-
-    public function setCompetition(Competition $competition): self
-    {
-        $this->competition = $competition;
-
-        return $this;
-    }
-
-    /** @return Collection<int, Competitor> */
-    public function getCompetitors(): Collection
-    {
-        return $this->competitors;
-    }
-
-    public function addCompetitor(Competitor $competitor): self
-    {
-        if (!$this->competitors->contains($competitor)) {
-            $this->competitors[] = $competitor;
+        if (!$this->oddsList->contains($odds)) {
+            $this->oddsList->add($odds);
         }
 
         return $this;
     }
 
-    public function removeCompetitor(Competitor $competitor): self
+    public function removeOddsFromList(Odds $odds): self
     {
-        $this->competitors->removeElement($competitor);
-
-        return $this;
-    }
-
-    public function getSportType(): SportType
-    {
-        return $this->sportType;
-    }
-
-    public function setSportType(SportType $sportType): self
-    {
-        $this->sportType = $sportType;
-
-        return $this;
-    }
-
-    /** @return Collection<int, Team> */
-    public function getTeams(): Collection
-    {
-        return $this->teams;
-    }
-
-    public function addTeam(Team $team): self
-    {
-        if (!$this->teams->contains($team)) {
-            $this->teams[] = $team;
-        }
-
-        return $this;
-    }
-
-    public function removeTeam(Team $team): self
-    {
-        $this->teams->removeElement($team);
-
-        return $this;
-    }
-
-    /** @return Collection<int, Odds> */
-    public function getOdds(): Collection
-    {
-        return $this->odds;
-    }
-
-    public function addOdd(Odds $odd): self
-    {
-        if (!$this->odds->contains($odd)) {
-            $this->odds[] = $odd;
-            $odd->setEvent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOdd(Odds $odd): self
-    {
-        if ($this->odds->removeElement($odd)) {
-            // set the owning side to null (unless already changed)
-            if ($odd->getEvent() === $this) {
-                $odd->setEvent(null);
-            }
-        }
+        $this->oddsList->removeElement($odds);
 
         return $this;
     }

@@ -21,13 +21,24 @@ class Odds
     /**
      * @ORM\Column(type="text")
      *
-     * @Assert\Length(min = 2, groups={"newOdds"})
+     * @Assert\NotBlank(
+     *     groups = {"newOdds", "editOddsDescription"},
+     *     normalizer = "trim"
+     * )
+     * @Assert\Length(
+     *     min = 2,
+     *     normalizer = "trim"
+     * )
      */
     private string $description;
 
     /**
      * @ORM\Column(type="float")
      *
+     * @Assert\NotBlank(
+     *     groups={"newOdds", "updateOdds"},
+     *     normalizer="trim"
+     * )
      * @Assert\GreaterThan(value=1.0, groups={"newOdds", "updateOdds"})
      */
     private float $oddsValue;
