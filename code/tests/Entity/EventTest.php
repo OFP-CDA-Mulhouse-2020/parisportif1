@@ -482,7 +482,7 @@ final class EventTest extends KernelTestCase
     }
 
     /** @dataProvider validCompetitorProvider */
-    public function testADdValidCompetitor(Competitor $validCompetitor): void
+    public function testAddValidCompetitor(Competitor $validCompetitor): void
     {
         $this->assertNotContains($validCompetitor, $this->event->getCompetitorsList());
         $this->event->addCompetitorToList($validCompetitor);

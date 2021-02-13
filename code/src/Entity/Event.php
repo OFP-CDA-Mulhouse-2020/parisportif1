@@ -42,6 +42,10 @@ class Event
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @Assert\NotBlank(
+     *     groups={"newEvent", "editEventDate"}
+     * )
      */
     private DateTimeInterface $eventDate;
 
@@ -95,6 +99,10 @@ class Event
      * @ORM\ManyToOne(targetEntity=Sport::class)
      * @ORM\JoinColumn(nullable=false)
      *
+     * @Assert\NotBlank(
+     *     groups = {"newEvent", "editEventSport", "newSport", "newSportType"},
+     *     normalizer = "trim"
+     * )
      * @Assert\Valid(
      *     groups = {"newEvent", "editEventSport", "newSport", "newSportType"}
      * )
@@ -201,9 +209,11 @@ class Event
         return $this->countryCode;
     }
 
-    public function setCountryCode(string $countryCode): void
+    public function setCountryCode(string $countryCode): self
     {
         $this->countryCode = $countryCode;
+
+        return $this;
     }
 
     public function getTimeZone(): string
