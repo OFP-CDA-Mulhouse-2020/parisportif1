@@ -53,8 +53,11 @@ class Sport
      * @ORM\ManyToOne(targetEntity=Sport::class)
      * @ORM\JoinColumn(nullable=false)
      *
+     * @Assert\NotNull(
+     *     groups = {"newSport", "editSportSportType", "newSportType"}
+     * )
      * @Assert\Valid(
-     *     groups = {"newSport", "editSportSportType", "newSportType"},
+     *     groups = {"newSport", "editSportSportType", "newSportType"}
      * )
      */
     private SportType $sportType;

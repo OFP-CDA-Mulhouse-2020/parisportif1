@@ -92,6 +92,16 @@ class Event
     private string $description;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Sport::class)
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid(
+     *     groups = {"newEvent", "editEventSport", "newSport", "newSportType"}
+     * )
+     */
+    private Sport $sport;
+
+    /**
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\NotBlank(
@@ -119,10 +129,29 @@ class Event
      */
     private Collection $oddsList;
 
+    /**
+     * @var Collection<int|null, Competitor|null>
+     *
+     * @ORM\ManyToMany(targetEntity=Competitor::class)
+     * @ORM\JoinTable(
+     *     inverseJoinColumns={@ORM\JoinColumn(unique=true)}
+     * )
+     *
+     * Not a ManyToMany! JoinColumn is set to unique for inverseJoinColumns.
+     * For more details look at {@link https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/association-mapping.html#one-to-many-unidirectional-with-join-table}
+     *
+     * @Assert\Valid(
+     *     groups = {"newCompetitor", "editEventOdds", "newOdds"},
+     *     traverse = true
+     * )
+     */
+    private Collection $competitorsList;
+
 
     public function __construct()
     {
         $this->oddsList = new ArrayCollection();
+        $this->competitorsList = new ArrayCollection();
     }
 
     /** @codeCoverageIgnore */
@@ -201,6 +230,18 @@ class Event
         return $this;
     }
 
+    public function getSport(): Sport
+    {
+        return $this->sport;
+    }
+
+    public function setSport(Sport $sport): self
+    {
+        $this->sport = $sport;
+
+        return $this;
+    }
+
     public function getResult(): string
     {
         return $this->result;
@@ -239,6 +280,36 @@ class Event
     public function removeOddsFromList(Odds $odds): self
     {
         $this->oddsList->removeElement($odds);
+
+        return $this;
+    }
+
+    /** @return Collection<int|null, Competitor|null> */
+    public function getCompetitorsList(): Collection
+    {
+        return $this->competitorsList;
+    }
+
+    /** @param Collection<int|null, Competitor|null> $competitorList */
+    public function setCompetitorsList(Collection $competitorList): self
+    {
+        $this->competitorsList = $competitorList;
+
+        return $this;
+    }
+
+    public function addCompetitorToList(Competitor $competitor): self
+    {
+        if (!$this->competitorsList->contains($competitor)) {
+            $this->competitorsList->add($competitor);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetitorFromList(Competitor $competitor): self
+    {
+        $this->competitorsList->removeElement($competitor);
 
         return $this;
     }

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Entity;
 
+use App\Entity\Competitor;
 use App\Entity\Event;
 use App\Entity\Odds;
+use App\Entity\Sport;
+use App\Entity\SportType;
 use App\Tests\GeneralTestMethod;
 use DateTime;
 use DateTimeImmutable;
@@ -248,6 +251,45 @@ final class EventTest extends KernelTestCase
         $this->assertTrue($violationOnAttribute);
     }
 
+    /** @dataProvider validSportProvider */
+    public function testSetValidSport(Sport $validSport): void
+    {
+        $this->event->setSport($validSport);
+
+        $violationList = $this->validator->validate(
+            $this->event,
+            null,
+            ['newEvent', 'newSport', 'newSportType', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "sport",
+            $violationList
+        );
+        $obtainedValue = $this->event->getSport();
+
+        $this->assertSame($validSport, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @dataProvider invalidSportProvider */
+    public function testSetInvalidSport(Sport $invalidSport): void
+    {
+        $this->event->setSport($invalidSport);
+
+        $violationList = $this->validator->validate(
+            $this->event,
+            null,
+            ['newEvent', 'newSport', 'newSportType', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "sport",
+            $violationList
+        );
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
+    }
+
     /** @dataProvider validResultProvider */
     public function testSetValidResult(string $validResult): void
     {
@@ -394,6 +436,113 @@ final class EventTest extends KernelTestCase
         $this->assertFalse($violationOnAttribute);
     }
 
+    /**
+     * @dataProvider validCompetitorsListProvider
+     * @param Collection<int|null, Competitor|null> $validCompetitorsList
+     */
+    public function testSetValidCompetitorsList(Collection $validCompetitorsList): void
+    {
+        $this->event->setCompetitorsList($validCompetitorsList);
+
+        $violationList = $this->validator->validate(
+            $this->event,
+            null,
+            ['newEvent', 'newCompetitor', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "competitorsList",
+            $violationList
+        );
+        $obtainedValue = $this->event->getCompetitorsList();
+
+        $this->assertSame($validCompetitorsList, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /**
+     * @dataProvider invalidCompetitorsListProvider
+     * @param Collection<int|null, Competitor|null> $invalidCompetitorsList
+     */
+    public function testSetInvalidCompetitorsList(Collection $invalidCompetitorsList): void
+    {
+        $this->event->setCompetitorsList($invalidCompetitorsList);
+
+        $violationList = $this->validator->validate(
+            $this->event,
+            null,
+            ['newEvent', 'newCompetitor', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "competitorsList",
+            $violationList
+        );
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
+    }
+
+    /** @dataProvider validCompetitorProvider */
+    public function testADdValidCompetitor(Competitor $validCompetitor): void
+    {
+        $this->assertNotContains($validCompetitor, $this->event->getCompetitorsList());
+        $this->event->addCompetitorToList($validCompetitor);
+
+        $violationList = $this->validator->validate(
+            $this->event,
+            null,
+            ['newEvent', 'newCompetitor', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "competitorsList",
+            $violationList
+        );
+
+        $this->assertContains($validCompetitor, $this->event->getCompetitorsList());
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @dataProvider invalidCompetitorProvider */
+    public function testAddInvalidCompetitor(Competitor $invalidCompetitor): void
+    {
+        $this->assertNotContains($invalidCompetitor, $this->event->getCompetitorsList());
+        $this->event->addCompetitorToList($invalidCompetitor);
+
+        $violationList = $this->validator->validate(
+            $this->event,
+            null,
+            ['newEvent', 'newCompetitor', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "competitorsList",
+            $violationList
+        );
+
+        $this->assertContains($invalidCompetitor, $this->event->getCompetitorsList());
+        $this->assertTrue($violationOnAttribute);
+    }
+
+    /** @dataProvider validCompetitorProvider */
+    public function testRemoveCompetitor(Competitor $competitor): void
+    {
+        $this->event->addCompetitorToList($competitor);
+        $this->assertContains($competitor, $this->event->getCompetitorsList());
+
+        $this->event->removeCompetitorFromList($competitor);
+
+        $violationList = $this->validator->validate(
+            $this->event,
+            null,
+            ['newEvent', 'newCompetitor', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "competitorsList",
+            $violationList
+        );
+
+        $this->assertNotContains($competitor, $this->event->getCompetitorsList());
+        $this->assertFalse($violationOnAttribute);
+    }
+
     /***********************
      **** Data Provider ****
      ***********************/
@@ -480,6 +629,70 @@ final class EventTest extends KernelTestCase
         yield [""];
         yield [" "];
         yield ["  "];
+    }
+
+    /** @return Generator<array<int, Sport>> */
+    public function validSportProvider(): Generator
+    {
+        yield [
+            (new Sport())
+                ->setName("SportName")
+                ->setDescription("Valid description")
+                ->setSportType(
+                    (new SportType())
+                        ->setName("Individual")
+                        ->setDescription("Valid description")
+                )
+        ];
+        yield [
+            (new Sport())
+                ->setName("OtherSport")
+                ->setDescription("Another valid description")
+                ->setSportType(
+                    (new SportType())
+                        ->setName("Groups")
+                        ->setDescription("Another valid description")
+                )
+        ];
+    }
+
+    /** @return Generator<array<int, Sport>> */
+    public function invalidSportProvider(): Generator
+    {
+        yield [new Sport()];
+        yield [
+            (new Sport())
+                ->setName("Valid")
+                ->setDescription("Valid")
+        ];
+        yield [
+            (new Sport())
+                ->setName("Valid")
+                ->setDescription("Valid")
+                ->setSportType(
+                    (new SportType())
+                        ->setDescription("")
+                        ->setName("")
+                )
+        ];
+        yield [
+            (new Sport())
+                ->setName("Valid")
+                ->setSportType(
+                    (new SportType())
+                        ->setName("Valid")
+                        ->setDescription("Valid")
+                )
+        ];
+        yield [
+            (new Sport())
+                ->setDescription("Valid")
+                ->setSportType(
+                    (new SportType())
+                        ->setName("Valid")
+                        ->setDescription("Valid")
+                )
+        ];
     }
 
     /** @return Generator<array<int, string>> */
@@ -576,6 +789,85 @@ final class EventTest extends KernelTestCase
         yield [
             (new Odds())
                 ->setWinning(false)
+        ];
+    }
+
+    /** @return Generator<array<int, Collection<int, Competitor>>> */
+    public function validCompetitorsListProvider(): Generator
+    {
+        yield [
+            new ArrayCollection(
+                [
+                    (new Competitor())
+                        ->setName("Vladimir")
+                        ->setCountryCode("RU"),
+                    (new Competitor())
+                        ->setName("Stephane")
+                        ->setCountryCode("FR")
+                ]
+            )
+        ];
+        yield [
+            new ArrayCollection(
+                [
+                    (new Competitor())
+                        ->setName("Vladimir")
+                        ->setCountryCode("RU")
+                ]
+            )
+        ];
+        yield [
+            new ArrayCollection()
+        ];
+    }
+
+    /** @return Generator<array<int, Collection<int, Competitor>>> */
+    public function invalidCompetitorsListProvider(): Generator
+    {
+        yield [
+            new ArrayCollection(
+                [
+                    (new Competitor())
+                        ->setName("Vladimir")
+                ]
+            )
+        ];
+        yield [
+            new ArrayCollection(
+                [
+                    (new Competitor())
+                        ->setCountryCode("FR")
+                ]
+            )
+        ];
+    }
+
+    /** @return Generator<array<int, Competitor>> */
+    public function validCompetitorProvider(): Generator
+    {
+        yield [
+            (new Competitor())
+                ->setName("Vladimir")
+                ->setCountryCode("RU")
+        ];
+        yield [
+            (new Competitor())
+                ->setName("Stephane")
+                ->setCountryCode("FR")
+        ];
+    }
+
+    /** @return Generator<array<int, Competitor>> */
+    public function invalidCompetitorProvider(): Generator
+    {
+        yield [new Competitor()];
+        yield [
+            (new Competitor)
+                ->setName("Vladimir")
+        ];
+        yield [
+            (new Competitor())
+                ->setCountryCode("FR")
         ];
     }
 }
