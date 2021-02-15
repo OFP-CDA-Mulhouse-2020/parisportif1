@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\TeamRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TeamRepository::class)
+ * @UniqueEntity(
+ *     fields = {"id"},
+ *     groups = {"newTeam"}
+ * )
+ * @UniqueEntity(
+ *     fields = {"name", "countryCode"},
+ *     groups = {"newTeam", "editTeamName", "editTeamCountry"}
+ * )
  */
 class Team
 {
@@ -23,47 +30,41 @@ class Team
     private int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *      min = 1,
-     *      max = 255
+     * @ORM\Column(type="text")
+     *
+     * @Assert\NotBlank(
+     *     groups = {"newTeam", "editTeamName"},
+     *     normalizer = "trim"
      * )
      */
     private string $name;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank(
+     *     groups = {"newTeam", "editTeamCountry"},
+     *     normalizer = "trim"
+     * )
+     * @Assert\Country(
+     *     groups = {"newTeam", "editTeamCountry"}
+     * )
+     */
+    private string $countryCode;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
-     */
-    private string $description;
-
-    /**
-     * @var Collection<int, Event>
      *
-     * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="teams")
+     * @Assert\NotBlank(
+     *     groups = {"newTeam", "editTeamDescription"},
+     *     normalizer = "trim",
+     *     allowNull = true
+     * )
      */
-    private Collection $events;
+    private ?string $description;
 
-    /**
-     * @var Collection<int, Competitor>
-     *
-     * @ORM\ManyToMany(targetEntity=Competitor::class, mappedBy="teams")
-     */
-    private Collection $competitors;
 
-    /**
-     * @var Collection<int, CompetitorTeamStatus>
-     *
-     * @ORM\OneToMany(targetEntity=CompetitorTeamStatus::class, mappedBy="team", orphanRemoval=true)
-     */
-    private Collection $competitorTeamStatuses;
-
-    public function __construct()
-    {
-        $this->events = new ArrayCollection();
-        $this->competitors = new ArrayCollection();
-        $this->competitorTeamStatuses = new ArrayCollection();
-    }
-
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
@@ -81,92 +82,26 @@ class Team
         return $this;
     }
 
-    public function getDescription(): string
+    public function getCountryCode(): string
+    {
+        return $this->countryCode;
+    }
+
+    public function setCountryCode(string $countryCode): self
+    {
+        $this->countryCode = $countryCode;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /** @return Collection<int, Event> */
-    public function getEvents(): Collection
-    {
-        return $this->events;
-    }
-
-    public function addEvent(Event $event): self
-    {
-        if (!$this->events->contains($event)) {
-            $this->events[] = $event;
-            $event->addTeam($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvent(Event $event): self
-    {
-        if ($this->events->removeElement($event)) {
-            $event->removeTeam($this);
-        }
-
-        return $this;
-    }
-
-    /** @return Collection<int, Competitor> */
-    public function getCompetitors(): Collection
-    {
-        return $this->competitors;
-    }
-
-    public function addCompetitor(Competitor $competitor): self
-    {
-        if (!$this->competitors->contains($competitor)) {
-            $this->competitors[] = $competitor;
-            $competitor->addTeam($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompetitor(Competitor $competitor): self
-    {
-        if ($this->competitors->removeElement($competitor)) {
-            $competitor->removeTeam($this);
-        }
-
-        return $this;
-    }
-
-    /** @return Collection<int, CompetitorTeamStatus> */
-    public function getCompetitorTeamStatuses(): Collection
-    {
-        return $this->competitorTeamStatuses;
-    }
-
-    public function addCompetitorTeamStatus(CompetitorTeamStatus $competitorTeamStatus): self
-    {
-        if (!$this->competitorTeamStatuses->contains($competitorTeamStatus)) {
-            $this->competitorTeamStatuses[] = $competitorTeamStatus;
-            $competitorTeamStatus->setTeam($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCompetitorTeamStatus(CompetitorTeamStatus $competitorTeamStatus): self
-    {
-        if ($this->competitorTeamStatuses->removeElement($competitorTeamStatus)) {
-            // set the owning side to null (unless already changed)
-            if ($competitorTeamStatus->getTeam() === $this) {
-                $competitorTeamStatus->setTeam(null);
-            }
-        }
 
         return $this;
     }

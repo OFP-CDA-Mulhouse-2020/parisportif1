@@ -4,29 +4,29 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\Payment;
+use App\Entity\BetPayment;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class PaymentFixtures extends Fixture implements DependentFixtureInterface
+final class BetPaymentFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
         for ($i = 1000; $i > 0; $i -= 100) {
-            $payment = new Payment();
+            $betPayment = new BetPayment();
 
             $even = ($i % 200 === 0);
             $amount = $even ? $i : -$i;
 
-            $payment->setAmount($amount);
-            $payment->setPaymentDate(new DateTimeImmutable("now - " . $i . " hours"));
-            $payment->setTransactionID(uniqid("payment" . $i, true));
-            $payment->setDescription("Payment of amount: " . $amount);
-            $payment->setWallet($this->getReference(WalletFixtures::WALLET_REFERENCE));
+            $betPayment->setAmount($amount);
+            $betPayment->setDate(new DateTimeImmutable("now - " . $i . " hours"));
+            $betPayment->setTransactionID(uniqid("payment" . $i, true));
+            $betPayment->setDescription("Payment of amount: " . $amount);
+            $betPayment->setWallet($this->getReference(WalletFixtures::WALLET_REFERENCE));
 
-            $manager->persist($payment);
+            $manager->persist($betPayment);
         }
 
         $manager->flush();

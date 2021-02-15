@@ -15,7 +15,7 @@ hide empty members
 skinparam linetype ortho
 caption CDA Bet Class Diagram
 footer Joël L & Bertrand C & Etienne S
-header Last updated 05/02/2021
+header Last updated 09/02/2021
 title CDA Bet
 
 namespace CdaBet {
@@ -67,21 +67,29 @@ namespace CdaBet {
     ' Manage the website user
     ' Abstract class for people to extend later
     class User {
-        -String gender
-        -String lastname
-        -String firstname
-        -String address
-        -String timeZone
-        -String country
-        -String city
-        -Int postcode
-        -Date birthdate
-        -Int phonenumber
+        -Array roles
+        ..Personal data..
         -String email
         -String password
-        -Bool active
-        -Bool verified
-        -Float maximunWeeklyBet
+        -String lastname
+        -String firstName
+        -Date birthdate
+        -String country
+        -String timeZone
+        -String gender
+        -String address
+        -String city
+        -Int postcode
+        -Int phonenumber
+        ..Dates..
+        -Date createdAt
+        -Date|null activatedAt
+        -Date|null suspendedAt
+        -Date|null deletedAt
+        ..Status..
+        -Bool activated
+        -Bool suspended
+        -Bool deleted
     }
 
     class Wallet {
@@ -89,11 +97,6 @@ namespace CdaBet {
         #credit()
         #debit(balance)
         #history()
-    }
-
-    class Order {
-        -Date date
-        -Int total
     }
 
     class Bet {
@@ -127,33 +130,35 @@ namespace CdaBet {
         -Date date
     }
 
-    'TODO Reverse cardinalities (they are reversed...)
     ' Relationships
-    Event "1" -up- "0..n" Sport : has >
-    Event "1" -- "0..n" SportType : has >
-    Competition "1..n" -- "0..n" Sport
-    Sport "1..n" o- "0..n" SportType
-    Competition "1..n" *- "0..1" Competition
-    Competition "1..n" *-- "0..1" Event
-    Competition "1..n" - "0..n" SportType
+    'TODO Review and fix cardinalities
+    Event "0" -up- "1" Sport : has >
+    Event "0..n" - "1..n" SportType : has >
+    Sport "0..n" o- "1..n" SportType : specifies <
 
-    Team "0..n" ---- "2..n" Event : has <
+    Competition "1..n" *-up- "1..n" Event : contain >
 
-    User "1" *-left- "1" Wallet : has >
-    User "0..n" *-- "1" Order
-    Order "1..2" *-- "1" BetPayment
-    Order "1..n" *-up- "1" Bet
+    Competition "0..1" *-- "1..n" Competition : contain >
 
-    Event "1..n" *-down- "1" Odds : has >
-    Event "2..n" -left- "0..n" Competitor: has >
-    Wallet "0..n" *-- "1" WalletPayment
+    Competitor "2..n" --o "0..n" Team : is in >
+    Team "2..n" -- "0..n" Event : has <
 
-    Competitor "0..n" -right-o "2..n" Team : is in >
+    Competitor "2..n" - "0..n" Event: has <
 
-    CompetitorTeamStatus "1" -- "0..n" Status
+    CompetitorTeamStatus "0..n" - "1" Status : specifies <
+    (Competitor, Team) *.. CompetitorTeamStatus
 
-    Bet "1" ..* (Odds, User)
-    (Competitor, Team) *.. "1" CompetitorTeamStatus
+    'TODO END
+
+    Event "1" *-- "1..n" Odds : has >
+
+    Odds "0..n" -down- "1" User : choose <
+    (Odds, User) *.. Bet
+
+    Bet "1" *- "1..2" BetPayment : specifies <
+
+    Wallet "1" -left-* "1" User : has <
+    Wallet "1" *- "0..n" WalletPayment : specifies <
 }
 @enduml
 

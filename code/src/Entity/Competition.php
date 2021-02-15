@@ -22,48 +22,59 @@ class Competition
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\Type("string")
-     * @Assert\Length(min = 1)
+     *
+     * @Assert\NotBlank(
+     *      groups={"newCompetition", "editCompetitionName"},
+     *      normalizer="trim"
+     * )
+     * @Assert\Length(
+     *     min = 1,
+     *     groups={"newCompetition", "editCompetitionName"}
+     * )
      */
     private string $name;
 
     /**
-     * @var Collection<int, Event>
+     * @ORM\ManyToOne(targetEntity=Competition::class, inversedBy="competitionsList")
      *
-     * @ORM\OneToMany(targetEntity=Event::class, mappedBy="competition")
+     * @Assert\Valid(
+     *     groups={"newCompetition", "changeParentCompetition"}
+     * )
      */
-    private Collection $events;
+    private ?Competition $parentCompetition;
 
     /**
-     * @var Collection<int, Competition>
+     * @var Collection<int|null, Competition|null>
      *
-     * @ORM\ManyToOne(targetEntity=Competition::class, inversedBy="competitions")
+     * @ORM\OneToMany(targetEntity=Competition::class, mappedBy="parentCompetition")
+     *
+     * @Assert\Valid(
+     *     groups={"newCompetition", "changeCompetitionsCompetitionsList"},
+     *     traverse=true
+     * )
      */
-    private Collection $competitions;
+    private Collection $competitionsList;
 
     /**
-     * @var Collection<int, Sport>
+     * @var Collection<int|null, Event|null>
      *
-     * @ORM\ManyToMany(targetEntity=Sport::class, inversedBy="competitions")
-     */
-    private Collection $sports;
-
-    /**
-     * @var Collection<int, SportType>
+     * @ORM\OneToMany(targetEntity=Competition::class, mappedBy="parentCompetition")
      *
-     * @ORM\ManyToMany(targetEntity=SportType::class, inversedBy="competitions")
+     * @Assert\Valid(
+     *     groups={"newCompetition", "changeCompetitionsEventsList", "newEvent"},
+     *     traverse=true
+     * )
      */
-    private Collection $sportTypes;
+    private Collection $eventsList;
 
 
     public function __construct()
     {
-        $this->events = new ArrayCollection();
-        $this->competitions = new ArrayCollection();
-        $this->sports = new ArrayCollection();
-        $this->sportTypes = new ArrayCollection();
+        $this->competitionsList = new ArrayCollection();
+        $this->eventsList = new ArrayCollection();
     }
 
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
@@ -81,110 +92,66 @@ class Competition
         return $this;
     }
 
-    /** @return Collection<int, Event> */
-    public function getEvents(): Collection
+    public function getParentCompetition(): ?self
     {
-        return $this->events;
+        return $this->parentCompetition ?? null;
     }
 
-    public function addEvent(Event $event): self
+    private function setParentCompetition(?self $parentCompetition): self
     {
-        if (!$this->events->contains($event)) {
-            $this->events[] = $event;
-            $event->setCompetition($this);
+        $this->parentCompetition = $parentCompetition;
+
+        return $this;
+    }
+
+    /** @return Collection<int|null, Competition|null> */
+    public function getCompetitionsList(): Collection
+    {
+        return $this->competitionsList;
+    }
+
+    public function addCompetitionToList(self $competitionToAdd): self
+    {
+        if (!$this->competitionsList->contains($competitionToAdd)) {
+            $this->competitionsList->add($competitionToAdd);
+            $competitionToAdd->setParentCompetition($this);
         }
 
         return $this;
     }
 
-    public function removeEvent(Event $event): self
+    public function removeCompetitionFromList(self $competitionToRemove): self
     {
-        if ($this->events->removeElement($event)) {
-            // set the owning side to null (unless already changed)
-            if ($event->getCompetition() === $this) {
-                $event->setCompetition(null);
-            }
+        if (
+            $this->competitionsList->removeElement($competitionToRemove) &&
+            $competitionToRemove->getParentCompetition() === $this
+        ) {
+            $competitionToRemove->setParentCompetition(null);
         }
 
         return $this;
     }
 
-    /** @return Collection<int, Competition> */
-    public function getCompetitions(): Collection
+    /** @return Collection<int|null, Event|null> */
+    public function getEventsList(): Collection
     {
-        return $this->competitions;
+        return $this->eventsList;
     }
 
-    /** @param Collection<int, Competition> $competitions */
-    public function setCompetitions(Collection $competitions): self
+    public function addEventToList(Event $eventToAdd): self
     {
-        $this->competitions = $competitions;
-
-        return $this;
-    }
-
-    public function addCompetition(Competition $competition): self
-    {
-        if (!$this->competitions->contains($competition)) {
-            $this->competitions[] = $competition;
+        if (!$this->eventsList->contains($eventToAdd)) {
+            $this->eventsList->add($eventToAdd);
         }
 
         return $this;
     }
 
-    public function removeCompetition(Competition $competition): self
+    public function removeEventFromList(Event $eventToRemove): self
     {
-        if ($this->competitions->removeElement($competition)) {
-            // set the owning side to null (unless already changed)
-            if ($competition->getCompetitions() === $this) {
-                $competition->setCompetitions(null);
-            }
-        }
+        $this->eventsList->removeElement($eventToRemove);
 
         return $this;
     }
 
-    /** @return Collection<int, Sport> */
-    public function getSports(): Collection
-    {
-        return $this->sports;
-    }
-
-    public function addSport(Sport $sport): self
-    {
-        if (!$this->sports->contains($sport)) {
-            $this->sports[] = $sport;
-        }
-
-        return $this;
-    }
-
-    public function removeSport(Sport $sport): self
-    {
-        $this->sports->removeElement($sport);
-
-        return $this;
-    }
-
-    /** @return Collection<int, SportType> */
-    public function getSportTypes(): Collection
-    {
-        return $this->sportTypes;
-    }
-
-    public function addSportType(SportType $sportType): self
-    {
-        if (!$this->sportTypes->contains($sportType)) {
-            $this->sportTypes[] = $sportType;
-        }
-
-        return $this;
-    }
-
-    public function removeSportType(SportType $sportType): self
-    {
-        $this->sportTypes->removeElement($sportType);
-
-        return $this;
-    }
 }

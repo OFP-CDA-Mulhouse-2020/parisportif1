@@ -8,10 +8,13 @@ use App\Repository\WalletRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=WalletRepository::class)
+ * @UniqueEntity("id")
  */
 class Wallet
 {
@@ -24,27 +27,32 @@ class Wallet
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\GreaterThanOrEqual(0)
+     *
+     * @Assert\NotBlank(groups={"changeWalletBalance"})
+     * @Assert\GreaterThanOrEqual(value=0, groups={"changeWalletBalance"})
      */
     private int $balance;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, mappedBy="wallet", cascade={"persist", "remove"})
-     */
-    private User $user;
-
-    /**
-     * @var Collection<int, Payment>
+     * @var Collection<int, WalletPayment>
      *
-     * @ORM\OneToMany(targetEntity=Payment::class, mappedBy="wallet", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity=WalletPayment::class)
+     * @ORM\JoinTable(
+     *     inverseJoinColumns={@ORM\JoinColumn(unique=true)}
+     * )
+     *
+     * Not a ManyToMany! JoinColumn is set to unique for inverseJoinColumns.
+     * For more details look at {@link https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/association-mapping.html#one-to-many-unidirectional-with-join-table}
      */
-    private Collection $payments;
+    private Collection $walletPaymentHistory;
+
 
     public function __construct()
     {
-        $this->payments = new ArrayCollection();
+        $this->walletPaymentHistory = new ArrayCollection();
     }
 
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;
@@ -62,48 +70,53 @@ class Wallet
         return $this;
     }
 
-    public function getUser(): User
+    public function addToBalance(int $valueToAdd): self
     {
-        return $this->user;
+        $this->balance += $valueToAdd;
+
+        return $this;
     }
 
-    public function setUser(User $user): self
+    public function removeFromBalance(int $valueToRemove): self
     {
-        $this->user = $user;
+        $this->balance -= $valueToRemove;
 
-        // set the owning side of the relation if necessary
-        if ($user->getWallet() !== $this) {
-            $user->setWallet($this);
+        return $this;
+    }
+
+    /** @return Collection<int, WalletPayment> */
+    public function getWalletPaymentHistory(): Collection
+    {
+        return $this->walletPaymentHistory;
+    }
+
+    public function addWalletPaymentToHistory(WalletPayment $walletPaymentHistory): self
+    {
+        if (!$this->walletPaymentHistory->contains($walletPaymentHistory)) {
+            $this->walletPaymentHistory->add($walletPaymentHistory);
         }
 
         return $this;
     }
 
-    /** @return Collection<int, Payment> */
-    public function getPayments(): Collection
+    public function removeWalletPaymentFromHistory(WalletPayment $walletPaymentHistory): self
     {
-        return $this->payments;
-    }
-
-    public function addPayment(Payment $payment): self
-    {
-        if (!$this->payments->contains($payment)) {
-            $this->payments[] = $payment;
-            $payment->setWallet($this);
-        }
+        $this->walletPaymentHistory->removeElement($walletPaymentHistory);
 
         return $this;
     }
 
-    public function removePayment(Payment $payment): self
+    /** @Assert\Callback(groups={"updateWalletPaymentHistory"}) */
+    public function validateWalletPaymentHistory(ExecutionContextInterface $context): void
     {
-        if ($this->payments->removeElement($payment)) {
-            // set the owning side to null (unless already changed)
-            if ($payment->getWallet() === $this) {
-                $payment->setWallet(null);
+        $validator = $context->getValidator();
+
+        foreach ($this->walletPaymentHistory as $walletPayment) {
+            if ($validator->validate($walletPayment, null, ['newWalletPayment'])->count() > 0) {
+                $context->buildViolation("walletPaymentHistory contain a non valid WalletPayment")
+                    ->atPath("walletPaymentHistory")
+                    ->addViolation();
             }
         }
-
-        return $this;
     }
 }

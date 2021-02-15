@@ -5,96 +5,133 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\Status;
+use App\Tests\GeneralTestMethod;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class StatusTest extends KernelTestCase
 {
-    private $status;
-    private $validator;
+    private Status $status;
+    private ValidatorInterface $validator;
+
 
     protected function setUp(): void
     {
         $this->status = new Status();
 
-        $kernel = self::bootKernel();
-        $kernel->boot();
-        $this->validator = $kernel->getContainer()->get("validator");
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
-    public function testInstanceOfStatus(): void
+    /**************
+     **** Test ****
+     **************/
+
+    /** @dataProvider validNameProvider */
+    public function testSetValidName(string $validName): void
     {
-        $this->assertInstanceOf(Status::class, $this->status);
-        $this->assertClassHasAttribute("name", Status::class);
-        $this->assertClassHasAttribute("description", Status::class);
+        $this->status->setName($validName);
+
+        $violationList = $this->validator->validate(
+            $this->status,
+            null,
+            ['newStatus', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "name",
+            $violationList
+        );
+        $obtainedValue = $this->status->getName();
+
+        $this->assertSame($validName, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    /**
-     * @dataProvider validStatusNameProvider
-     */
-    public function testSetValidStatusName($name)
+    /** @dataProvider invalidNameProvider */
+    public function testSetInvalidName(string $invalidName): void
     {
-        $this->status->setName($name);
-        $errorsList = $this->validator->validate($this->status);
-        $this->assertEquals(0, count($errorsList));
+        $this->status->setName($invalidName);
+
+        $violationList = $this->validator->validate(
+            $this->status,
+            null,
+            ['newStatus', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "name",
+            $violationList
+        );
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
     }
 
-    public function validStatusNameProvider(): array
+    /** @dataProvider validDescriptionProvider */
+    public function testSetValidDescription(string $validDescription): void
     {
-        return [
-            ["Team France"],
-        ];
+        $this->status->setDescription($validDescription);
+
+        $violationList = $this->validator->validate(
+            $this->status,
+            null,
+            ['newStatus', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "description",
+            $violationList
+        );
+        $obtainedValue = $this->status->getDescription();
+
+        $this->assertSame($validDescription, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    /**
-     * @dataProvider invalidStatusNameProvider
-     */
-    public function testSetInvalidStatusName(string $name): void
+    /** @dataProvider invalidDescriptionProvider */
+    public function testSetInvalidDescription(string $invalidDescription): void
     {
-        $this->status->setName($name);
-        $errorsList = $this->validator->validate($this->status);
-        $this->assertGreaterThan(0, count($errorsList));
+        $this->status->setDescription($invalidDescription);
+
+        $violationList = $this->validator->validate(
+            $this->status,
+            null,
+            ['newStatus', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "description",
+            $violationList
+        );
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
     }
 
-    public function invalidStatusNameProvider(): array
+    /***********************
+     **** Data Provider ****
+     ***********************/
+
+    /** @return Generator<array<int, string>> */
+    public function validNameProvider(): Generator
     {
-        return [
-            [""],
-            ["L"]
-        ];
+        yield ["Substitute"];
+        yield ["Player"];
     }
 
-    /**
-     * @dataProvider validStatusDescProvider
-     */
-    public function testSetValidStatusDesc($description)
+    /** @return Generator<array<int, string>> */
+    public function invalidNameProvider(): Generator
     {
-        $this->status->setDescription($description);
-        $errorsList = $this->validator->validate($this->status);
-        $this->assertEquals(0, count($errorsList));
+        yield [""];
     }
 
-    public function validStatusDescProvider(): array
+    /** @return Generator<array<int, string>> */
+    public function validDescriptionProvider(): Generator
     {
-        return [
-            ["Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, consectetur!"],
-        ];
+        yield ["Valid description"];
+        yield ["Another valid description"];
     }
 
-    /**
-     * @dataProvider invalidStatusDescProvider
-     */
-    public function testSetInvalidStatusDesc(string $description): void
+    /** @return Generator<array<int, string>> */
+    public function invalidDescriptionProvider(): Generator
     {
-        $this->status->setDescription($description);
-        $errorsList = $this->validator->validate($this->status);
-        $this->assertGreaterThan(0, count($errorsList));
-    }
-
-    public function invalidStatusDescProvider(): array
-    {
-        return [
-            [""],
-            ["L"]
-        ];
+        yield [""];
     }
 }

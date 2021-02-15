@@ -5,10 +5,23 @@ namespace App\Entity;
 use App\Repository\CompetitorTeamStatusRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CompetitorTeamStatusRepository::class)
+ * @UniqueEntity(
+ *     fields={"id"},
+ *     groups={"newCompetitorTeamStatus"}
+ * )
+ * @UniqueEntity(
+ *     fields={"competitor", "team"},
+ *     groups={
+ *          "newCompetitorTeamStatus",
+ *          "editCompetitorTeamStatusCompetitor",
+ *          "editCompetitorTeamStatusTeam",
+ *     }
+ * )
  */
 class CompetitorTeamStatus
 {
@@ -21,29 +34,50 @@ class CompetitorTeamStatus
 
     /**
      * @ORM\Column(type="date_immutable")
-     * @Assert\NotNull
      */
     private DateTimeInterface $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Competitor::class, inversedBy="competitorTeamStatuses")
+     * @ORM\ManyToOne(targetEntity=Competitor::class)
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid(
+     *     groups={
+     *          "editCompetitorTeamStatusCompetitor",
+     *          "newCompetitor"
+     *      }
+     * )
      */
     private Competitor $competitor;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="competitorTeamStatuses")
+     * @ORM\ManyToOne(targetEntity=Team::class)
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid(
+     *     groups={
+     *          "editCompetitorTeamStatusTeam",
+     *          "newTeam"
+     *     }
+     * )
      */
     private Team $team;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="competitorTeamStatuses")
+     * @ORM\ManyToOne(targetEntity=Status::class)
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid(
+     *     groups={
+     *          "editCompetitorTeamStatusStatus",
+     *          "newStatus"
+     *     }
+     * )
      */
     private Status $status;
 
 
+    /** @codeCoverageIgnore */
     public function getId(): int
     {
         return $this->id;

@@ -5,137 +5,335 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\User;
+use App\Entity\Wallet;
+use App\Entity\WalletPayment;
+use App\Tests\GeneralTestMethod;
+use DateInterval;
+use DateTime;
+use DateTimeInterface;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class UserTest extends KernelTestCase
 {
-    private $user;
-    private $validator;
+    private User $user;
+    private ValidatorInterface $validator;
+
 
     protected function setUp(): void
     {
         $this->user = new User();
 
-        $kernel = self::bootKernel();
-        $kernel->boot();
-        $this->validator = $kernel->getContainer()->get("validator");
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
-    public function testInstanceOfUser(): void
+    /**************
+     **** Test ****
+     **************/
+
+    /** @dataProvider validEmailProvider */
+    public function testSetValidEmail(string $validEmail): void
     {
-        $this->assertInstanceOf(User::class, $this->user);
-        $this->assertClassHasAttribute("email", User::class);
-        $this->assertClassHasAttribute("password", User::class);
-        $this->assertClassHasAttribute("lastname", User::class);
-        $this->assertClassHasAttribute("firstname", User::class);
-        $this->assertClassHasAttribute("birthdate", User::class);
-        $this->assertClassHasAttribute("creationDate", User::class);
-        $this->assertClassHasAttribute("active", User::class);
-        $this->assertClassHasAttribute("activeSince", User::class);
-        $this->assertClassHasAttribute("suspended", User::class);
-        $this->assertClassHasAttribute("suspendedSince", User::class);
-        $this->assertClassHasAttribute("deleted", User::class);
-        $this->assertClassHasAttribute("deletedSince", User::class);
-        $this->assertClassHasAttribute("wallet", User::class);
+        $this->user->setEmail($validEmail);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'updateUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("email", $violationList);
+        $obtainedValue = $this->user->getEmail();
+
+        $this->assertSame($validEmail, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    public function testSetLastName()
+    /** @dataProvider invalidEmailProvider */
+    public function testSetInvalidEmail(string $invalidEmail): void
     {
-        $this->user->setLastname("Dupont");
-        $this->assertSame("Dupont", $this->user->getLastname());
+        $this->user->setEmail($invalidEmail);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'updateUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("email", $violationList);
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
     }
 
-    public function testSetLastNameInvalidated()
+    /** @dataProvider validLastNameProvider */
+    public function testSetValidLastName(string $validLastName): void
     {
-        $this->expectException(\Exception::class);
-        $this->user->setLastname("D");
-        $this->assertSame("D", $this->user->getLastname());
+        $this->user->setLastname($validLastName);
+
+        $violationList = $this->validator->validate($this->user);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("lastname", $violationList);
+        $obtainedValue = $this->user->getLastname();
+
+        $this->assertSame($validLastName, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    //firstname
-    public function testSetFirstName()
+    /** @dataProvider invalidLastNameProvider */
+    public function testSetInvalidLastName(string $invalidLastName): void
     {
-        $this->user->setFirstname("Ben");
-        $this->assertSame("Ben", $this->user->getFirstname());
+        $this->user->setLastname($invalidLastName);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'updateUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("lastname", $violationList);
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
     }
 
-
-    public function testSetFirstNameInvalidated()
+    /** @dataProvider validFirstNameProvider */
+    public function testSetValidFirstName(string $validFirstName): void
     {
-        $this->expectException(\Exception::class);
-        $this->user->setFirstname("B");
-        $this->assertSame("B", $this->user->getFirstname());
+        $this->user->setFirstname($validFirstName);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'updateUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("firstname", $violationList);
+        $obtainedValue = $this->user->getFirstname();
+
+        $this->assertSame($validFirstName, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-
-    /**
-     * @dataProvider invalidEmailProvider
-     */
-    public function testSetInvalidEmail($email)
+    /** @dataProvider invalidFirstNameProvider */
+    public function testSetInvalidFirstName(string $invalidFirstName): void
     {
-        $this->user->setEmail($email);
-        $errorsList = $this->validator->validate($this->user, null, ['read']);
-        $this->assertGreaterThan(0, count($errorsList));
+        $this->user->setFirstname($invalidFirstName);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'updateUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("firstname", $violationList);
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
     }
 
-    public function invalidEmailProvider(): array
+    /** @dataProvider validBirthDateProvider */
+    public function testSetValidBirthDate(DateTimeInterface $validDate): void
     {
-        return [
-            [""],
-            ["doe.j@codeuronline"],
-            ["johndoe.com"]
+        $this->user->setBirthdate($validDate);
 
-        ];
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("birthdate", $violationList);
+        $obtainedValue = $this->user->getBirthdate();
+
+        $this->assertSame($validDate, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    /**
-     * @dataProvider validEmailProvider
-     */
-    public function testSetValidEmail($email)
+    /** @dataProvider invalidBirthDateProvider */
+    public function testSetInvalidBirthDate(DateTimeInterface $invalidBirthDate): void
     {
-        $this->user->setEmail($email);
-        $errorsList = $this->validator->validate($this->user);
-        $this->assertEquals(0, count($errorsList));
+        $this->user->setBirthdate($invalidBirthDate);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("birthdate", $violationList);
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
     }
 
-    public function validEmailProvider(): array
+    /** @dataProvider validCountryCodeProvider */
+    public function testSetValidCountryCode(string $validCountryCode): void
     {
-        return [
-            ["doe.j@codeur.online"],
-            ["john@doe.com"]
-        ];
+        $this->user->setCountryCode($validCountryCode);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'updateUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("countryCode", $violationList);
+        $obtainedValue = $this->user->getCountryCode();
+
+        $this->assertSame($validCountryCode, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    //password
-    public function testPasswordValidated()
+    /** @dataProvider invalidCountryCodeProvider */
+    public function testSetInvalidCountryCode(string $invalidCountryCode): void
     {
-        $this->user->setPassword("Test95qz@a");
-        $this->assertSame("Test95qz@a", $this->user->getPassword());
+        $this->user->setCountryCode($invalidCountryCode);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'updateUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("countryCode", $violationList);
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
     }
 
-    public function testInvalidPassword()
+    /** @dataProvider validTimeZoneProvider */
+    public function testSetValidTimeZone(string $validTimeZone): void
     {
-        $this->expectException(\Exception::class);
-        $this->user->setPassword("pas");
-        $this->assertSame("pas", $this->user->getPassword());
+        $this->user->setTimeZone($validTimeZone);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'updateUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("timeZone", $violationList);
+        $obtainedValue = $this->user->getTimeZone();
+
+        $this->assertSame($validTimeZone, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    //boolean
-    public function testActiveBool()
+    /** @dataProvider invalidTimeZoneProvider */
+    public function testSetInvalidTimeZone(string $invalidTimeZone): void
     {
-        $this->user->setActive(true);
-        $this->assertTrue($this->user->getActive());
+        $this->user->setTimeZone($invalidTimeZone);
+
+        $violationList = $this->validator->validate($this->user, null, ['registerUser', 'updateUser', 'Default']);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("timeZone", $violationList);
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
     }
 
-    public function testSuspendedBool()
+    /** @dataProvider validWalletProvider */
+    public function testSetValidWallet(Wallet $validWallet): void
     {
-        $this->user->setSuspended(true);
-        $this->assertTrue($this->user->getSuspended());
+        $this->user->setWallet($validWallet);
+
+        $violationList = $this->validator->validate(
+            $this->user,
+            null,
+            [
+                'registerUser',
+                'updateWalletPaymentHistory',
+                'changeWalletBalance',
+                'Default'
+            ]
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("wallet", $violationList);
+        $obtainedValue = $this->user->getWallet();
+
+        $this->assertSame($validWallet, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
     }
 
-    public function testDeletedBool()
+    /** @dataProvider invalidWalletProvider */
+    public function testSetInvalidWallet(Wallet $invalidWallet): void
     {
-        $this->user->setDeleted(true);
-        $this->assertTrue($this->user->getDeleted());
+        $this->user->setWallet($invalidWallet);
+
+        $violationList = $this->validator->validate(
+            $this->user,
+            null,
+            [
+                'registerUser',
+                'updateWalletPaymentHistory',
+                'changeWalletBalance',
+                'Default'
+            ]
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("wallet", $violationList);
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
+    }
+
+    /***********************
+     **** Data Provider ****
+     ***********************/
+
+    /** @return Generator<array<int, string>> */
+    public function validEmailProvider(): Generator
+    {
+        yield ["doe.j@codeur.online"];
+        yield ["john@doe.com"];
+    }
+
+    /** @return Generator<array<int, string>> * */
+    public function invalidEmailProvider(): Generator
+    {
+        yield [""];
+        yield ["doe.j@@codeuronline"];
+        yield ["johndoe.com"];
+    }
+
+    /** @return Generator<array<int, string>> */
+    public function validLastNameProvider(): Generator
+    {
+        yield ["Dupont"];
+        yield ["Smith"];
+        yield ["O"];
+    }
+
+    /** @return Generator<array<int, string>> */
+    public function invalidLastNameProvider(): Generator
+    {
+        yield [""];
+        yield ["Favo*"];
+        yield ["W@"];
+    }
+
+    /** @return Generator<array<int, string>> * */
+    public function validFirstNameProvider(): Generator
+    {
+        yield ['John'];
+        yield ['Edouard'];
+        yield ['El\'Rob'];
+    }
+
+    /** @return Generator<array<int, string>> * */
+    public function invalidFirstNameProvider(): Generator
+    {
+        yield [''];
+        yield ['Edo@uard'];
+        yield ['El+Rob'];
+    }
+
+    /** @return Generator<array<int, DateTimeInterface>> * */
+    public function validBirthDateProvider(): Generator
+    {
+        yield [new DateTime("now - 18 years")];
+        yield [new DateTime("now - 21 years")];
+    }
+
+    /** @return Generator<array<int, DateTimeInterface>> * */
+    public function invalidBirthDateProvider(): Generator
+    {
+        yield [(new DateTime("now - 18 years"))->add(new DateInterval('PT1H'))];
+        yield [(new DateTime("now - 18 years"))->add(new DateInterval('PT5M'))];
+        yield [new DateTime("now - 15 years")];
+    }
+
+    /** @return Generator<array<int, string>> * */
+    public function validCountryCodeProvider(): Generator
+    {
+        yield ["FR"];
+        yield ["BE"];
+        yield ["CH"];
+    }
+
+    /** @return Generator<array<int, string>> * */
+    public function invalidCountryCodeProvider(): Generator
+    {
+        yield [""];
+        yield ["NOT VALID LEL"];
+    }
+
+    /** @return Generator<array<int, string>> * */
+    public function validTimeZoneProvider(): Generator
+    {
+        yield ['Europe/Paris'];
+        yield ['Europe/Brussels'];
+        yield ['Europe/Oslo'];
+    }
+
+    /** @return Generator<array<int, string>> * */
+    public function invalidTimeZoneProvider(): Generator
+    {
+        yield [""];
+        yield ["NOT A TIMEZONE"];
+        yield ["EuropeParis"];
+    }
+
+    /** @return Generator<array<int, Wallet>> * */
+    public function validWalletProvider(): Generator
+    {
+        yield [(new Wallet())->setBalance(0)];
+        yield [(new Wallet())->setBalance(5000)];
+    }
+
+    /** @return Generator<array<int, Wallet>> * */
+    public function invalidWalletProvider(): Generator
+    {
+        yield [new Wallet()];
+        yield [(new Wallet())->setBalance(-5000)];
+        yield [(new Wallet())->addWalletPaymentToHistory(new WalletPayment())];
     }
 }

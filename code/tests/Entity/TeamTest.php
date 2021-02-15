@@ -5,99 +5,197 @@ declare(strict_types=1);
 namespace App\Tests\Entity;
 
 use App\Entity\Team;
+use App\Tests\GeneralTestMethod;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class TeamTest extends KernelTestCase
 {
-    private ?Team $team;
-    private ?ValidatorInterface $validator;
+    private Team $team;
+    private ValidatorInterface $validator;
 
     protected function setUp(): void
     {
         $this->team = new Team();
 
-        $kernel = self::bootKernel();
-        $kernel->boot();
-        $this->validator = $kernel->getContainer()->get("validator");
-    }
-
-    public function testInstanceOfTeam(): void
-    {
-        $this->assertInstanceOf(Team::class, $this->team);
-        $this->assertClassHasAttribute("name", Team::class);
-        $this->assertClassHasAttribute("description", Team::class);
-    }
-
-    /**
-     * @dataProvider invalidNameProvider()
-     */
-    public function testSetInvalidTeamName(string $name)
-    {
-        $this->team->setName($name);
-        $errorsList = $this->validator->validate($this->team);
-        $this->assertGreaterThan(0, count($errorsList));
-    }
-
-    public function invalidNameProvider(): array
-    {
-        return [
-            [""],
-            [
-                "Amon Rattanakosin Krung Thep Mahanakhon Mahinthara Mahadilok Phop Noppharat Ratchathani " .
-                "Ayuthaya Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya Witsanukam " .
-                "Prasit Bravo Association Amon Rattanakosin Krung Thep Mahanakhon Mahinthara Mahadilok Phop Noppharat " .
-                "Ratchathani Ayuthaya Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya " .
-                "Witsanukam Prasit Bravo Association Football Club"
-            ]
-        ];
-    }
-
-    /**
-     * @dataProvider validNameProvider()
-     */
-    public function testSetValidTeamName(string $name)
-    {
-        $this->team->setName($name);
-        $errorsList = $this->validator->validate($this->team);
-        $this->assertEquals(0, count($errorsList));
-    }
-
-    public function validNameProvider(): array
-    {
-        return [
-            [
-                "Amon Rattanakosin Krung Thep Mahanakhon Mahinthara Mahadilok Phop Noppharat Ratchathani Ayuthaya " .
-                "Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya Witsanukam Prasit Bravo " .
-                "Association Football Club"
-            ]
-        ];
-    }
-
-    /**
-     * @dataProvider validDescriptionProvider()
-     */
-    public function testSetValidTeamDescription(string $description)
-    {
-        $this->team->setName($description);
-        $errorsList = $this->validator->validate($this->team);
-        $this->assertEquals(0, count($errorsList));
-    }
-
-    public function validDescriptionProvider(): array
-    {
-        return [
-            [
-                "Bangkok Bravo FC is a Thai club based in the country's capital. " .
-                "Bangkok Bravo FC officially has the longest club name in football at the moment"
-            ]
-        ];
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
-        $this->team = null;
-        $this->validator = null;
+        unset($this->team, $this->validator);
+    }
+
+    /**************
+     **** Test ****
+     **************/
+
+    /** @dataProvider validNameProvider */
+    public function testSetValidName(string $validName): void
+    {
+        $this->team->setName($validName);
+
+        $violationList = $this->validator->validate(
+            $this->team,
+            null,
+            ['newTeam', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "name",
+            $violationList
+        );
+        $obtainedValue = $this->team->getName();
+
+        $this->assertSame($validName, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @dataProvider invalidNameProvider */
+    public function testSetInvalidName(string $invalidName): void
+    {
+        $this->team->setName($invalidName);
+
+        $violationList = $this->validator->validate(
+            $this->team,
+            null,
+            ['newTeam', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "name",
+            $violationList
+        );
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
+    }
+
+    /** @dataProvider validCountryCodeProvider */
+    public function testSetValidCountryCode(string $validCountryCode): void
+    {
+        $this->team->setCountryCode($validCountryCode);
+
+        $violationList = $this->validator->validate(
+            $this->team,
+            null,
+            ['newTeam', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "countryCode",
+            $violationList
+        );
+        $obtainedValue = $this->team->getCountryCode();
+
+        $this->assertSame($validCountryCode, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @dataProvider invalidCountryCodeProvider */
+    public function testSetInvalidCountryCode(string $invalidCountryCode): void
+    {
+        $this->team->setCountryCode($invalidCountryCode);
+
+        $violationList = $this->validator->validate(
+            $this->team,
+            null,
+            ['newTeam', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "countryCode",
+            $violationList
+        );
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
+    }
+
+    /** @dataProvider validDescriptionProvider */
+    public function testSetValidDescription(?string $validDescription): void
+    {
+        $this->team->setDescription($validDescription);
+
+        $violationList = $this->validator->validate(
+            $this->team,
+            null,
+            ['newTeam', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "description",
+            $violationList
+        );
+        $obtainedValue = $this->team->getDescription();
+
+        $this->assertSame($validDescription, $obtainedValue);
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @dataProvider invalidDescriptionProvider */
+    public function testSetInvalidDescription(string $invalidDescription): void
+    {
+        $this->team->setDescription($invalidDescription);
+
+        $violationList = $this->validator->validate(
+            $this->team,
+            null,
+            ['newTeam', 'Default']
+        );
+        $violationOnAttribute = GeneralTestMethod::isViolationOn(
+            "description",
+            $violationList
+        );
+
+        $this->assertGreaterThanOrEqual(1, count($violationList));
+        $this->assertTrue($violationOnAttribute);
+    }
+
+    /***********************
+     **** Data Provider ****
+     ***********************/
+
+    /** @return Generator<array<int, string>> */
+    public function validNameProvider(): Generator
+    {
+        yield ["Cubs"];
+        yield ["Destroyers"];
+        yield ["Vipers"];
+    }
+
+    /** @return Generator<array<int, string>> */
+    public function invalidNameProvider(): Generator
+    {
+        yield [""];
+        yield [" "];
+        yield ["   "];
+    }
+
+    /** @return Generator<array<int, string>> */
+    public function validCountryCodeProvider(): Generator
+    {
+        yield ["FR"];
+        yield ["US"];
+        yield ["GB"];
+    }
+
+    /** @return Generator<array<int, string>> */
+    public function invalidCountryCodeProvider(): Generator
+    {
+        yield [""];
+        yield ["France"];
+    }
+
+    /** @return Generator<array<int|null, string|null>> */
+    public function validDescriptionProvider(): Generator
+    {
+        yield [null];
+        yield ["Valid description"];
+    }
+
+    /** @return Generator<array<int, string>> */
+    public function invalidDescriptionProvider(): Generator
+    {
+        yield [""];
+        yield [" "];
+        yield ["   "];
     }
 }
