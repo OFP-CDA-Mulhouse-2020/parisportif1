@@ -14,9 +14,12 @@ class HomeController extends AbstractController
      */
     public function homePage(EventRepository $eventRepository): Response
     {
-        return $this->render('home/homepage.html.twig', [
-            'controller_name' => 'HomeController',
-            'event_list' => $eventRepository->findAll()
-        ]);
+        return $this->render(
+            'home/homepage.html.twig',
+            [
+                'controller_name' => 'HomeController',
+                'event_list' => $eventRepository->findAll()
+            ]
+        );
     }
 }
