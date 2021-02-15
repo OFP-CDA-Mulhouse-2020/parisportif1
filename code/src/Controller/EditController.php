@@ -5,16 +5,16 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\EditFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
 class EditController extends AbstractController
 {
-    private $encode;
+    private UserPasswordEncoderInterface $encode;
 
     public function __construct(UserPasswordEncoderInterface $encoder)
     {
@@ -22,7 +22,7 @@ class EditController extends AbstractController
     }
 
     /**
-     * @Route("/edit", name="edit")
+     * @Route("/account/edit", name="edit_account_page")
      */
     public function index(
         AuthenticationUtils $authenticationUtils,
