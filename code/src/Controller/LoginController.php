@@ -17,6 +17,10 @@ final class LoginController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->getUser() !== null) {
+            return $this->redirectToRoute('home_page');
+        }
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
