@@ -48,7 +48,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string")
      *
-     * @Assert\NotBlank(groups={"registerUser", "updateUser"})
+     * @Assert\NotBlank(groups={"addPasswordToUser", "updatePasswordFor:q:User"})
      */
     private string $password;
 
@@ -110,7 +110,7 @@ class User implements UserInterface
      * @ORM\OneToOne(targetEntity=Wallet::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Assert\Valid(groups={"registerUser", "updateWalletPaymentHistory", "changeWalletBalance"})
+     * @Assert\Valid(groups={"addWalletToUser", "updateWalletPaymentHistory", "changeWalletBalance"})
      */
     private Wallet $wallet;
 
