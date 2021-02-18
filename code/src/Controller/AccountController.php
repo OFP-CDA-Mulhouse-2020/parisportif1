@@ -14,7 +14,7 @@ class AccountController extends AbstractController
     public function accountPage(): Response
     {
         return $this->render(
-            'account/account.html.twig',
+            'account/accountShow.html.twig',
             [
                 'controller_name' => 'AccountController',
             ]
