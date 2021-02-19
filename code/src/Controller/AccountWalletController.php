@@ -1,24 +1,22 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-final class ProfileController extends AbstractController
+class AccountWalletController extends AbstractController
 {
     /**
-     * @Route("/profile", name="app_profile")
+     * @Route("/account/wallet", name="account_wallet")
      */
     public function index(): Response
     {
         return $this->render(
-            'profile/index.html.twig',
+            'account/wallet/wallet.html.twig',
             [
-                'controller_name' => 'ProfileController'
+                'controller_name' => 'AccountWalletController',
             ]
         );
     }

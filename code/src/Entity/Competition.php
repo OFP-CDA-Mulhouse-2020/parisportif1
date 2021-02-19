@@ -153,5 +153,4 @@ class Competition
 
         return $this;
     }
-
 }

@@ -1,5 +1,14 @@
 parameters:
     level: 6
+
+    bootstrapFiles:
+        - bin/.phpunit/phpunit/vendor/autoload.php
+        - vendor/autoload.php
+
     paths:
         - src
         - tests
+
+    ignoreErrors:
+        - '#Dynamic call to static method PHPUnit\\Framework\\.*#'
+        - '#Dynamic call to static method Symfony\\Bundle\\FrameworkBundle\\Test\\.*#'
